@@ -1,30 +1,87 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Users,
     Briefcase,
     TrendingUp,
     ArrowUpRight,
     Clock,
-    Search
+    Search,
+    Loader2,
+    FileText
 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { collection, getDocs, query, orderBy, limit, doc, getDoc } from 'firebase/firestore';
+import { db } from '@/lib/firebase';
+import Link from 'next/link';
 
 export default function AdminOverview() {
-    const stats = [
-        { name: 'Total Talent', value: '12,842', change: '+12%', icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
-        { name: 'Active Jobs', value: '456', change: '+5%', icon: Briefcase, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-        { name: 'Interviews Today', value: '89', change: '+18%', icon: Clock, color: 'text-amber-600', bg: 'bg-amber-50' },
-        { name: 'Platform Revenue', value: '$84,200', change: '+24%', icon: TrendingUp, color: 'text-purple-600', bg: 'bg-purple-50' },
-    ];
+    const [loading, setLoading] = useState(true);
+    const [stats, setStats] = useState([
+        { name: 'Total Talent', value: '0', change: '+0%', icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
+        { name: 'Active Jobs', value: '0', change: '+0%', icon: Briefcase, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+        { name: 'Applications', value: '0', change: '+0%', icon: FileText, color: 'text-amber-600', bg: 'bg-amber-50' },
+        { name: 'New Reviews', value: '0', icon: Clock, color: 'text-purple-600', bg: 'bg-purple-50' },
+    ]);
 
-    const recentUsers = [
-        { name: 'Amara Okafor', role: 'Machine Learning Engineer', joined: '2 mins ago', status: 'Pending Review' },
-        { name: 'David Mensah', role: 'Full Stack Developer', joined: '15 mins ago', status: 'Interviewing' },
-        { name: 'Sarah Kone', role: 'Data Scientist', joined: '1 hour ago', status: 'Vetted' },
-        { name: 'Emmanuel Tetteh', role: 'DevOps Architect', joined: '3 hours ago', status: 'New' },
-    ];
+    const [recentUsers, setRecentUsers] = useState<any[]>([]);
+
+    useEffect(() => {
+        fetchDashboardData();
+    }, []);
+
+    const fetchDashboardData = async () => {
+        try {
+            setLoading(true);
+
+            // Fetch Profiles Count
+            const profilesSnap = await getDocs(collection(db, 'profiles'));
+            const totalTalent = profilesSnap.size;
+
+            // Fetch Jobs Count
+            const jobsSnap = await getDocs(collection(db, 'jobs'));
+            const totalJobs = jobsSnap.size;
+
+            // Fetch Applications Count
+            const appsSnap = await getDocs(collection(db, 'applications'));
+            const totalApps = appsSnap.size;
+
+            // Fetch Recent Users
+            const recentUsersQuery = query(
+                collection(db, 'profiles'),
+                orderBy('createdAt', 'desc'),
+                limit(4)
+            );
+            const recentUsersSnap = await getDocs(recentUsersQuery);
+            const users = recentUsersSnap.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+
+            setRecentUsers(users);
+            setStats([
+                { name: 'Total Talent', value: totalTalent.toLocaleString(), change: '+12%', icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
+                { name: 'Active Jobs', value: totalJobs.toLocaleString(), change: '+5%', icon: Briefcase, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+                { name: 'Applications', value: totalApps.toLocaleString(), change: '+18%', icon: FileText, color: 'text-amber-600', bg: 'bg-amber-50' },
+                { name: 'New Reviews', value: users.filter((u: any) => u.status === 'New' || u.status === 'Pending Review').length.toString(), icon: Clock, color: 'text-purple-600', bg: 'bg-purple-50' },
+            ]);
+
+        } catch (error) {
+            console.error('Error fetching dashboard data:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4">
+                <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
+                <p className="text-zinc-500 font-medium font-medium">Synchronizing system data...</p>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-12">
@@ -69,22 +126,24 @@ export default function AdminOverview() {
                     </div>
                     <div className="divide-y divide-zinc-50">
                         {recentUsers.map((user) => (
-                            <div key={user.name} className="p-6 flex items-center gap-6 hover:bg-zinc-50/50 transition-colors">
-                                <div className="w-12 h-12 rounded-full bg-zinc-100 flex items-center justify-center font-bold text-zinc-400">
-                                    {user.name[0]}
+                            <div key={user.id} className="p-6 flex items-center gap-6 hover:bg-zinc-50/50 transition-colors">
+                                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-600">
+                                    {user.fullName?.[0] || user.email?.[0] || 'U'}
                                 </div>
                                 <div className="flex-1">
-                                    <h4 className="font-bold text-zinc-900">{user.name}</h4>
-                                    <p className="text-sm text-zinc-500">{user.role}</p>
+                                    <h4 className="font-bold text-zinc-900">{user.fullName || 'New User'}</h4>
+                                    <p className="text-sm text-zinc-500">{user.role || 'Unassigned Role'}</p>
                                 </div>
                                 <div className="text-right">
                                     <span className={`text-[10px] uppercase tracking-widest font-black px-2 py-1 rounded-md mb-1 inline-block ${user.status === 'Vetted' ? 'bg-emerald-50 text-emerald-600' :
-                                            user.status === 'Pending Review' ? 'bg-amber-50 text-amber-600' :
-                                                'bg-zinc-100 text-zinc-500'
+                                        user.status === 'Pending Review' || user.status === 'New' ? 'bg-amber-50 text-amber-600' :
+                                            'bg-zinc-100 text-zinc-500'
                                         }`}>
-                                        {user.status}
+                                        {user.status || 'New'}
                                     </span>
-                                    <p className="text-xs text-zinc-400">{user.joined}</p>
+                                    <p className="text-xs text-zinc-400">
+                                        {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Just now'}
+                                    </p>
                                 </div>
                             </div>
                         ))}

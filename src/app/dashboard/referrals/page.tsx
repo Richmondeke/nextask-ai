@@ -98,31 +98,41 @@ export default function ReferralsPage() {
         <FadeIn>
             <div className="space-y-8 pb-20">
                 {/* Header Section */}
-                <div className="bg-blue-600 rounded-[40px] p-10 md:p-14 text-white relative overflow-hidden">
-                    <div className="relative z-10 max-w-2xl">
-                        <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-[1.1]">
-                            Refer people you've worked with. <br />
-                            <span className="text-blue-200">Earn when they get hired.</span>
-                        </h1>
-                        <p className="text-blue-100 text-lg md:text-xl leading-relaxed mb-10 opacity-90">
-                            Help your talented colleagues find world-class opportunities and get recognized for your professional network.
-                        </p>
-                        <div className="flex flex-col sm:flex-row gap-4 max-w-md">
-                            <div className="flex-1 bg-white/10 backdrop-blur-xl rounded-2xl px-6 py-4 border border-white/20 flex items-center justify-between group">
-                                <span className="text-sm font-bold tracking-wider text-blue-50">
-                                    {profile?.referralCode || 'REF-XXXX'}
-                                </span>
-                                <button
-                                    onClick={copyToClipboard}
-                                    className="text-[10px] font-black uppercase tracking-widest bg-white text-blue-600 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition-colors shadow-sm"
-                                >
-                                    {copied ? 'Copied!' : 'Copy Link'}
-                                </button>
+                <div className="bg-blue-600 rounded-[32px] p-8 md:p-10 text-white relative overflow-hidden">
+                    <div className="flex flex-col md:flex-row items-center gap-10 relative z-10">
+                        <div className="flex-1 space-y-4">
+                            <h1 className="text-3xl md:text-4xl font-bold tracking-tight leading-tight">
+                                Refer your network, <br />
+                                <span className="text-blue-200">Earn rewards.</span>
+                            </h1>
+                            <p className="text-blue-100 text-sm md:text-base leading-relaxed opacity-90 max-w-xl">
+                                Support your talented colleagues and get rewarded for your professional network.
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                                <div className="flex-1 bg-white/10 backdrop-blur-xl rounded-xl px-4 py-3 border border-white/20 flex items-center justify-between group max-w-xs">
+                                    <span className="text-xs font-bold tracking-wider text-blue-50">
+                                        {profile?.referralCode || 'REF-XXXX'}
+                                    </span>
+                                    <button
+                                        onClick={copyToClipboard}
+                                        className="text-[10px] font-black uppercase tracking-widest bg-white text-blue-600 px-3 py-1 rounded-lg hover:bg-blue-50 transition-colors shadow-sm"
+                                    >
+                                        {copied ? 'Copied!' : 'Copy'}
+                                    </button>
+                                </div>
                             </div>
+                        </div>
+
+                        <div className="hidden md:block w-1/3 max-w-[240px]">
+                            <img
+                                src="/referral_header.png"
+                                alt="Referrals"
+                                className="w-full h-auto rounded-2xl shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500"
+                            />
                         </div>
                     </div>
                     {/* Abstract shape */}
-                    <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -mr-20 -mt-20" />
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-10 -mt-10" />
                 </div>
 
                 {/* Feature Cards */}

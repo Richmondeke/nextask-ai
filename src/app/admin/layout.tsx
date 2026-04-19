@@ -6,21 +6,17 @@ import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import {
-    LayoutDashboard,
-    Users,
-    Briefcase,
-    Settings,
-    ArrowLeft,
-    ShieldAlert,
+    Menu,
     Loader2
 } from 'lucide-react';
-import Link from 'next/link';
+import DashboardSidebar from '@/components/DashboardSidebar';
+import Logo from '@/components/ui/Logo';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter();
-    const pathname = usePathname();
     const [isLoading, setIsLoading] = useState(true);
     const [isAuthorized, setIsAuthorized] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -55,58 +51,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         return null;
     }
 
-    const adminLinks = [
-        { name: 'Overview', href: '/admin', icon: LayoutDashboard },
-        { name: 'Talent Pool', href: '/admin/users', icon: Users },
-        { name: 'Job Manager', href: '/admin/jobs', icon: Briefcase },
-        { name: 'Settings', href: '/admin/settings', icon: Settings },
-    ];
-
     return (
-        <div className="min-h-screen bg-zinc-50 flex">
-            {/* Admin Sidebar */}
-            <aside className="w-64 bg-zinc-900 text-white flex flex-col fixed h-full z-50">
-                <div className="p-8 border-b border-zinc-800 flex items-center gap-3">
-                    <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-lg">
-                        N
-                    </div>
-                    <span className="font-bold tracking-tight text-xl">Admin</span>
-                </div>
+        <div className="min-h-screen bg-zinc-50 flex flex-col lg:flex-row">
+            {/* Mobile Header */}
+            <header className="lg:hidden h-16 border-b border-zinc-200 px-6 flex items-center justify-between sticky top-0 bg-white/80 backdrop-blur-md z-40">
+                <Logo />
+                <button
+                    onClick={() => setIsSidebarOpen(true)}
+                    className="p-2 text-zinc-500 hover:text-zinc-900"
+                >
+                    <Menu size={24} />
+                </button>
+            </header>
 
-                <nav className="flex-1 p-4 space-y-1 mt-6">
-                    {adminLinks.map((link) => {
-                        const isActive = pathname === link.href;
-                        const Icon = link.icon;
-                        return (
-                            <Link
-                                key={link.name}
-                                href={link.href}
-                                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive
-                                        ? 'bg-blue-600 text-white'
-                                        : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
-                                    }`}
-                            >
-                                <Icon size={20} />
-                                <span className="text-sm font-medium">{link.name}</span>
-                            </Link>
-                        );
-                    })}
-                </nav>
-
-                <div className="p-4 border-t border-zinc-800">
-                    <Link
-                        href="/dashboard"
-                        className="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-white transition-all group"
-                    >
-                        <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-                        <span className="text-sm">Back to User View</span>
-                    </Link>
-                </div>
-            </aside>
+            <DashboardSidebar
+                isOpen={isSidebarOpen}
+                onClose={() => setIsSidebarOpen(false)}
+            />
 
             {/* Main Content Area */}
-            <main className="flex-1 ml-64 p-12">
-                <div className="max-w-7xl mx-auto">
+            <main className="flex-1 lg:pl-64">
+                <div className="p-6 md:p-12 max-w-7xl mx-auto">
                     {children}
                 </div>
             </main>
