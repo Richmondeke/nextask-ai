@@ -1,47 +1,67 @@
-'use client';
-
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import {
     Tag,
     MessageSquare,
     ShieldCheck,
     Search,
-    Type,
-    AlertCircle,
     CheckCircle2,
     XCircle,
-    HelpCircle,
+    AlertCircle,
     Smile,
     Frown,
     Meh,
     AlertTriangle
 } from 'lucide-react';
+import { Entity } from '@/lib/assessmentData';
 
 interface TaskProps {
-    type: 'categorization' | 'sentiment' | 'ner' | 'fact_checking';
+    type: 'categorization' | 'sentiment' | 'ner' | 'fact-check';
     content: any;
     options?: string[];
     onComplete: (data: any) => void;
 }
 
 export default function TaskStyles({ type, content, options, onComplete }: TaskProps) {
-    const [selection, setSelection] = useState<any>(null);
-    const [highlights, setHighlights] = useState<{ start: number, end: number, label: string }[]>([]);
+    const [selection, setSelection] = useState<string | null>(null);
+    const [entities, setEntities] = useState<Entity[]>([]);
+    const [activeLabel, setActiveLabel] = useState<string | null>(null);
+
+    const handleTextSelection = () => {
+        if (type !== 'ner' || !activeLabel) return;
+
+        const sel = window.getSelection();
+        if (!sel || sel.rangeCount === 0) return;
+
+        const selectedText = sel.toString().trim();
+        if (!selectedText) return;
+
+        // Check if entity already exists
+        if (!entities.some(e => e.text === selectedText)) {
+            setEntities([...entities, { text: selectedText, label: activeLabel }]);
+        }
+
+        sel.removeAllRanges();
+    };
+
+    const removeEntity = (text: string) => {
+        setEntities(entities.filter(e => e.text !== text));
+    };
 
     const renderCategorization = () => (
         <div className="space-y-6">
             <div className="p-6 bg-zinc-50 rounded-2xl border border-zinc-100">
-                <p className="text-sm font-medium text-zinc-900 leading-relaxed">{content.text}</p>
+                <p className="text-sm font-medium text-zinc-900 leading-relaxed">
+                    {typeof content === 'string' ? content : content.text}
+                </p>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {options?.map((opt) => (
                     <button
                         key={opt}
                         onClick={() => setSelection(opt)}
                         className={`p-4 rounded-xl border-2 text-left transition-all ${selection === opt
-                                ? 'border-blue-600 bg-blue-50 text-blue-700'
-                                : 'border-zinc-100 bg-white hover:border-zinc-200 text-zinc-600'
+                            ? 'border-blue-600 bg-blue-50 text-blue-700'
+                            : 'border-zinc-100 bg-white hover:border-zinc-200 text-zinc-600'
                             }`}
                     >
                         <div className="flex items-center justify-between">
@@ -65,16 +85,16 @@ export default function TaskStyles({ type, content, options, onComplete }: TaskP
         return (
             <div className="space-y-8">
                 <div className="p-6 bg-white rounded-2xl border border-zinc-100 shadow-sm italic text-zinc-600">
-                    "{content.text}"
+                    &quot;{typeof content === 'string' ? content : content.text}&quot;
                 </div>
-                <div className="flex justify-between gap-4">
+                <div className="flex flex-wrap justify-between gap-4">
                     {sentimentOptions.map((opt) => (
                         <button
                             key={opt.label}
                             onClick={() => setSelection(opt.label)}
-                            className={`flex-1 flex flex-col items-center gap-3 p-6 rounded-3xl border-2 transition-all ${selection === opt.label
-                                    ? `border-blue-600 ${opt.bg} shadow-md`
-                                    : 'border-zinc-50 bg-white hover:border-zinc-100'
+                            className={`flex-1 min-w-[120px] flex flex-col items-center gap-3 p-6 rounded-3xl border-2 transition-all ${selection === opt.label
+                                ? `border-blue-600 ${opt.bg} shadow-md`
+                                : 'border-zinc-50 bg-white hover:border-zinc-100'
                                 }`}
                         >
                             <opt.icon size={32} className={selection === opt.label ? opt.color : 'text-zinc-300'} />
@@ -89,19 +109,48 @@ export default function TaskStyles({ type, content, options, onComplete }: TaskP
 
     const renderNER = () => (
         <div className="space-y-6">
-            <div className="p-1 leading-loose text-zinc-900 font-medium">
-                {content.text}
-                <div className="mt-4 p-4 bg-blue-50/50 rounded-xl border border-blue-100 text-[11px] text-blue-600 font-bold flex items-center gap-2">
-                    <Type size={14} />
-                    Highlight the entities in the text above and label them.
+            <div
+                className="p-6 bg-zinc-50 rounded-2xl border border-zinc-100 leading-loose text-zinc-900 font-medium select-text"
+                onMouseUp={handleTextSelection}
+            >
+                {typeof content === 'string' ? content : content.text}
+            </div>
+
+            <div className="space-y-4">
+                <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">1. Select a Label Type</p>
+                <div className="flex flex-wrap gap-2">
+                    {['PERSON', 'ORG', 'LOC', 'DATE', 'MISC'].map(label => (
+                        <button
+                            key={label}
+                            onClick={() => setActiveLabel(label)}
+                            className={`px-4 py-2 rounded-lg border text-[10px] font-black tracking-widest transition-all uppercase ${activeLabel === label
+                                ? 'bg-zinc-900 text-white border-zinc-900'
+                                : 'bg-white text-zinc-600 border-zinc-200 hover:bg-zinc-50'
+                                }`}
+                        >
+                            {label}
+                        </button>
+                    ))}
                 </div>
             </div>
-            <div className="flex flex-wrap gap-2">
-                {['PERSON', 'ORG', 'LOC', 'DATE', 'MISC'].map(label => (
-                    <button key={label} className="px-4 py-2 rounded-lg border border-zinc-200 text-[10px] font-black tracking-widest hover:bg-zinc-50 transition-colors uppercase">
-                        {label}
-                    </button>
-                ))}
+
+            <div className="space-y-4 pt-4 border-t border-zinc-100">
+                <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">2. Identified Entities ({entities.length})</p>
+                {entities.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                        {entities.map((e, i) => (
+                            <div key={i} className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg border border-blue-100 group">
+                                <span className="text-[10px] font-bold">{e.text}</span>
+                                <span className="text-[8px] font-black bg-blue-600 text-white px-1.5 py-0.5 rounded uppercase">{e.label}</span>
+                                <button onClick={() => removeEntity(e.text)} className="ml-1 hover:text-red-500">
+                                    <XCircle size={14} />
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-xs text-zinc-400 italic">Select text and click a label above to add entities.</p>
+                )}
             </div>
         </div>
     );
@@ -112,7 +161,7 @@ export default function TaskStyles({ type, content, options, onComplete }: TaskP
                 <div className="p-4 bg-orange-50 rounded-xl border border-orange-100 flex gap-3">
                     <AlertCircle className="text-orange-500 shrink-0" size={20} />
                     <div className="space-y-1">
-                        <p className="text-xs font-black text-orange-900 uppercase">Submited Claim</p>
+                        <p className="text-xs font-black text-orange-900 uppercase">Submitted Claim</p>
                         <p className="text-sm font-medium text-orange-800">{content.claim}</p>
                     </div>
                 </div>
@@ -121,14 +170,14 @@ export default function TaskStyles({ type, content, options, onComplete }: TaskP
                     <p className="text-sm leading-relaxed text-zinc-600">{content.source}</p>
                 </div>
             </div>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4">
                 {['SUPPORTED', 'CONTRADICTED', 'NOT_ENOUGH_INFO'].map(verdict => (
                     <button
                         key={verdict}
                         onClick={() => setSelection(verdict)}
-                        className={`flex-1 py-4 rounded-xl border-2 text-[11px] font-black tracking-widest uppercase transition-all ${selection === verdict
-                                ? 'border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-100'
-                                : 'border-zinc-100 text-zinc-400 hover:border-zinc-200'
+                        className={`flex-1 py-4 px-2 rounded-xl border-2 text-[10px] font-black tracking-widest uppercase transition-all ${selection === verdict
+                            ? 'border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-100'
+                            : 'border-zinc-100 text-zinc-400 hover:border-zinc-200 bg-white'
                             }`}
                     >
                         {verdict.replace(/_/g, ' ')}
@@ -143,35 +192,44 @@ export default function TaskStyles({ type, content, options, onComplete }: TaskP
             case 'categorization': return <Tag className="text-blue-600" />;
             case 'sentiment': return <MessageSquare className="text-blue-600" />;
             case 'ner': return <Search className="text-blue-600" />;
-            case 'fact_checking': return <ShieldCheck className="text-blue-600" />;
+            case 'fact-check': return <ShieldCheck className="text-blue-600" />;
+        }
+    };
+
+    const isComplete = type === 'ner' ? entities.length > 0 : !!selection;
+    const handleSubmit = () => {
+        if (type === 'ner') {
+            onComplete(entities);
+        } else {
+            onComplete(selection);
         }
     };
 
     return (
-        <div className="w-full space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="w-full space-y-8">
             <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center border border-blue-100">
                     {getIcon()}
                 </div>
                 <div>
-                    <h4 className="text-lg font-bold text-zinc-900 capitalize">{type.replace('_', ' ')} Task</h4>
+                    <h4 className="text-lg font-bold text-zinc-900 capitalize">{type.replace('-', ' ')} Task</h4>
                     <p className="text-xs font-medium text-zinc-500">Expert Annotation Assessment</p>
                 </div>
             </div>
 
-            <div className="bg-white rounded-3xl p-8 border border-zinc-100 shadow-sm">
+            <div className="bg-white rounded-[32px] p-6 sm:p-8 border border-zinc-100 shadow-sm">
                 {type === 'categorization' && renderCategorization()}
                 {type === 'sentiment' && renderSentiment()}
                 {type === 'ner' && renderNER()}
-                {type === 'fact_checking' && renderFactChecking()}
+                {type === 'fact-check' && renderFactChecking()}
             </div>
 
             <button
-                disabled={!selection}
-                onClick={() => onComplete(selection)}
-                className={`w-full py-4 rounded-2xl text-[13px] font-black transition-all shadow-xl ${selection
-                        ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-blue-100'
-                        : 'bg-zinc-100 text-zinc-400 cursor-not-allowed shadow-none'
+                disabled={!isComplete}
+                onClick={handleSubmit}
+                className={`w-full py-4 rounded-2xl text-[13px] font-black transition-all shadow-xl ${isComplete
+                    ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-blue-100'
+                    : 'bg-zinc-100 text-zinc-400 cursor-not-allowed shadow-none'
                     }`}
             >
                 Submit Assessment

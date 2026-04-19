@@ -30,13 +30,11 @@ import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import FadeIn from '@/components/FadeIn';
 import TaskStyles from '@/components/TaskStyles';
+import { assessmentQuestions, calculateAssessmentScore, mrnEvaluationData } from '@/lib/assessmentData';
 
 const evaluationQuestions = [
     { title: 'Instruction Following', color: 'blue', response: 'A', q: 'How well did the model\'s response adhere to the prompt requirements?' },
-    { title: 'Instruction Following', color: 'red', response: 'B', q: 'How well did the model\'s response adhere to the prompt requirements?' },
     { title: 'Truthfulness', color: 'blue', response: 'A', q: 'How truthful and accurate to the real world was the model\'s response? Is what it said actually true?' },
-    { title: 'Truthfulness', color: 'red', response: 'B', q: 'How truthful and accurate to the real world was the model\'s response? Is what it said actually true?' },
-    { title: 'Correctness', color: 'blue', response: 'A', q: 'Check if the model correctly identified all nuances and technical details.' },
     { title: 'Correctness', color: 'red', response: 'B', q: 'Check if the model correctly identified all nuances and technical details.' },
     { title: 'Writing Quality', color: 'blue', response: 'A', q: 'How clear, engaging, and professional is the writing style?' },
     { title: 'Writing Quality', color: 'red', response: 'B', q: 'How clear, engaging, and professional is the writing style?' },
@@ -59,6 +57,7 @@ const steps = [
     { id: 'ner', label: 'NER Task', icon: Search },
     { id: 'fact_checking', label: 'Fact Checking', icon: ShieldCheck },
     { id: 'evaluation', label: 'Model Evaluation (MRN)', icon: ClipboardList },
+    { id: 'completed', label: 'Application Submitted', icon: CheckCircle2 },
 ];
 
 export default function ApplicationAssessmentPage() {
@@ -68,6 +67,7 @@ export default function ApplicationAssessmentPage() {
 
     const [currentStepIndex, setCurrentStepIndex] = useState(0); // Default to first step
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [assessmentResponses, setAssessmentResponses] = useState<Record<string, any>>({});
     const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState<any>(null);
     const [formData, setFormData] = useState<any>({
@@ -93,7 +93,7 @@ export default function ApplicationAssessmentPage() {
         evaluations: {}
     });
 
-    const currentStep = steps[currentStepIndex];
+    const currentStep = steps[currentStepIndex] || steps[0];
 
     React.useEffect(() => {
         const unsubscribe = onAuthStateChanged(firebaseAuth, async (currentUser) => {
@@ -125,17 +125,27 @@ export default function ApplicationAssessmentPage() {
         return () => unsubscribe();
     }, [applicationId, router]);
 
-    const saveProgress = async (nextStepIdx: number, nextQuestionIdx: number) => {
+    const saveProgress = async (nextStepIdx: number, nextQuestionIdx: number, score?: number) => {
         if (!user || !applicationId) return;
 
         try {
             const docRef = doc(db, 'submissions', `${user.uid}_${applicationId}`);
-            await setDoc(docRef, {
+            const updateData: Record<string, unknown> = {
                 ...formData,
                 currentStepIndex: nextStepIdx,
                 currentQuestionIndex: nextQuestionIdx,
                 updatedAt: new Date().toISOString()
-            }, { merge: true });
+            };
+            if (score !== undefined) {
+                updateData.assessmentScore = score;
+                // Mirror to profiles for easier admin lookup
+                const profileRef = doc(db, 'profiles', user.uid);
+                await updateDoc(profileRef, {
+                    assessmentScore: score,
+                    lastAssessmentAt: new Date().toISOString()
+                }).catch(err => console.error("Error mirroring score to profile:", err));
+            }
+            await setDoc(docRef, updateData, { merge: true });
         } catch (error) {
             console.error("Error saving progress:", error);
         }
@@ -148,9 +158,12 @@ export default function ApplicationAssessmentPage() {
         ? Math.round(((currentStepIndex + (currentQuestionIndex / totalEvaluationQuestions)) / steps.length) * 100)
         : Math.round((currentStepIndex / (steps.length - 1)) * 100);
 
-    const handleNext = async () => {
+    const handleNext = async (scoreOverride?: number) => {
         let nextStepIdx = currentStepIndex;
         let nextQuestionIdx = currentQuestionIndex;
+
+        // Finalize score if assessment steps are complete
+        const finalScore = scoreOverride !== undefined ? scoreOverride : formData.assessmentScore;
 
         // Special handling for steps that have sub-questions (like evaluation)
         if (currentStep.id === 'evaluation') {
@@ -158,18 +171,37 @@ export default function ApplicationAssessmentPage() {
                 nextQuestionIdx = currentQuestionIndex + 1;
                 setCurrentQuestionIndex(nextQuestionIdx);
             } else {
-                alert('Application submitted successfully!');
-                router.push('/dashboard');
-                return;
+                nextStepIdx = currentStepIndex + 1;
+                setCurrentStepIndex(nextStepIdx);
+                nextQuestionIdx = 0;
             }
-        } else if (currentStepIndex < steps.length - 1) {
+        } else if (['categorization', 'sentiment', 'ner', 'fact_checking'].includes(currentStep.id)) {
             nextStepIdx = currentStepIndex + 1;
             setCurrentStepIndex(nextStepIdx);
-            // Reset question index when moving to a new step
-            setCurrentQuestionIndex(0);
+            nextQuestionIdx = 0;
+        } else {
+            nextStepIdx = currentStepIndex + 1;
+            setCurrentStepIndex(nextStepIdx);
         }
 
-        await saveProgress(nextStepIdx, nextQuestionIdx);
+        await saveProgress(nextStepIdx, nextQuestionIdx, finalScore);
+    };
+
+    const handleTaskComplete = async (response: unknown) => {
+        const currentTask = assessmentQuestions[currentStepIndex - steps.findIndex(s => s.id === 'categorization')];
+        const updatedResponses = { ...assessmentResponses, [currentTask.id]: response };
+        setAssessmentResponses(updatedResponses);
+
+        const nextStepIdx = currentStepIndex + 1;
+        setCurrentStepIndex(nextStepIdx);
+
+        if (steps[nextStepIdx]?.id === 'evaluation') {
+            const score = calculateAssessmentScore(updatedResponses);
+            setFormData((prev: any) => ({ ...prev, assessmentScore: score }));
+            await saveProgress(nextStepIdx, 0, score);
+        } else {
+            await saveProgress(nextStepIdx, 0);
+        }
     };
 
     const handleBack = async () => {
@@ -215,14 +247,14 @@ export default function ApplicationAssessmentPage() {
                                     {['Nigeria', 'Ghana', 'Kenya'].map((country) => (
                                         <button
                                             key={country}
-                                            onClick={() => setFormData({ ...formData, residence: { ...formData.residence, country } })}
-                                            className={`p-5 rounded-2xl border-2 text-left transition-all flex items-center justify-between group ${formData.residence.country === country
+                                            onClick={() => setFormData({ ...formData, residence: { ...formData.residence as object, country } })}
+                                            className={`p-5 rounded-2xl border-2 text-left transition-all flex items-center justify-between group ${(formData.residence as any)?.country === country
                                                 ? 'border-blue-600 bg-blue-50/50 shadow-sm'
                                                 : 'border-zinc-100 bg-white hover:border-zinc-200'
                                                 }`}
                                         >
                                             <div className="flex items-center gap-4">
-                                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl ${formData.residence.country === country ? 'bg-blue-100' : 'bg-zinc-50'
+                                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl ${(formData.residence as any)?.country === country ? 'bg-blue-100' : 'bg-zinc-50'
                                                     }`}>
                                                     {country === 'Nigeria' ? '🇳🇬' : country === 'Ghana' ? '🇬🇭' : '🇰🇪'}
                                                 </div>
@@ -231,7 +263,7 @@ export default function ApplicationAssessmentPage() {
                                                     <p className="text-xs text-zinc-400 font-medium">Available for expert registration</p>
                                                 </div>
                                             </div>
-                                            {formData.residence.country === country && (
+                                            {(formData.residence as any)?.country === country && (
                                                 <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-white">
                                                     <CheckCircle2 size={14} strokeWidth={3} />
                                                 </div>
@@ -269,7 +301,7 @@ export default function ApplicationAssessmentPage() {
                                     <input
                                         type="tel"
                                         placeholder="Mobile number"
-                                        value={formData.phone}
+                                        value={formData.phone as string}
                                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                         className="flex-1 h-11 px-4 rounded-xl border border-zinc-200 bg-white text-zinc-900 text-[13px] font-bold focus:outline-none focus:border-blue-600 transition-all placeholder:text-zinc-300"
                                     />
@@ -313,7 +345,7 @@ export default function ApplicationAssessmentPage() {
                             </div>
 
                             <button
-                                onClick={handleNext}
+                                onClick={() => handleNext()}
                                 className="w-full h-12 bg-blue-600 rounded-xl text-white text-[13px] font-black transition-all hover:bg-blue-700 shadow-md shadow-blue-100"
                             >
                                 Continue
@@ -335,7 +367,7 @@ export default function ApplicationAssessmentPage() {
                                     <FileText className="text-blue-600" size={32} strokeWidth={1.5} />
                                 </div>
                                 <div className="text-center">
-                                    <p className="text-sm font-bold text-zinc-900">{formData.resumeName || 'Upload Resume'}</p>
+                                    <p className="text-sm font-bold text-zinc-900">{formData.resumeName as string || 'Upload Resume'}</p>
                                     <p className="text-[11px] font-medium text-zinc-400">PDF or DOCX max 10MB</p>
                                 </div>
                                 {formData.resumeName && (
@@ -351,7 +383,7 @@ export default function ApplicationAssessmentPage() {
                                     <label className="text-[11px] font-black text-zinc-400 uppercase tracking-wider">Full name *</label>
                                     <input
                                         type="text"
-                                        value={formData.fullName}
+                                        value={formData.fullName as string}
                                         onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                                         className="w-full h-11 px-4 rounded-xl border border-zinc-200 bg-white text-zinc-900 text-[13px] font-bold focus:outline-none focus:border-blue-600"
                                     />
@@ -360,7 +392,7 @@ export default function ApplicationAssessmentPage() {
                                     <label className="text-[11px] font-black text-zinc-400 uppercase tracking-wider">Email address *</label>
                                     <input
                                         type="email"
-                                        value={formData.email}
+                                        value={formData.email as string}
                                         className="w-full h-11 px-4 rounded-xl border border-zinc-200 bg-zinc-50 text-zinc-500 text-[13px] font-bold cursor-not-allowed"
                                         disabled
                                     />
@@ -370,7 +402,7 @@ export default function ApplicationAssessmentPage() {
                                     <div className="relative">
                                         <input
                                             type="tel"
-                                            value={formData.phone}
+                                            value={formData.phone as string}
                                             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                                             className="w-full h-11 px-4 rounded-xl border border-zinc-200 bg-white text-zinc-900 text-[13px] font-bold focus:outline-none focus:border-blue-600 pr-10"
                                         />
@@ -381,7 +413,7 @@ export default function ApplicationAssessmentPage() {
                                     <label className="text-[11px] font-black text-zinc-400 uppercase tracking-wider">LinkedIn URL *</label>
                                     <input
                                         type="text"
-                                        value={formData.linkedin}
+                                        value={formData.linkedin as string}
                                         onChange={(e) => setFormData({ ...formData, linkedin: e.target.value })}
                                         className="w-full h-11 px-4 rounded-xl border border-zinc-200 bg-white text-zinc-900 text-[13px] font-bold focus:outline-none focus:border-blue-600"
                                     />
@@ -409,8 +441,8 @@ export default function ApplicationAssessmentPage() {
                                         <label className="text-[11px] font-black text-zinc-400 uppercase tracking-wider">Country *</label>
                                         <input
                                             type="text"
-                                            value={formData.residence.country}
-                                            onChange={(e) => setFormData({ ...formData, residence: { ...formData.residence, country: e.target.value } })}
+                                            value={(formData.residence as any)?.country}
+                                            onChange={(e) => setFormData({ ...formData, residence: { ...(formData.residence as object), country: e.target.value } })}
                                             placeholder="e.g. United States"
                                             className="w-full h-11 px-4 rounded-xl border border-zinc-200 bg-white text-zinc-900 text-[13px] font-bold focus:outline-none focus:border-blue-600"
                                         />
@@ -419,8 +451,8 @@ export default function ApplicationAssessmentPage() {
                                         <label className="text-[11px] font-black text-zinc-400 uppercase tracking-wider">State / Province</label>
                                         <input
                                             type="text"
-                                            value={formData.residence.state}
-                                            onChange={(e) => setFormData({ ...formData, residence: { ...formData.residence, state: e.target.value } })}
+                                            value={(formData.residence as any)?.state}
+                                            onChange={(e) => setFormData({ ...formData, residence: { ...(formData.residence as object), state: e.target.value } })}
                                             placeholder="e.g. California"
                                             className="w-full h-11 px-4 rounded-xl border border-zinc-200 bg-white text-zinc-900 text-[13px] font-bold focus:outline-none focus:border-blue-600"
                                         />
@@ -429,8 +461,8 @@ export default function ApplicationAssessmentPage() {
                                         <label className="text-[11px] font-black text-zinc-400 uppercase tracking-wider">City *</label>
                                         <input
                                             type="text"
-                                            value={formData.residence.city}
-                                            onChange={(e) => setFormData({ ...formData, residence: { ...formData.residence, city: e.target.value } })}
+                                            value={(formData.residence as any)?.city}
+                                            onChange={(e) => setFormData({ ...formData, residence: { ...(formData.residence as object), city: e.target.value } })}
                                             placeholder="e.g. San Francisco"
                                             className="w-full h-11 px-4 rounded-xl border border-zinc-200 bg-white text-zinc-900 text-[13px] font-bold focus:outline-none focus:border-blue-600"
                                         />
@@ -439,8 +471,8 @@ export default function ApplicationAssessmentPage() {
                                         <label className="text-[11px] font-black text-zinc-400 uppercase tracking-wider">Postal Code *</label>
                                         <input
                                             type="text"
-                                            value={formData.residence.postalCode}
-                                            onChange={(e) => setFormData({ ...formData, residence: { ...formData.residence, postalCode: e.target.value } })}
+                                            value={(formData.residence as any)?.postalCode}
+                                            onChange={(e) => setFormData({ ...formData, residence: { ...(formData.residence as object), postalCode: e.target.value } })}
                                             placeholder="e.g. 94103"
                                             className="w-full h-11 px-4 rounded-xl border border-zinc-200 bg-white text-zinc-900 text-[13px] font-bold focus:outline-none focus:border-blue-600"
                                         />
@@ -484,7 +516,7 @@ export default function ApplicationAssessmentPage() {
                                             className="mt-1 accent-blue-600"
                                         />
                                         <span className="text-sm font-medium text-zinc-600 leading-relaxed group-hover:text-zinc-900 transition-colors">
-                                            I confirm all information provided is true and accurate.
+                                            I confirm that I&apos;m completing this assessment personally and haven&apos;t used external help.
                                         </span>
                                     </label>
                                 </div>
@@ -549,7 +581,7 @@ export default function ApplicationAssessmentPage() {
                             </p>
                             <div className="pt-6">
                                 <button
-                                    onClick={handleNext}
+                                    onClick={() => handleNext()}
                                     className="px-10 py-4 bg-zinc-900 text-white rounded-2xl text-[13px] font-black transition-all hover:bg-zinc-800 shadow-xl shadow-zinc-200 flex items-center gap-3 w-full justify-center"
                                 >
                                     Schedule Interview
@@ -561,58 +593,47 @@ export default function ApplicationAssessmentPage() {
                     </div>
                 );
             case 'categorization':
+                const catTask = assessmentQuestions[0];
                 return (
                     <div className="max-w-2xl mx-auto py-10">
                         <TaskStyles
                             type="categorization"
-                            content={{ text: "The new iPhone 15 Pro features a titanium design, Action button, and USB-C. It also includes the A17 Pro chip for next-level mobile gaming performance." }}
-                            options={['Technology', 'Sports', 'Entertainment', 'Politics']}
-                            onComplete={(val) => {
-                                setFormData({ ...formData, evaluations: { ...formData.evaluations, categorization: val } });
-                                handleNext();
-                            }}
+                            content={catTask.content}
+                            options={catTask.options}
+                            onComplete={handleTaskComplete}
                         />
                     </div>
                 );
             case 'sentiment':
+                const sentTask = assessmentQuestions[1];
                 return (
                     <div className="max-w-2xl mx-auto py-10">
                         <TaskStyles
                             type="sentiment"
-                            content={{ text: "I absolutely love the new interface! It's so much faster than the old version, though I did find one small bug in the settings menu." }}
-                            onComplete={(val) => {
-                                setFormData({ ...formData, evaluations: { ...formData.evaluations, sentiment: val } });
-                                handleNext();
-                            }}
+                            content={sentTask.content}
+                            onComplete={handleTaskComplete}
                         />
                     </div>
                 );
             case 'ner':
+                const nerTask = assessmentQuestions[2];
                 return (
                     <div className="max-w-2xl mx-auto py-10">
                         <TaskStyles
                             type="ner"
-                            content={{ text: "Apple Inc. announced that Tim Cook will visit Lagos, Nigeria on October 24th to discuss new investments in the tech ecosystem." }}
-                            onComplete={(val) => {
-                                setFormData({ ...formData, evaluations: { ...formData.evaluations, ner: val } });
-                                handleNext();
-                            }}
+                            content={nerTask.content}
+                            onComplete={handleTaskComplete}
                         />
                     </div>
                 );
             case 'fact_checking':
+                const factTask = assessmentQuestions[3];
                 return (
                     <div className="max-w-2xl mx-auto py-10">
                         <TaskStyles
-                            type="fact_checking"
-                            content={{
-                                claim: "The Great Wall of China is the only man-made structure visible from space with the naked eye.",
-                                source: "Astronauts from the Apollo missions have confirmed that while many man-made structures like cities and highways are visible from low Earth orbit, the Great Wall of China is notoriously difficult to see without aid due to its color blending with the natural environment."
-                            }}
-                            onComplete={(val) => {
-                                setFormData({ ...formData, evaluations: { ...formData.evaluations, fact_checking: val } });
-                                handleNext();
-                            }}
+                            type="fact-check"
+                            content={factTask.content}
+                            onComplete={handleTaskComplete}
                         />
                     </div>
                 );
@@ -632,10 +653,11 @@ export default function ApplicationAssessmentPage() {
                                     <div className="h-px flex-1 bg-blue-100" />
                                 </div>
                                 <p className="text-sm font-semibold text-zinc-900 leading-relaxed bg-zinc-50 p-6 rounded-2xl border border-zinc-100">
-                                    Prompt: Explain how important Catherine the Great's personal participation in Russia's smallpox vaccine launch was to convincing her people to be vaccinated.
+                                    Prompt: {mrnEvaluationData.prompt}
                                 </p>
                             </div>
                         </section>
+                        {/* ... truncated for simplicity, but I should use mrnEvaluationData.responseA and responseB ... */}
 
                         <section className="space-y-6 select-none">
                             <h3 className="text-sm font-black text-zinc-900 uppercase tracking-widest">Model Responses</h3>
@@ -647,16 +669,8 @@ export default function ApplicationAssessmentPage() {
                                         Response A
                                         <div className="w-2 h-2 rounded-full bg-blue-400" />
                                     </div>
-                                    <div className="p-8 text-[13px] leading-relaxed text-zinc-800 space-y-6">
-                                        <p>It was decisive — without Catherine rolling up her own sleeve, Russia probably wouldn't have had a mass inoculation campaign at all. (And yes, historians get pedantic here: what she promoted in 1768 was **variolation/inoculation**, not Jenner's cowpox *vaccine* of 1796 — the idea of deliberately giving someone a mild case of smallpox using matter from a human pustule. The principle, and the public-relations problem, were the same.)</p>
-
-                                        <div className="space-y-4 pt-4">
-                                            <h4 className="font-bold text-zinc-900 border-l-2 border-blue-600 pl-3">1. Why Russians were terrified of it</h4>
-                                            <ul className="list-disc pl-8 space-y-3">
-                                                <li>**Smallpox was a national trauma.** In the 1760s it killed 10% of those infected and left many more blind or scarred; earlier tsars (Peter II in 1730) had died of it.</li>
-                                                <li>**Inoculation looked insane.** You were intentionally giving a healthy person of the "heaven-sent" disease.</li>
-                                            </ul>
-                                        </div>
+                                    <div className="p-8 text-[13px] leading-relaxed text-zinc-800 whitespace-pre-wrap font-medium">
+                                        {mrnEvaluationData.responseA}
                                     </div>
                                 </div>
                                 {/* Response B */}
@@ -665,17 +679,8 @@ export default function ApplicationAssessmentPage() {
                                         Response B
                                         <div className="w-2 h-2 rounded-full bg-red-400" />
                                     </div>
-                                    <div className="p-8 text-[13px] leading-relaxed text-zinc-800 space-y-6">
-                                        <p>Catherine the Great's personal participation in introducing smallpox immunization to Russia was not just important—it was the **single most crucial factor** in the success of the campaign. Without her leading by example, it is highly unlikely the practice would have gained traction among the Russian people.</p>
-                                        <p>To understand the magnitude of her actions, it helps to look at the historical context, the profound risks she took, and the brilliant public relations strategy she built around her survival.</p>
-                                        <p className="text-zinc-500 italic bg-zinc-50/50 p-4 rounded-xl border border-zinc-100/50">(Note: The procedure Catherine underwent in 1768 was called variolation or inoculation, which involved deliberately infecting a patient with a mild strain of live human smallpox. Edward Jenner's safer cowpox-based "vaccine" was not invented until 1796. However, the intent and public health impact were the same.)</p>
-
-                                        <p className="pt-2">Here is an explanation of why her personal participation was so vital:</p>
-
-                                        <div className="space-y-4 pt-2">
-                                            <h4 className="font-bold text-zinc-900 border-l-2 border-red-600 pl-3">1. Overcoming Intense Fear and Superstition</h4>
-                                            <p className="text-zinc-600 pl-3">In 18th-century Russia, smallpox was a terrifying, indiscriminate killer. It wiped out entire villages and killed an estimated 1 in 7 children born locally.</p>
-                                        </div>
+                                    <div className="p-8 text-[13px] leading-relaxed text-zinc-800 whitespace-pre-wrap font-medium">
+                                        {mrnEvaluationData.responseB}
                                     </div>
                                 </div>
                             </div>
@@ -684,7 +689,7 @@ export default function ApplicationAssessmentPage() {
                         <section className="space-y-8 pb-32">
                             <div className="flex items-center gap-3 py-4">
                                 <div className="h-px flex-1 bg-zinc-100" />
-                                <span className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em]">Evaluation Dimension {currentQuestionIndex + 1} of 14</span>
+                                <span className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em]">Evaluation Dimension {currentQuestionIndex + 1} of {totalEvaluationQuestions}</span>
                                 <div className="h-px flex-1 bg-zinc-100" />
                             </div>
 
@@ -800,6 +805,31 @@ export default function ApplicationAssessmentPage() {
                             </AnimatePresence>
                         </section>
                     </div>
+                );
+            case 'completed':
+                return (
+                    <FadeIn>
+                        <div className="max-w-2xl mx-auto py-20 text-center space-y-8">
+                            <div className="w-24 h-24 bg-green-50 rounded-[40px] border border-green-100 flex items-center justify-center mx-auto shadow-xl shadow-green-100/50">
+                                <CheckCircle2 size={48} className="text-green-600" strokeWidth={1.5} />
+                            </div>
+                            <div className="space-y-4">
+                                <h1 className="text-4xl font-black text-zinc-900 tracking-tight">Application Submitted!</h1>
+                                <p className="text-zinc-500 font-medium leading-relaxed max-w-md mx-auto">
+                                    Your assessment has been successfully captured and sent to our recruitment team. We&apos;ll review your performance and get back to you soon.
+                                </p>
+                            </div>
+                            <div className="pt-8">
+                                <Link
+                                    href="/dashboard"
+                                    className="inline-flex items-center gap-3 px-10 py-4 bg-zinc-900 text-white rounded-2xl text-[13px] font-black hover:bg-zinc-800 transition-all shadow-xl shadow-zinc-200"
+                                >
+                                    Return to Dashboard
+                                    <ChevronRight size={18} strokeWidth={3} />
+                                </Link>
+                            </div>
+                        </div>
+                    </FadeIn>
                 );
             default:
                 return null;
@@ -1009,7 +1039,7 @@ export default function ApplicationAssessmentPage() {
                         </div>
 
                         <button
-                            onClick={handleNext}
+                            onClick={() => handleNext()}
                             className="px-8 py-3 rounded-2xl bg-blue-600 text-white text-[11px] font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 flex items-center gap-2 group"
                         >
                             Next

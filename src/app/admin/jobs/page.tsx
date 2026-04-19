@@ -23,7 +23,8 @@ import {
     CheckCircle2,
     XCircle,
     AlertCircle,
-    Loader2
+    Loader2,
+    ExternalLink
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -307,36 +308,68 @@ export default function JobManagerPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.05 }}
-                            className="bg-white p-6 rounded-[32px] border border-zinc-100 shadow-sm hover:shadow-md transition-all group flex items-center gap-6"
+                            className="group p-4 sm:p-6 bg-white border border-zinc-100 rounded-[32px] shadow-sm hover:shadow-md transition-all"
                         >
-                            <div className="w-14 h-14 rounded-2xl bg-zinc-50 flex items-center justify-center text-zinc-400 border border-zinc-100">
-                                <Briefcase size={24} />
-                            </div>
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
+                                {/* Job Details */}
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                                        <h3 className="font-bold text-zinc-900 group-hover:text-blue-600 transition-colors">
+                                            {job.title}
+                                        </h3>
+                                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${job.status === 'active'
+                                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-100'
+                                            : 'bg-zinc-100 text-zinc-600 border border-zinc-200'
+                                            }`}>
+                                            {job.status}
+                                        </span>
+                                    </div>
 
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-3 mb-1">
-                                    <h3 className="font-bold text-zinc-900 truncate">{job.title}</h3>
-                                    <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md ${job.status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-zinc-100 text-zinc-500'
-                                        }`}>
-                                        {job.status || 'Active'}
-                                    </span>
+                                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-medium text-zinc-500">
+                                        <span className="flex items-center gap-1.5 shrink-0">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-blue-500/20" />
+                                            {job.companyName}
+                                        </span>
+                                        <span className="flex items-center gap-1.5 shrink-0">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-500/20" />
+                                            {job.salary}
+                                        </span>
+                                        <span className="flex items-center gap-1.5 shrink-0">
+                                            <span className="w-1.5 h-1.5 rounded-full bg-violet-500/20" />
+                                            {job.type || 'Full-time'}
+                                        </span>
+                                        <span className="flex items-center gap-1.5 shrink-0">
+                                            <Users className="w-3.5 h-3.5 opacity-60" />
+                                            {job.applicationCount || 0} applicants
+                                        </span>
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-4 text-xs font-medium text-zinc-500">
-                                    <span className="flex items-center gap-1"><Users size={14} /> {job.applicationCount || 0} Applied</span>
-                                    <span className="flex items-center gap-1"><Clock size={14} /> Created {job.createdAt?.seconds ? new Date(job.createdAt.seconds * 1000).toLocaleDateString() : job.createdAt ? new Date(job.createdAt).toLocaleDateString() : 'N/A'}</span>
-                                </div>
-                            </div>
 
-                            <div className="flex items-center gap-2">
-                                <button
-                                    onClick={() => toggleJobStatus(job.id, job.status)}
-                                    className="px-4 py-2 rounded-xl text-xs font-bold bg-zinc-50 text-zinc-600 hover:bg-zinc-100 transition-all"
-                                >
-                                    {job.status === 'Active' ? 'Close' : 'Reopen'}
-                                </button>
-                                <button className="p-2 text-zinc-400 hover:bg-zinc-50 rounded-xl transition-all">
-                                    <MoreVertical size={20} />
-                                </button>
+                                {/* Actions */}
+                                <div className="flex items-center gap-2 pt-3 sm:pt-0 border-t sm:border-0 border-zinc-100">
+                                    <button
+                                        onClick={() => toggleJobStatus(job.id, job.status)}
+                                        className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold transition-all ${job.status === 'active'
+                                            ? 'bg-red-50 text-red-600 hover:bg-red-100'
+                                            : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
+                                            }`}
+                                    >
+                                        {job.status === 'active' ? (
+                                            <>
+                                                <XCircle className="w-4 h-4" />
+                                                <span>Close</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <CheckCircle2 className="w-4 h-4" />
+                                                <span>Activate</span>
+                                            </>
+                                        )}
+                                    </button>
+                                    <button className="p-2 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 rounded-lg transition-all">
+                                        <ExternalLink className="w-4 h-4" />
+                                    </button>
+                                </div>
                             </div>
                         </motion.div>
                     ))

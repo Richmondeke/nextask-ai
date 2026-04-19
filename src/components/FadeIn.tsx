@@ -24,12 +24,11 @@ export default function FadeIn({ children, delay = 0, direction = 'up', classNam
                 opacity: 0,
                 ...(directions[direction] || { y: 20 })
             }}
-            whileInView={{
+            animate={{
                 opacity: 1,
                 y: 0,
                 x: 0
             }}
-            viewport={{ once: false, margin: "-100px" }}
             transition={{
                 duration: 0.6,
                 delay: delay,

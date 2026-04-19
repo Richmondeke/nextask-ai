@@ -104,6 +104,7 @@ export default function TalentPoolPage() {
                             <tr className="border-b border-zinc-100 bg-zinc-50/50">
                                 <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-zinc-400">Professional</th>
                                 <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-zinc-400">Role</th>
+                                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-zinc-400 text-center">Score</th>
                                 <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-zinc-400">Status</th>
                                 <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-zinc-400">Joined</th>
                                 <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-zinc-400 text-right">Actions</th>
@@ -147,6 +148,18 @@ export default function TalentPoolPage() {
                                         <span className="text-sm font-medium text-zinc-600">
                                             {user.headline || 'Professional'}
                                         </span>
+                                    </td>
+                                    <td className="px-8 py-6 text-center">
+                                        {user.assessmentScore !== undefined ? (
+                                            <span className={`inline-flex items-center justify-center w-10 h-10 rounded-full font-black text-xs ${user.assessmentScore >= 80 ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' :
+                                                user.assessmentScore >= 60 ? 'bg-amber-50 text-amber-600 border border-amber-100' :
+                                                    'bg-rose-50 text-rose-600 border border-rose-100'
+                                                }`}>
+                                                {Math.round(user.assessmentScore)}%
+                                            </span>
+                                        ) : (
+                                            <span className="text-zinc-300 text-xs font-bold uppercase tracking-widest">N/A</span>
+                                        )}
                                     </td>
                                     <td className="px-8 py-6">
                                         <div className="flex items-center gap-2">
