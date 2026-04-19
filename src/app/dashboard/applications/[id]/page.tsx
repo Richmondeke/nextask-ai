@@ -20,7 +20,6 @@ import {
     MapPin,
     ExternalLink,
     Tag,
-    MessageSquare,
     Search
 } from 'lucide-react';
 import Link from 'next/link';
