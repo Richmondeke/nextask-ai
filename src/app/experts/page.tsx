@@ -73,12 +73,12 @@ export default function ExpertsPage() {
                         tags: data.tags || []
                     };
 
-                    const tags = job.tags.map(t => t.toLowerCase());
-                    if (tags.some(t => t.includes('engine') || t.includes('dev') || t.includes('ml') || t.includes('security') || t.includes('infra') || t.includes('tech'))) {
+                    const tags = (job.tags as string[]).map((t: string) => t.toLowerCase());
+                    if (tags.some((t: string) => t.includes('engine') || t.includes('dev') || t.includes('ml') || t.includes('security') || t.includes('infra') || t.includes('tech'))) {
                         categorized.Engineering.push(job);
-                    } else if (tags.some(t => t.includes('op') || t.includes('project') || t.includes('manag') || t.includes('stratetg'))) {
+                    } else if (tags.some((t: string) => t.includes('op') || t.includes('project') || t.includes('manag') || t.includes('stratetg'))) {
                         categorized.Operations.push(job);
-                    } else if (tags.some(t => t.includes('mark') || t.includes('sal') || t.includes('grow'))) {
+                    } else if (tags.some((t: string) => t.includes('mark') || t.includes('sal') || t.includes('grow'))) {
                         categorized.Marketing.push(job);
                     } else {
                         categorized.Other.push(job);
