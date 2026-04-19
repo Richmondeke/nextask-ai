@@ -2,34 +2,79 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { Mail, Lock, User, ArrowRight, Loader2 } from 'lucide-react';
+import Logo from '@/components/ui/Logo';
+import { auth, db } from '@/lib/firebase';
+import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, updateProfile } from 'firebase/auth';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { generateReferralCode } from '@/lib/utils';
 
 export default function SignupPage() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const refCode = searchParams.get('ref');
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+
+    const handleSignup = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+        setError('');
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+            await updateProfile(user, { displayName: name });
+
+            // Create Profile with Referral Logic
+            const myRefCode = generateReferralCode();
+            await setDoc(doc(db, 'profiles', user.uid), {
+                fullName: name,
+                email: email,
+                referralCode: myRefCode,
+                referredBy: refCode || null,
+                role: 'user', // Default role
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            });
+
+            router.push('/dashboard');
+        } catch (err: any) {
+            setError(err.message || 'Failed to create account. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleGoogleLogin = async () => {
+        setIsLoading(true);
+        setError('');
+        const provider = new GoogleAuthProvider();
+        try {
+            await signInWithPopup(auth, provider);
+            router.push('/dashboard');
+        } catch (err: any) {
+            setError(err.message || 'Failed to sign in with Google.');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     return (
-        <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
+        <div className="min-h-screen bg-white text-zinc-900 flex flex-col items-center justify-center p-6 relative overflow-hidden">
             {/* Background Gradient Effect */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[120px] pointer-events-none" />
 
-            {/* Logo */}
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="mb-12 relative z-10"
             >
-                <Link href="/" className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center shadow-lg shadow-blue-500/20">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 4H8L16 16V20H12L4 8V4Z" fill="white" />
-                            <path d="M16 4H20V12L8 20H4V16L16 4Z" fill="white" fillOpacity="0.5" />
-                        </svg>
-                    </div>
-                    <span className="text-2xl font-bold tracking-tighter">Nexttask</span>
-                </Link>
+                <Logo />
             </motion.div>
 
             {/* Signup Card */}
@@ -37,14 +82,20 @@ export default function SignupPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.1 }}
-                className="w-full max-w-md bg-white/5 border border-white/10 p-10 rounded-[32px] backdrop-blur-xl relative z-10"
+                className="w-full max-w-md bg-white border border-zinc-100 p-10 rounded-[32px] shadow-2xl shadow-zinc-200/50 relative z-10"
             >
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold tracking-tight mb-2">Create account</h1>
                     <p className="text-zinc-500">Join the elite network of AI experts.</p>
                 </div>
 
-                <div className="space-y-6">
+                <form onSubmit={handleSignup} className="space-y-6">
+                    {error && (
+                        <div className="p-3 rounded-xl bg-red-50 border border-red-100 text-red-600 text-xs font-medium animate-in fade-in slide-in-from-top-1">
+                            {error}
+                        </div>
+                    )}
+
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-zinc-400 ml-1">Full Name</label>
                         <div className="relative group">
@@ -52,7 +103,8 @@ export default function SignupPage() {
                             <input
                                 type="text"
                                 placeholder="John Doe"
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm"
+                                required
+                                className="w-full bg-zinc-50 border border-zinc-100 rounded-2xl pl-12 pr-4 py-3.5 focus:outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all text-sm text-zinc-900 placeholder:text-zinc-400"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />
@@ -66,7 +118,8 @@ export default function SignupPage() {
                             <input
                                 type="email"
                                 placeholder="name@example.com"
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm"
+                                required
+                                className="w-full bg-zinc-50 border border-zinc-100 rounded-2xl pl-12 pr-4 py-3.5 focus:outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all text-sm text-zinc-900 placeholder:text-zinc-400"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
@@ -80,28 +133,43 @@ export default function SignupPage() {
                             <input
                                 type="password"
                                 placeholder="••••••••"
-                                className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm"
+                                required
+                                minLength={6}
+                                className="w-full bg-zinc-50 border border-zinc-100 rounded-2xl pl-12 pr-4 py-3.5 focus:outline-none focus:ring-4 focus:ring-blue-50 focus:border-blue-500 transition-all text-sm text-zinc-900 placeholder:text-zinc-400"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
                     </div>
 
-                    <button className="w-full bg-white text-black font-bold py-4 rounded-2xl hover:bg-zinc-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group">
-                        Sign Up
-                        <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    <button
+                        type="submit"
+                        disabled={isLoading}
+                        className="w-full bg-blue-600 text-white font-bold py-4 rounded-2xl hover:bg-blue-700 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group shadow-lg shadow-blue-100"
+                    >
+                        {isLoading ? <Loader2 className="animate-spin" size={18} /> : (
+                            <>
+                                Sign Up
+                                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                            </>
+                        )}
                     </button>
 
                     <div className="relative my-8">
                         <div className="absolute inset-0 flex items-center">
-                            <div className="w-full border-t border-white/10"></div>
+                            <div className="w-full border-t border-zinc-100"></div>
                         </div>
-                        <div className="relative flex justify-center text-xs uppercase">
-                            <span className="bg-black px-2 text-zinc-500 font-medium">Or join with</span>
+                        <div className="relative flex justify-center text-[10px] uppercase tracking-widest font-black">
+                            <span className="bg-white px-2 text-zinc-400">Or join with</span>
                         </div>
                     </div>
 
-                    <button className="w-full flex items-center justify-center gap-3 bg-white/5 border border-white/10 hover:bg-white/10 py-3.5 rounded-2xl transition-all font-medium text-sm">
+                    <button
+                        type="button"
+                        onClick={handleGoogleLogin}
+                        disabled={isLoading}
+                        className="w-full flex items-center justify-center gap-3 bg-white border border-zinc-200 hover:bg-zinc-50 py-3.5 rounded-2xl transition-all font-bold text-sm text-zinc-900 shadow-sm disabled:opacity-50"
+                    >
                         <svg className="w-5 h-5" viewBox="0 0 24 24">
                             <path
                                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -122,11 +190,11 @@ export default function SignupPage() {
                         </svg>
                         Google
                     </button>
-                </div>
+                </form>
 
-                <p className="text-center mt-10 text-zinc-500 text-sm">
+                <p className="text-center mt-10 text-zinc-500 text-sm font-medium">
                     Already have an account?{' '}
-                    <Link href="/login" title="Go to Login" className="text-white font-bold hover:text-blue-500 transition-colors">Sign in</Link>
+                    <Link href="/login" title="Go to Login" className="text-blue-600 font-bold hover:text-blue-700 transition-colors">Sign in</Link>
                 </p>
             </motion.div>
 

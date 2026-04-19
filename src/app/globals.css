@@ -19,14 +19,7 @@
   --font-sans: "Inter", system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #000000;
-    --foreground: #ffffff;
-    --muted: #1e293b;
-    --border: #334155;
-  }
-}
+/* Removed dark mode overrides to maintain consistent light theme as requested */
 
 body {
   background: var(--background);

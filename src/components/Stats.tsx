@@ -10,9 +10,9 @@ const stats = [
 
 export default function Stats() {
     return (
-        <section className="py-12 border-y border-border bg-muted/30">
+        <section className="py-20 bg-zinc-50 border-y border-zinc-200">
             <div className="max-w-7xl mx-auto px-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                     {stats.map((stat, i) => (
                         <motion.div
                             key={stat.label}
@@ -22,12 +22,12 @@ export default function Stats() {
                             viewport={{ once: true }}
                             className="flex flex-col items-center text-center"
                         >
-                            <span className="text-sm font-medium text-secondary mb-2 uppercase tracking-wider">
+                            <span className="text-sm font-semibold text-zinc-500 mb-3 uppercase tracking-[0.2em]">
                                 {stat.label}
                             </span>
-                            <span className="text-4xl font-bold tracking-tight">
+                            <span className="text-5xl font-bold tracking-tight text-zinc-900">
                                 {stat.prefix}{stat.value}
-                                <span className="text-xl text-secondary font-medium">{stat.suffix}</span>
+                                <span className="text-2xl text-zinc-400 font-medium ml-1">{stat.suffix}</span>
                             </span>
                         </motion.div>
                     ))}

@@ -1,135 +1,232 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
-    Users,
+    Users as UsersIcon,
     Copy,
     Gift,
     Send,
     Zap,
     TrendingUp,
     Share2,
-    Mail
+    Check,
+    Loader2,
+    Users,
+    Linkedin,
+    ShieldCheck,
+    ChevronRight
 } from 'lucide-react';
+import { auth, db } from '@/lib/firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 
 export default function ReferralsPage() {
-    const referrals = [
-        { name: 'Sarah Wilson', email: 's.wilson@gmail.com', status: 'Active', reward: '$150' },
-        { name: 'Michael Chen', email: 'm.chen@outlook.com', status: 'Signed Up', reward: '$0' },
-        { name: 'Eric Johnson', email: 'ericj@tech.io', status: 'Payment Pending', reward: '$150' },
-    ];
+    const [user, setUser] = useState<any>(null);
+    const [profile, setProfile] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [referrals, setReferrals] = useState<any[]>([]);
+    const [copied, setCopied] = useState(false);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                setUser(user);
+                await fetchData(user.uid);
+            } else {
+                setUser(null);
+                setIsLoading(false);
+            }
+        });
+        return () => unsubscribe();
+    }, []);
+
+    const fetchData = async (uid: string) => {
+        setIsLoading(true);
+        try {
+            const profileDoc = await getDoc(doc(db, 'profiles', uid));
+            if (profileDoc.exists()) {
+                const profileData = profileDoc.data();
+                setProfile(profileData);
+
+                if (profileData.referralCode) {
+                    const q = query(
+                        collection(db, 'profiles'),
+                        where('referredBy', '==', profileData.referralCode)
+                    );
+                    const querySnapshot = await getDocs(q);
+                    const refs = querySnapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                    setReferrals(refs);
+                }
+            }
+        } catch (error) {
+            console.error("Error fetching referrals:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    const copyToClipboard = () => {
+        if (!profile?.referralCode) return;
+        const url = `${window.location.origin}/signup?ref=${profile.referralCode}`;
+        navigator.clipboard.writeText(url);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
+
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-[400px]">
+                <Loader2 className="animate-spin text-blue-600" size={32} />
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-8 pb-20">
-            {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-2xl font-bold tracking-tight text-zinc-900">Refer & Earn</h1>
-                    <p className="text-zinc-500 mt-2 text-sm">Earn $150 for every expert you refer who successfully joins Nexttask.</p>
-                </div>
-                <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-900 text-white text-sm font-bold hover:bg-zinc-800 transition-colors shadow-sm">
-                    <Send size={16} />
-                    Invite via Email
-                </button>
-            </div>
-
-            {/* Referral Link Card */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.98 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="p-8 rounded-2xl bg-zinc-900 text-white relative overflow-hidden group shadow-md"
-                >
-                    <div className="relative z-10 space-y-6">
-                        <div className="p-3 bg-white/10 rounded-xl w-fit border border-white/5">
-                            <Gift size={28} />
-                        </div>
-                        <div>
-                            <h2 className="text-xl font-bold mb-2">Invite your friends</h2>
-                            <p className="text-zinc-400 max-w-sm text-sm">Share your unique referral link and start building the future of AI together.</p>
-                        </div>
-                        <div className="flex items-center gap-2 bg-white/5 p-1.5 rounded-xl border border-white/10 backdrop-blur-sm">
-                            <code className="flex-1 px-4 text-xs font-mono truncate text-zinc-300">nexttask.ai/r/jd-4421</code>
-                            <button className="p-2.5 bg-white text-zinc-900 rounded-lg hover:bg-zinc-100 transition-colors">
-                                <Copy size={16} />
+            {/* Header Section */}
+            <div className="bg-blue-600 rounded-[40px] p-10 md:p-14 text-white relative overflow-hidden">
+                <div className="relative z-10 max-w-2xl">
+                    <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 leading-[1.1]">
+                        Refer people you've worked with. <br />
+                        <span className="text-blue-200">Earn when they get hired.</span>
+                    </h1>
+                    <p className="text-blue-100 text-lg md:text-xl leading-relaxed mb-10 opacity-90">
+                        Help your talented colleagues find world-class opportunities and get recognized for your professional network.
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 max-w-md">
+                        <div className="flex-1 bg-white/10 backdrop-blur-xl rounded-2xl px-6 py-4 border border-white/20 flex items-center justify-between group">
+                            <span className="text-sm font-bold tracking-wider text-blue-50">
+                                {profile?.referralCode || 'REF-XXXX'}
+                            </span>
+                            <button
+                                onClick={copyToClipboard}
+                                className="text-[10px] font-black uppercase tracking-widest bg-white text-blue-600 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition-colors shadow-sm"
+                            >
+                                {copied ? 'Copied!' : 'Copy Link'}
                             </button>
                         </div>
                     </div>
-                </motion.div>
+                </div>
+                {/* Abstract shape */}
+                <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -mr-20 -mt-20" />
+            </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="p-6 rounded-2xl bg-white border border-zinc-200 flex flex-col justify-between shadow-sm">
-                        <p className="text-zinc-500 text-xs font-bold uppercase tracking-wider">Total Earned</p>
-                        <div className="mt-4">
-                            <p className="text-3xl font-black text-zinc-900">$450</p>
-                            <div className="flex items-center gap-1 text-green-600 text-[10px] font-bold mt-1">
-                                <TrendingUp size={12} /> +12% this month
-                            </div>
+            {/* Feature Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                    {
+                        title: "1. Upload connections",
+                        desc: "Export your LinkedIn ZIP or CSV and upload it to Nexttask.",
+                        icon: <Linkedin size={24} />,
+                        color: "bg-blue-50 text-blue-600"
+                    },
+                    {
+                        title: "2. We find matches",
+                        desc: "Our AI matches your connections with frontier research roles.",
+                        icon: <Zap size={24} />,
+                        color: "bg-orange-50 text-orange-600"
+                    },
+                    {
+                        title: "3. You earn 20%",
+                        desc: "Get a 20% commission on every placement from your network.",
+                        icon: <Gift size={24} />,
+                        color: "bg-green-50 text-green-600"
+                    }
+                ].map((feature, i) => (
+                    <div key={i} className="bg-white p-8 rounded-[32px] border border-zinc-100 shadow-sm space-y-4 hover:shadow-md transition-shadow">
+                        <div className={`w-12 h-12 rounded-2xl ${feature.color} flex items-center justify-center shadow-inner`}>
+                            {feature.icon}
                         </div>
+                        <h3 className="font-bold text-lg">{feature.title}</h3>
+                        <p className="text-sm text-zinc-500 leading-relaxed font-medium">{feature.desc}</p>
                     </div>
-                    <div className="p-6 rounded-2xl bg-white border border-zinc-200 flex flex-col justify-between shadow-sm">
-                        <p className="text-zinc-500 text-xs font-bold uppercase tracking-wider">Successful Referrals</p>
-                        <div className="mt-4">
-                            <p className="text-3xl font-black text-zinc-900">3</p>
-                            <p className="text-[10px] text-zinc-400 font-medium mt-1">From 5 signups</p>
+                ))}
+            </div>
+
+            {/* Stats Block */}
+            <div className="bg-zinc-900 rounded-[40px] p-8 md:p-12 text-white shadow-2xl shadow-zinc-200">
+                <div className="grid grid-cols-2 lg:grid-cols-6 gap-8 md:gap-12 text-center md:text-left">
+                    {[
+                        { label: "Signed Up", value: referrals.length },
+                        { label: "Application Started", value: 0 },
+                        { label: "Application Completed", value: 0 },
+                        { label: "Offer Extended", value: 0 },
+                        { label: "Hired", value: 0 },
+                        { label: "Paid", value: "$0" }
+                    ].map((stat, i) => (
+                        <div key={i} className="space-y-2">
+                            <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest">{stat.label}</p>
+                            <p className="text-2xl md:text-3xl font-bold">{stat.value}</p>
                         </div>
-                    </div>
-                    <div className="p-6 rounded-2xl bg-blue-50 border border-blue-100 col-span-2 flex items-center justify-between shadow-sm">
-                        <div className="flex items-center gap-4">
-                            <div className="p-3 rounded-xl bg-blue-600/10 text-blue-600 border border-blue-600/10">
-                                <Zap size={24} />
-                            </div>
-                            <div>
-                                <p className="font-bold text-blue-900 text-sm">Referral Bonus x2</p>
-                                <p className="text-[11px] text-blue-600 font-medium">Active for next 48 hours</p>
-                            </div>
-                        </div>
-                        <button className="px-5 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold hover:bg-blue-700 transition-colors shadow-sm">
-                            Boost Now
-                        </button>
-                    </div>
+                    ))}
                 </div>
             </div>
 
-            {/* Referrals List */}
-            <div className="space-y-6 pt-4">
-                <div className="flex items-center justify-between border-b border-zinc-100 pb-4">
-                    <h2 className="text-lg font-bold text-zinc-900">Your Referrals</h2>
-                    <button className="flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:bg-zinc-50 transition-all">
-                        <Share2 size={14} /> Share Link
-                    </button>
+            {/* Recent Referrals Table */}
+            <div className="bg-white rounded-[40px] border border-zinc-100 shadow-sm overflow-hidden">
+                <div className="p-8 border-b border-zinc-100 flex items-center justify-between bg-zinc-50/30">
+                    <h3 className="text-xl font-bold">Recent Referrals</h3>
+                    <div className="px-4 py-1.5 rounded-full bg-white border border-zinc-200 text-zinc-500 text-[11px] font-bold flex items-center gap-2 shadow-sm">
+                        <Users size={14} />
+                        {referrals.length} total
+                    </div>
                 </div>
-
-                <div className="rounded-xl border border-zinc-100 overflow-hidden bg-white shadow-sm">
+                <div className="overflow-x-auto">
                     <table className="w-full text-left">
                         <thead>
-                            <tr className="bg-zinc-50/50">
-                                <th className="px-6 py-4 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Expert</th>
-                                <th className="px-6 py-4 text-[10px] font-black text-zinc-400 uppercase tracking-widest">Status</th>
-                                <th className="px-6 py-4 text-[10px] font-black text-zinc-400 uppercase tracking-widest text-right">Reward</th>
+                            <tr className="bg-zinc-50/50 border-b border-zinc-100">
+                                <th className="px-8 py-5 text-[10px] uppercase tracking-widest font-black text-zinc-400">Talent</th>
+                                <th className="px-8 py-5 text-[10px] uppercase tracking-widest font-black text-zinc-400">Status</th>
+                                <th className="px-8 py-5 text-right text-[10px] uppercase tracking-widest font-black text-zinc-400">Reward</th>
                             </tr>
                         </thead>
+
                         <tbody className="divide-y divide-zinc-100">
-                            {referrals.map((ref, index) => (
-                                <tr key={ref.email} className="hover:bg-zinc-50/50 transition-colors">
-                                    <td className="px-6 py-4">
-                                        <div className="font-bold text-zinc-900 text-sm">{ref.name}</div>
-                                        <div className="text-[11px] text-zinc-400 font-medium">{ref.email}</div>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <span className={`px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-widest shadow-sm border ${ref.status === 'Active' ? 'bg-green-50 text-green-600 border-green-100' :
+                            {referrals.length > 0 ? (
+                                referrals.map((ref) => (
+                                    <tr key={ref.id} className="hover:bg-zinc-50/50 transition-colors group">
+                                        <td className="px-8 py-6">
+                                            <div className="font-bold text-zinc-900 text-sm group-hover:text-blue-600 transition-colors">{ref.fullName}</div>
+                                            <div className="text-[11px] text-zinc-400 font-medium">{ref.email}</div>
+                                        </td>
+                                        <td className="px-8 py-6">
+                                            <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm border ${ref.status === 'Active' ? 'bg-green-50 text-green-600 border-green-100' :
                                                 ref.status === 'Signed Up' ? 'bg-blue-50 text-blue-600 border-blue-100' :
                                                     'bg-yellow-50 text-yellow-600 border-yellow-100'
-                                            }`}>
-                                            {ref.status}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 text-right font-bold text-zinc-900 text-sm">
-                                        {ref.reward}
+                                                }`}>
+                                                {ref.status || 'Signed Up'}
+                                            </span>
+                                        </td>
+                                        <td className="px-8 py-6 text-right font-black text-zinc-900 text-sm">
+                                            {ref.status === 'Active' ? '$150.00' : '$0.00'}
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan={3} className="px-8 py-24 text-center">
+                                        <div className="flex flex-col items-center justify-center gap-4 max-w-xs mx-auto">
+                                            <div className="w-16 h-16 rounded-[24px] bg-zinc-50 border border-zinc-100 flex items-center justify-center text-zinc-200">
+                                                <Share2 size={32} />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <p className="text-sm font-bold text-zinc-900">No referrals discovered</p>
+                                                <p className="text-xs text-zinc-400 leading-relaxed">Your professional network is your greatest asset. Share your link to start earning.</p>
+                                            </div>
+                                            <button
+                                                onClick={copyToClipboard}
+                                                className="mt-2 px-6 py-2.5 bg-zinc-900 text-white rounded-xl text-xs font-bold hover:bg-zinc-800 transition-all shadow-lg shadow-zinc-200"
+                                            >
+                                                Share Referral Link
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
                 </div>

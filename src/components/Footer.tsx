@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Logo from "./ui/Logo";
 
 const footerLinks = [
     {
@@ -31,13 +32,11 @@ const footerLinks = [
 
 export default function Footer() {
     return (
-        <footer className="bg-muted/50 border-t border-border pt-20 pb-10">
+        <footer className="bg-white border-t border-zinc-100 pt-20 pb-10">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-20">
                     <div className="col-span-2">
-                        <Link href="/" className="text-2xl font-bold tracking-tight mb-6 block">
-                            Nexttask<span className="text-primary">.ai</span>
-                        </Link>
+                        <Logo className="mb-6" />
                         <p className="text-secondary max-w-xs text-sm leading-relaxed">
                             Defining the future of work by connecting the world's top AI professionals
                             with leading labs and enterprises.

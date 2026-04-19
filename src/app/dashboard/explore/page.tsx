@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
     Search,
@@ -142,9 +143,12 @@ export default function ExplorePage() {
                                 </div>
                             </div>
                             <div className="flex items-center gap-3">
-                                <button className="px-6 py-2 rounded-lg border border-zinc-200 text-zinc-700 text-sm font-bold hover:bg-zinc-50 transition-colors">
+                                <Link
+                                    href={`/dashboard/applications/${job.id}`}
+                                    className="px-6 py-2 rounded-lg border border-zinc-200 text-zinc-700 text-sm font-bold hover:bg-zinc-50 transition-colors"
+                                >
                                     Apply
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </motion.div>
