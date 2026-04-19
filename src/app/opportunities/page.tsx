@@ -28,10 +28,18 @@ export default function OpportunitiesPage() {
             try {
                 const q = query(collection(db, "jobs"), orderBy("createdAt", "desc"));
                 const querySnapshot = await getDocs(q);
-                const fetchedJobs = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                })) as Job[];
+                const fetchedJobs = querySnapshot.docs.map(doc => {
+                    const data = doc.data();
+                    return {
+                        id: doc.id,
+                        title: data.title,
+                        company: data.companyName || "Nexttask AI",
+                        pay: data.salary || "Competitive",
+                        hires: `${data.applicationCount || 0} applicants`,
+                        tags: data.tags || [],
+                        description: data.description || ""
+                    };
+                }) as Job[];
                 setJobs(fetchedJobs);
             } catch (error) {
                 console.error("Error fetching jobs:", error);

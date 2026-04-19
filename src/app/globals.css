@@ -16,7 +16,7 @@
   --color-secondary: var(--secondary);
   --color-muted: var(--muted);
   --color-border: var(--border);
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-sans: var(--font-manrope), system-ui, sans-serif;
 }
 
 /* Removed dark mode overrides to maintain consistent light theme as requested */

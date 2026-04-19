@@ -124,27 +124,23 @@ export default function AdminOverview() {
                         <h3 className="text-xl font-bold">New Talent Submissions</h3>
                         <button className="text-sm font-bold text-blue-600 hover:text-blue-700">View All</button>
                     </div>
-                    <div className="divide-y divide-zinc-50">
+                    <div className="p-8 space-y-4">
                         {recentUsers.map((user) => (
-                            <div key={user.id} className="p-6 flex items-center gap-6 hover:bg-zinc-50/50 transition-colors">
-                                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center font-bold text-blue-600">
-                                    {user.fullName?.[0] || user.email?.[0] || 'U'}
+                            <div key={user.id} className="flex items-center justify-between p-4 bg-zinc-50 rounded-2xl hover:bg-zinc-100/50 transition-all group">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold">
+                                        {user.fullName?.[0] || 'U'}
+                                    </div>
+                                    <div>
+                                        <p className="font-bold text-zinc-900 group-hover:text-blue-600 transition-colors">{user.fullName}</p>
+                                        <p className="text-xs text-zinc-400 font-medium">
+                                            Joined {user.createdAt?.seconds ? new Date(user.createdAt.seconds * 1000).toLocaleDateString() : 'Recently'}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div className="flex-1">
-                                    <h4 className="font-bold text-zinc-900">{user.fullName || 'New User'}</h4>
-                                    <p className="text-sm text-zinc-500">{user.role || 'Unassigned Role'}</p>
-                                </div>
-                                <div className="text-right">
-                                    <span className={`text-[10px] uppercase tracking-widest font-black px-2 py-1 rounded-md mb-1 inline-block ${user.status === 'Vetted' ? 'bg-emerald-50 text-emerald-600' :
-                                        user.status === 'Pending Review' || user.status === 'New' ? 'bg-amber-50 text-amber-600' :
-                                            'bg-zinc-100 text-zinc-500'
-                                        }`}>
-                                        {user.status || 'New'}
-                                    </span>
-                                    <p className="text-xs text-zinc-400">
-                                        {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'Just now'}
-                                    </p>
-                                </div>
+                                <span className="text-[10px] font-black uppercase tracking-widest px-2 py-1 bg-white border border-zinc-100 rounded-lg text-zinc-500">
+                                    {user.status || 'Applied'}
+                                </span>
                             </div>
                         ))}
                     </div>
@@ -154,17 +150,17 @@ export default function AdminOverview() {
                 <div className="lg:col-span-4 bg-zinc-900 rounded-[40px] p-8 text-white relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/20 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-blue-600/30 transition-all duration-700" />
 
-                    <h3 className="text-xl font-bold mb-6 relative z-10">Admin Tasks</h3>
+                    <h3 className="text-xl font-bold mb-6 relative z-10">System Status</h3>
                     <div className="space-y-4 relative z-10">
                         {[
-                            'Review 24 new resumes',
-                            'Approve payout requests',
-                            'Update platform pricing',
-                            'Audit security logs'
+                            { label: `Review ${recentUsers.filter((u: any) => u.status === 'New' || u.status === 'Pending Review').length} new profiles`, count: recentUsers.filter((u: any) => u.status === 'New' || u.status === 'Pending Review').length },
+                            { label: `Audit ${stats.find(s => s.name === 'Active Jobs')?.value || 0} active jobs`, count: 1 },
+                            { label: 'Check security logs', count: 0 },
+                            { label: 'Review payout requests', count: 0 }
                         ].map((task, i) => (
                             <div key={i} className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-all cursor-pointer">
-                                <div className="w-2 h-2 rounded-full bg-blue-500" />
-                                <span className="text-sm font-medium text-zinc-300">{task}</span>
+                                <div className={`w-2 h-2 rounded-full ${task.count > 0 ? 'bg-amber-500' : 'bg-zinc-600'}`} />
+                                <span className="text-sm font-medium text-zinc-300">{task.label}</span>
                             </div>
                         ))}
                     </div>
@@ -172,8 +168,8 @@ export default function AdminOverview() {
                     <button className="w-full mt-8 py-4 bg-white text-zinc-900 font-bold rounded-2xl hover:bg-zinc-100 transition-all">
                         Launch System Audit
                     </button>
-                </div>
-            </div>
-        </div>
+                </div >
+            </div >
+        </div >
     );
 }

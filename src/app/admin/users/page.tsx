@@ -22,7 +22,8 @@ import {
     Mail,
     Phone,
     MapPin,
-    ExternalLink
+    ExternalLink,
+    Calendar
 } from 'lucide-react';
 
 export default function TalentPoolPage() {
@@ -36,7 +37,11 @@ export default function TalentPoolPage() {
 
     const fetchUsers = async () => {
         try {
-            const q = query(collection(db, 'profiles'), orderBy('createdAt', 'desc'), limit(50));
+            const profilesRef = collection(db, 'profiles');
+            const q = query(
+                profilesRef,
+                orderBy('createdAt', 'desc')
+            );
             const querySnapshot = await getDocs(q);
             const userData = querySnapshot.docs.map(doc => ({
                 id: doc.id,
@@ -153,9 +158,13 @@ export default function TalentPoolPage() {
                                         </div>
                                     </td>
                                     <td className="px-8 py-6">
-                                        <div className="text-xs font-medium text-zinc-500 flex items-center gap-1.5">
-                                            <Clock size={14} />
-                                            {new Date(user.createdAt).toLocaleDateString()}
+                                        <div className="flex items-center gap-1.5 text-zinc-400 font-medium">
+                                            <Calendar size={12} />
+                                            {user.createdAt?.seconds
+                                                ? new Date(user.createdAt.seconds * 1000).toLocaleDateString()
+                                                : user.createdAt
+                                                    ? new Date(user.createdAt).toLocaleDateString()
+                                                    : 'N/A'}
                                         </div>
                                     </td>
                                     <td className="px-8 py-6 text-right">

@@ -18,7 +18,10 @@ import {
     AlertCircle,
     Type,
     MapPin,
-    ExternalLink
+    ExternalLink,
+    Tag,
+    MessageSquare,
+    Search
 } from 'lucide-react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
@@ -27,6 +30,7 @@ import { db, auth as firebaseAuth } from '@/lib/firebase';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
 import FadeIn from '@/components/FadeIn';
+import TaskStyles from '@/components/TaskStyles';
 
 const evaluationQuestions = [
     { title: 'Instruction Following', color: 'blue', response: 'A', q: 'How well did the model\'s response adhere to the prompt requirements?' },
@@ -51,7 +55,11 @@ const steps = [
     { id: 'resume', label: 'Upload Resume', icon: FileText },
     { id: 'auth', label: 'Work Authorization', icon: ShieldCheck },
     { id: 'interview', label: 'Domain Expert Interview', icon: Monitor, badge: 'CORE' },
-    { id: 'evaluation', label: 'Model Response Evaluation (MRN)', icon: ClipboardList },
+    { id: 'categorization', label: 'Categorization', icon: Tag },
+    { id: 'sentiment', label: 'Sentiment Analysis', icon: MessageSquare },
+    { id: 'ner', label: 'NER Task', icon: Search },
+    { id: 'fact_checking', label: 'Fact Checking', icon: ShieldCheck },
+    { id: 'evaluation', label: 'Model Evaluation (MRN)', icon: ClipboardList },
 ];
 
 export default function ApplicationAssessmentPage() {
@@ -145,7 +153,8 @@ export default function ApplicationAssessmentPage() {
         let nextStepIdx = currentStepIndex;
         let nextQuestionIdx = currentQuestionIndex;
 
-        if (isEvaluationStep) {
+        // Special handling for steps that have sub-questions (like evaluation)
+        if (currentStep.id === 'evaluation') {
             if (currentQuestionIndex < totalEvaluationQuestions - 1) {
                 nextQuestionIdx = currentQuestionIndex + 1;
                 setCurrentQuestionIndex(nextQuestionIdx);
@@ -157,6 +166,8 @@ export default function ApplicationAssessmentPage() {
         } else if (currentStepIndex < steps.length - 1) {
             nextStepIdx = currentStepIndex + 1;
             setCurrentStepIndex(nextStepIdx);
+            // Reset question index when moving to a new step
+            setCurrentQuestionIndex(0);
         }
 
         await saveProgress(nextStepIdx, nextQuestionIdx);
@@ -538,13 +549,72 @@ export default function ApplicationAssessmentPage() {
                                 You've reached the core of our assessment. We'll be matching you with a domain expert for a deeper technical discussion.
                             </p>
                             <div className="pt-6">
-                                <button className="px-10 py-4 bg-zinc-900 text-white rounded-2xl text-[13px] font-black transition-all hover:bg-zinc-800 shadow-xl shadow-zinc-200 flex items-center gap-3">
+                                <button
+                                    onClick={handleNext}
+                                    className="px-10 py-4 bg-zinc-900 text-white rounded-2xl text-[13px] font-black transition-all hover:bg-zinc-800 shadow-xl shadow-zinc-200 flex items-center gap-3 w-full justify-center"
+                                >
                                     Schedule Interview
                                     <ChevronRight size={18} strokeWidth={3} />
                                 </button>
                                 <p className="mt-4 text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Typical duration: 45 minutes</p>
                             </div>
                         </div>
+                    </div>
+                );
+            case 'categorization':
+                return (
+                    <div className="max-w-2xl mx-auto py-10">
+                        <TaskStyles
+                            type="categorization"
+                            content={{ text: "The new iPhone 15 Pro features a titanium design, Action button, and USB-C. It also includes the A17 Pro chip for next-level mobile gaming performance." }}
+                            options={['Technology', 'Sports', 'Entertainment', 'Politics']}
+                            onComplete={(val) => {
+                                setFormData({ ...formData, evaluations: { ...formData.evaluations, categorization: val } });
+                                handleNext();
+                            }}
+                        />
+                    </div>
+                );
+            case 'sentiment':
+                return (
+                    <div className="max-w-2xl mx-auto py-10">
+                        <TaskStyles
+                            type="sentiment"
+                            content={{ text: "I absolutely love the new interface! It's so much faster than the old version, though I did find one small bug in the settings menu." }}
+                            onComplete={(val) => {
+                                setFormData({ ...formData, evaluations: { ...formData.evaluations, sentiment: val } });
+                                handleNext();
+                            }}
+                        />
+                    </div>
+                );
+            case 'ner':
+                return (
+                    <div className="max-w-2xl mx-auto py-10">
+                        <TaskStyles
+                            type="ner"
+                            content={{ text: "Apple Inc. announced that Tim Cook will visit Lagos, Nigeria on October 24th to discuss new investments in the tech ecosystem." }}
+                            onComplete={(val) => {
+                                setFormData({ ...formData, evaluations: { ...formData.evaluations, ner: val } });
+                                handleNext();
+                            }}
+                        />
+                    </div>
+                );
+            case 'fact_checking':
+                return (
+                    <div className="max-w-2xl mx-auto py-10">
+                        <TaskStyles
+                            type="fact_checking"
+                            content={{
+                                claim: "The Great Wall of China is the only man-made structure visible from space with the naked eye.",
+                                source: "Astronauts from the Apollo missions have confirmed that while many man-made structures like cities and highways are visible from low Earth orbit, the Great Wall of China is notoriously difficult to see without aid due to its color blending with the natural environment."
+                            }}
+                            onComplete={(val) => {
+                                setFormData({ ...formData, evaluations: { ...formData.evaluations, fact_checking: val } });
+                                handleNext();
+                            }}
+                        />
                     </div>
                 );
             case 'evaluation':

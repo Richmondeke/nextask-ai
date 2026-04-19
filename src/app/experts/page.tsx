@@ -1,6 +1,4 @@
-"use client";
-
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FadeIn from "@/components/FadeIn";
@@ -15,10 +13,13 @@ import {
     Smartphone,
     Layers,
     Play,
-    CheckCircle2
+    CheckCircle2,
+    Loader2
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { db } from "@/lib/firebase";
+import { collection, query, orderBy, getDocs } from "firebase/firestore";
 
 const benefits = [
     { icon: <Zap className="w-6 h-6" />, title: "Equity", desc: "Generous equity grant" },
@@ -32,19 +33,69 @@ const benefits = [
     { icon: <CheckCircle2 className="w-6 h-6" />, title: "Parental leave", desc: "For all new parents" },
 ];
 
-const openRoles = {
-    engineering: [
-        { title: "Security Engineer", location: "San Francisco", type: "Full time", salary: "$130K - $500K" },
-        { title: "Infrastructure Engineer", location: "San Francisco", type: "Full time", salary: "$130K - $500K" },
-        { title: "Machine Learning Engineer", location: "San Francisco", type: "Full time", salary: "$130K - $500K" },
-    ],
-    operations: [
-        { title: "People Ops Manager", location: "San Francisco", type: "Full time", salary: "$140K - $160K" },
-        { title: "Strategic Project Lead", location: "San Francisco", type: "Full time", salary: "$120K - $200K" },
-    ]
-};
+interface Job {
+    id: string;
+    title: string;
+    location: string;
+    type: string;
+    salary: string;
+    tags: string[];
+}
 
 export default function ExpertsPage() {
+    const [jobs, setJobs] = useState<Record<string, Job[]>>({});
+    const [loading, setLoading] = useState(true);
+    const [activeFilter, setActiveFilter] = useState("All");
+
+    useEffect(() => {
+        const fetchJobs = async () => {
+            try {
+                const q = query(collection(db, "jobs"), orderBy("createdAt", "desc"));
+                const querySnapshot = await getDocs(q);
+
+                const categorized: Record<string, Job[]> = {
+                    Engineering: [],
+                    Operations: [],
+                    Marketing: [],
+                    Other: []
+                };
+
+                querySnapshot.docs.forEach(doc => {
+                    const data = doc.data();
+                    const job = {
+                        id: doc.id,
+                        title: data.title,
+                        location: data.location || "Remote",
+                        type: data.type || "Full time",
+                        salary: data.salary || "Competitive",
+                        tags: data.tags || []
+                    };
+
+                    const tags = job.tags.map(t => t.toLowerCase());
+                    if (tags.some(t => t.includes('engine') || t.includes('dev') || t.includes('ml') || t.includes('security') || t.includes('infra') || t.includes('tech'))) {
+                        categorized.Engineering.push(job);
+                    } else if (tags.some(t => t.includes('op') || t.includes('project') || t.includes('manag') || t.includes('stratetg'))) {
+                        categorized.Operations.push(job);
+                    } else if (tags.some(t => t.includes('mark') || t.includes('sal') || t.includes('grow'))) {
+                        categorized.Marketing.push(job);
+                    } else {
+                        categorized.Other.push(job);
+                    }
+                });
+
+                setJobs(categorized);
+            } catch (error) {
+                console.error("Error fetching jobs:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchJobs();
+    }, []);
+
+    const categories = ["All", "Engineering", "Marketing", "Operations"];
+
     return (
         <main className="min-h-screen bg-white">
             <Navbar />
@@ -164,56 +215,63 @@ export default function ExpertsPage() {
                                 <h2 className="text-3xl font-bold mb-4">Open Roles</h2>
                                 <p className="text-zinc-600 mb-8">We&apos;re looking for exceptional people to join our growing team.</p>
                                 <div className="space-y-4">
-                                    {["All", "Engineering", "Marketing", "Operations"].map(tag => (
-                                        <button key={tag} className="block text-sm font-bold text-zinc-400 hover:text-blue-600 transition-colors">
+                                    {categories.map(tag => (
+                                        <button
+                                            key={tag}
+                                            onClick={() => setActiveFilter(tag)}
+                                            className={`block text-sm font-bold transition-colors ${activeFilter === tag ? "text-blue-600" : "text-zinc-400 hover:text-blue-600"
+                                                }`}
+                                        >
                                             {tag}
                                         </button>
                                     ))}
                                 </div>
                             </div>
                             <div className="md:col-span-3">
-                                <div className="space-y-12">
-                                    <div>
-                                        <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-6 border-b border-zinc-100 pb-2">
-                                            Engineering ({openRoles.engineering.length} roles)
-                                        </h3>
-                                        <div className="divide-y divide-zinc-50">
-                                            {openRoles.engineering.map(role => (
-                                                <div key={role.title} className="py-6 flex flex-col sm:flex-row sm:items-center justify-between group cursor-pointer">
-                                                    <div>
-                                                        <h4 className="font-bold text-lg group-hover:text-blue-600 transition-colors">{role.title}</h4>
-                                                        <p className="text-zinc-500 text-sm font-medium">
-                                                            {role.location} · {role.type} · {role.salary}
-                                                        </p>
-                                                    </div>
-                                                    <div className="mt-4 sm:mt-0 text-zinc-400 group-hover:text-blue-600 transition-colors">
-                                                        <MoveRight className="w-5 h-5" />
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
+                                {loading ? (
+                                    <div className="flex items-center justify-center py-20">
+                                        <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
                                     </div>
-                                    <div>
-                                        <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-6 border-b border-zinc-100 pb-2">
-                                            Operations ({openRoles.operations.length} roles)
-                                        </h3>
-                                        <div className="divide-y divide-zinc-50">
-                                            {openRoles.operations.map(role => (
-                                                <div key={role.title} className="py-6 flex flex-col sm:flex-row sm:items-center justify-between group cursor-pointer">
-                                                    <div>
-                                                        <h4 className="font-bold text-lg group-hover:text-blue-600 transition-colors">{role.title}</h4>
-                                                        <p className="text-zinc-500 text-sm font-medium">
-                                                            {role.location} · {role.type} · {role.salary}
-                                                        </p>
+                                ) : (
+                                    <div className="space-y-12">
+                                        {Object.entries(jobs)
+                                            .filter(([category]) => activeFilter === "All" || activeFilter === category)
+                                            .map(([category, categoryJobs]) => (
+                                                categoryJobs.length > 0 && (
+                                                    <div key={category}>
+                                                        <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-6 border-b border-zinc-100 pb-2">
+                                                            {category} ({categoryJobs.length} roles)
+                                                        </h3>
+                                                        <div className="divide-y divide-zinc-50">
+                                                            {categoryJobs.map(role => (
+                                                                <Link
+                                                                    href="/opportunities"
+                                                                    key={role.id}
+                                                                    className="py-6 flex flex-col sm:flex-row sm:items-center justify-between group cursor-pointer"
+                                                                >
+                                                                    <div>
+                                                                        <h4 className="font-bold text-lg group-hover:text-blue-600 transition-colors">{role.title}</h4>
+                                                                        <p className="text-zinc-500 text-sm font-medium">
+                                                                            {role.location} · {role.type} · {role.salary}
+                                                                        </p>
+                                                                    </div>
+                                                                    <div className="mt-4 sm:mt-0 text-zinc-400 group-hover:text-blue-600 transition-colors">
+                                                                        <MoveRight className="w-5 h-5" />
+                                                                    </div>
+                                                                </Link>
+                                                            ))}
+                                                        </div>
                                                     </div>
-                                                    <div className="mt-4 sm:mt-0 text-zinc-400 group-hover:text-blue-600 transition-colors">
-                                                        <MoveRight className="w-5 h-5" />
-                                                    </div>
-                                                </div>
+                                                )
                                             ))}
-                                        </div>
+
+                                        {!loading && Object.values(jobs).every(arr => arr.length === 0) && (
+                                            <div className="text-center py-20 text-zinc-500">
+                                                No open roles found at this time. Check back soon!
+                                            </div>
+                                        )}
                                     </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </div>

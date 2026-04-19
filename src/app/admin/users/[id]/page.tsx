@@ -88,7 +88,11 @@ export default function UserDetailPage() {
                             </span>
                             <div className="flex items-center gap-1.5 text-zinc-400 text-xs font-medium">
                                 <Calendar size={14} />
-                                Joined {new Date(user.createdAt).toLocaleDateString()}
+                                Joined {user.createdAt?.seconds
+                                    ? new Date(user.createdAt.seconds * 1000).toLocaleDateString()
+                                    : user.createdAt
+                                        ? new Date(user.createdAt).toLocaleDateString()
+                                        : 'Recently'}
                             </div>
                         </div>
                     </div>
