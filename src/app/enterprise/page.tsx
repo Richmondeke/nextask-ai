@@ -127,7 +127,7 @@ export default function EnterprisePage() {
                 <div className="bg-primary rounded-[48px] p-12 md:p-24 text-white text-center">
                     <h2 className="text-4xl md:text-6xl font-bold mb-8">Ready to evolve?</h2>
                     <p className="text-primary-foreground/80 text-lg md:text-xl mb-12 max-w-2xl mx-auto">
-                        Join the world's most innovative enterprises building their future with Nextask AI.
+                        Join the world's most innovative enterprises building their future with Nexttask AI.
                     </p>
                     <button className="bg-white text-primary px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-100 transition-all">
                         Schedule an onboarding call

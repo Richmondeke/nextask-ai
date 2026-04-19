@@ -44,7 +44,7 @@ export default function ExpertsPage() {
                             transition={{ duration: 0.5, delay: 0.1 }}
                             className="text-xl text-secondary mb-10 max-w-xl leading-relaxed"
                         >
-                            Nextask connects the world's most talented developers and researchers
+                            Nexttask connects the world's most talented developers and researchers
                             with high-impact AI opportunities. Join thousands of experts building
                             the future of intelligence.
                         </motion.p>

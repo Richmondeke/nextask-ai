@@ -55,7 +55,7 @@ export default function ResearchPage() {
                         transition={{ duration: 0.5, delay: 0.2 }}
                         className="max-w-3xl text-xl md:text-2xl text-secondary leading-relaxed"
                     >
-                        Nextask.ai Research is dedicated to building the infrastructure for the next
+                        Nexttask.ai Research is dedicated to building the infrastructure for the next
                         leap in artificial intelligence. We focus on the intersection of data quality,
                         human feedback, and model evaluation.
                     </motion.p>
@@ -83,7 +83,7 @@ export default function ResearchPage() {
                 {/* Benchmark Feature */}
                 <div className="rounded-[40px] bg-black text-white p-12 md:p-20 relative overflow-hidden">
                     <div className="relative z-10 max-w-2xl">
-                        <h2 className="text-4xl md:text-5xl font-bold mb-8">Nextask Benchmark v1.0</h2>
+                        <h2 className="text-4xl md:text-5xl font-bold mb-8">Nexttask Benchmark v1.0</h2>
                         <p className="text-gray-400 text-lg mb-10 leading-relaxed">
                             Our proprietary benchmark tests models on complex coding, logical reasoning,
                             and agentic behavior. We provide the most accurate measure of a model's

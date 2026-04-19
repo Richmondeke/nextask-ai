@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nextask.ai | Shaping the Future of AI",
-  description: "Nextask connects the world's top AI professionals with leading AI labs and enterprises. Find top-tier, remote AI roles.",
+  title: "Nexttask.ai | Shaping the Future of AI",
+  description: "Nexttask connects the world's top AI professionals with leading AI labs and enterprises. Find top-tier, remote AI roles.",
 };
 
 export default function RootLayout({

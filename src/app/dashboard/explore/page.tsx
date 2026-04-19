@@ -63,8 +63,8 @@ export default function ExplorePage() {
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Explore Roles</h1>
-                    <p className="text-zinc-500 mt-2">Find your next project curated for your expertise.</p>
+                    <h1 className="text-xl font-bold tracking-tight">Explore Roles</h1>
+                    <p className="text-zinc-500 mt-2 text-sm">Find your next project curated for your expertise.</p>
                 </div>
                 <div className="flex items-center gap-3">
                     <div className="relative group">

@@ -23,8 +23,8 @@ export default function ReferralsPage() {
         <div className="space-y-8">
             {/* Header */}
             <div>
-                <h1 className="text-3xl font-bold tracking-tight">Refer & Earn</h1>
-                <p className="text-zinc-500 mt-2">Earn $150 for every expert you refer who successfully joins Nextask.</p>
+                <h1 className="text-xl font-bold tracking-tight">Refer & Earn</h1>
+                <p className="text-zinc-500 mt-2 text-sm">Earn $150 for every expert you refer who successfully joins Nexttask.</p>
             </div>
 
             {/* Referral Link Card */}
@@ -39,8 +39,8 @@ export default function ReferralsPage() {
                             <Gift size={32} />
                         </div>
                         <div>
-                            <h2 className="text-2xl font-bold mb-2">Invite your friends</h2>
-                            <p className="text-blue-100/80 max-w-sm">Share your unique referral link and start building the future of AI together.</p>
+                            <h2 className="text-xl font-bold mb-2">Invite your friends</h2>
+                            <p className="text-blue-100/80 max-w-sm text-sm">Share your unique referral link and start building the future of AI together.</p>
                         </div>
                         <div className="flex items-center gap-3 bg-black/20 p-2 rounded-2xl border border-white/10 backdrop-blur-sm">
                             <code className="flex-1 px-4 text-sm font-mono truncate">nextask.ai/r/jd-4421</code>
@@ -120,8 +120,8 @@ export default function ReferralsPage() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className={`px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider ${ref.status === 'Active' ? 'bg-green-500/10 text-green-500' :
-                                                ref.status === 'Signed Up' ? 'bg-blue-500/10 text-blue-500' :
-                                                    'bg-yellow-500/10 text-yellow-500'
+                                            ref.status === 'Signed Up' ? 'bg-blue-500/10 text-blue-500' :
+                                                'bg-yellow-500/10 text-yellow-500'
                                             }`}>
                                             {ref.status}
                                         </span>

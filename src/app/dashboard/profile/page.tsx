@@ -28,8 +28,8 @@ export default function ProfilePage() {
                 </div>
                 <div className="text-center md:text-left space-y-4">
                     <div>
-                        <h1 className="text-4xl font-bold tracking-tight">John Doe</h1>
-                        <p className="text-zinc-500 text-lg">Senior Machine Learning Engineer</p>
+                        <h1 className="text-2xl font-bold tracking-tight">John Doe</h1>
+                        <p className="text-zinc-500 text-base">Senior Machine Learning Engineer</p>
                     </div>
                     <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-sm text-zinc-400">
                         <span className="flex items-center gap-2"><MapPin size={16} className="text-blue-500" /> San Francisco, CA</span>

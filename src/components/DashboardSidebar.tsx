@@ -28,14 +28,19 @@ export default function DashboardSidebar() {
     return (
         <div className="w-64 h-screen bg-black border-r border-white/10 flex flex-col fixed left-0 top-0 z-50">
             {/* Logo */}
-            <div className="p-8">
-                <Link href="/" className="text-2xl font-bold tracking-tighter text-white">
-                    Nextask<span className="text-blue-500">.ai</span>
+            <div className="p-6">
+                <Link href="/" className="flex items-center gap-3 group">
+                    <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform">
+                        N
+                    </div>
+                    <span className="text-lg font-bold tracking-tight text-white">
+                        Nexttask<span className="text-blue-500">.ai</span>
+                    </span>
                 </Link>
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 px-4 space-y-2">
+            <nav className="flex-1 px-3 space-y-1">
                 {sidebarLinks.map((link) => {
                     const isActive = pathname === link.href;
                     const Icon = link.icon;
@@ -44,19 +49,19 @@ export default function DashboardSidebar() {
                         <Link
                             key={link.name}
                             href={link.href}
-                            className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 group ${isActive
-                                    ? 'bg-blue-600/10 text-blue-500'
-                                    : 'text-zinc-400 hover:bg-white/5 hover:text-white'
+                            className={`flex items-center justify-between px-3 py-2 rounded-lg transition-all duration-200 group ${isActive
+                                ? 'bg-blue-600/10 text-blue-500'
+                                : 'text-zinc-400 hover:bg-white/5 hover:text-white'
                                 }`}
                         >
-                            <div className="flex items-center gap-3">
-                                <Icon size={20} className={isActive ? 'text-blue-500' : 'text-zinc-400 group-hover:text-white'} />
-                                <span className="font-medium">{link.name}</span>
+                            <div className="flex items-center gap-2.5">
+                                <Icon size={18} className={isActive ? 'text-blue-500' : 'text-zinc-400 group-hover:text-white'} />
+                                <span className="text-sm font-medium">{link.name}</span>
                             </div>
                             {isActive && (
                                 <motion.div
                                     layoutId="activeTab"
-                                    className="w-1.5 h-1.5 rounded-full bg-blue-500"
+                                    className="w-1 h-1 rounded-full bg-blue-500"
                                 />
                             )}
                         </Link>

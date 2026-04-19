@@ -36,7 +36,7 @@ export default function Footer() {
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-20">
                     <div className="col-span-2">
                         <Link href="/" className="text-2xl font-bold tracking-tight mb-6 block">
-                            Nextask<span className="text-primary">.ai</span>
+                            Nexttask<span className="text-primary">.ai</span>
                         </Link>
                         <p className="text-secondary max-w-xs text-sm leading-relaxed">
                             Defining the future of work by connecting the world's top AI professionals
@@ -65,7 +65,7 @@ export default function Footer() {
 
                 <div className="pt-10 border-t border-border flex flex-col md:flex-row items-center justify-between gap-6">
                     <p className="text-xs text-secondary">
-                        © {new Date().getFullYear()} Nextask AI. All rights reserved.
+                        © {new Date().getFullYear()} Nexttask AI. All rights reserved.
                     </p>
                     <div className="flex items-center gap-6">
                         <Link href="#" className="text-xs text-secondary hover:text-foreground">Terms</Link>

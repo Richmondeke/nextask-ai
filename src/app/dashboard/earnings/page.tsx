@@ -25,8 +25,8 @@ export default function EarningsPage() {
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Earnings</h1>
-                    <p className="text-zinc-500 mt-2">Manage your payouts, rewards, and transaction history.</p>
+                    <h1 className="text-xl font-bold tracking-tight">Earnings</h1>
+                    <p className="text-zinc-500 mt-2 text-sm">Manage your payouts, rewards, and transaction history.</p>
                 </div>
                 <button className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-white text-black font-semibold hover:bg-zinc-200 transition-colors">
                     Withdraw Funds
@@ -41,7 +41,7 @@ export default function EarningsPage() {
                         <DollarSign size={20} className="text-zinc-400" />
                     </div>
                     <div className="relative z-10">
-                        <h2 className="text-4xl font-bold tracking-tight">$2,451.00</h2>
+                        <h2 className="text-3xl font-bold tracking-tight">$2,451.00</h2>
                         <p className="text-xs font-semibold text-green-600 mt-2 flex items-center gap-1">
                             +15.5% vs last month <ArrowUpRight size={12} />
                         </p>
@@ -57,7 +57,7 @@ export default function EarningsPage() {
                         <Calendar size={20} className="text-zinc-600" />
                     </div>
                     <div>
-                        <h2 className="text-4xl font-bold text-white">$600.00</h2>
+                        <h2 className="text-3xl font-bold text-white">$600.00</h2>
                         <p className="text-xs text-zinc-500 mt-2">Estimated Arrival: Apr 25</p>
                     </div>
                 </div>
