@@ -91,16 +91,16 @@ export default function TalentPoolPage() {
                 </div>
             </div>
 
-            <div className="bg-white rounded-[40px] border border-zinc-100 shadow-xl shadow-zinc-200/20 overflow-hidden">
+            <div className="bg-white rounded-[40px] border border-zinc-100 shadow-xl shadow-zinc-200/50 overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
+                    <table className="w-full text-left border-collapse min-w-[800px]">
                         <thead>
-                            <tr className="bg-zinc-50/50 border-b border-zinc-100">
-                                <th className="px-8 py-6 text-[10px] uppercase tracking-widest font-black text-zinc-400">Professional</th>
-                                <th className="px-8 py-6 text-[10px] uppercase tracking-widest font-black text-zinc-400">Role</th>
-                                <th className="px-8 py-6 text-[10px] uppercase tracking-widest font-black text-zinc-400">Status</th>
-                                <th className="px-8 py-6 text-[10px] uppercase tracking-widest font-black text-zinc-400">Applied</th>
-                                <th className="px-8 py-6 text-[10px] uppercase tracking-widest font-black text-zinc-400 text-right">Actions</th>
+                            <tr className="border-b border-zinc-100 bg-zinc-50/50">
+                                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-zinc-400">Professional</th>
+                                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-zinc-400">Role</th>
+                                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-zinc-400">Status</th>
+                                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-zinc-400">Joined</th>
+                                <th className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-zinc-400 text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-zinc-50">
@@ -145,8 +145,8 @@ export default function TalentPoolPage() {
                                     <td className="px-8 py-6">
                                         <div className="flex items-center gap-2">
                                             <span className={`w-2 h-2 rounded-full ${user.status === 'Vetted' ? 'bg-emerald-500' :
-                                                    user.status === 'Interviewing' ? 'bg-blue-500' :
-                                                        'bg-amber-500'
+                                                user.status === 'Interviewing' ? 'bg-blue-500' :
+                                                    'bg-amber-500'
                                                 }`} />
                                             <span className="text-sm font-bold text-zinc-900">{user.status || 'Applied'}</span>
                                         </div>
@@ -166,12 +166,13 @@ export default function TalentPoolPage() {
                                             >
                                                 <CheckCircle2 size={20} />
                                             </button>
-                                            <button
+                                            <Link
+                                                href={`/admin/users/${user.id}`}
                                                 className="p-2 text-zinc-400 hover:bg-zinc-100 rounded-xl transition-all"
                                                 title="View Profile"
                                             >
                                                 <ExternalLink size={20} />
-                                            </button>
+                                            </Link>
                                             <button className="p-2 text-zinc-400 hover:bg-zinc-100 rounded-xl transition-all">
                                                 <MoreHorizontal size={20} />
                                             </button>

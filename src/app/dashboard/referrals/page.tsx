@@ -46,7 +46,15 @@ export default function ReferralsPage() {
         try {
             const profileDoc = await getDoc(doc(db, 'profiles', uid));
             if (profileDoc.exists()) {
-                const profileData = profileDoc.data();
+                let profileData = profileDoc.data();
+
+                // Auto-generate referral code if missing
+                if (!profileData.referralCode) {
+                    const newCode = `REF-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+                    await updateDoc(doc(db, 'profiles', uid), { referralCode: newCode });
+                    profileData = { ...profileData, referralCode: newCode };
+                }
+
                 setProfile(profileData);
 
                 if (profileData.referralCode) {
@@ -152,11 +160,11 @@ export default function ReferralsPage() {
                 <div className="grid grid-cols-2 lg:grid-cols-6 gap-8 md:gap-12 text-center md:text-left">
                     {[
                         { label: "Signed Up", value: referrals.length },
-                        { label: "Application Started", value: 0 },
-                        { label: "Application Completed", value: 0 },
-                        { label: "Offer Extended", value: 0 },
-                        { label: "Hired", value: 0 },
-                        { label: "Paid", value: "$0" }
+                        { label: "Application Started", value: referrals.filter(r => r.status === 'Applied').length },
+                        { label: "Assessment Completed", value: referrals.filter(r => r.status === 'Assessment').length },
+                        { label: "Offer Extended", value: referrals.filter(r => r.status === 'Offer').length },
+                        { label: "Hired", value: referrals.filter(r => r.status === 'Hired').length },
+                        { label: "Paid", value: `$${referrals.filter(r => r.status === 'Hired').length * 250}` }
                     ].map((stat, i) => (
                         <div key={i} className="space-y-2">
                             <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest">{stat.label}</p>
@@ -164,6 +172,23 @@ export default function ReferralsPage() {
                         </div>
                     ))}
                 </div>
+            </div>
+
+            {/* LinkedIn Upload Section */}
+            <div className="bg-white rounded-[40px] border-2 border-dashed border-zinc-100 p-12 text-center space-y-6">
+                <div className="w-20 h-20 bg-blue-50 text-blue-600 rounded-[32px] flex items-center justify-center mx-auto shadow-inner">
+                    <Linkedin size={40} strokeWidth={1.5} />
+                </div>
+                <div className="max-w-md mx-auto space-y-2">
+                    <h3 className="text-2xl font-bold">Import LinkedIn Connections</h3>
+                    <p className="text-zinc-500 text-sm leading-relaxed font-medium">
+                        Upload your LinkedIn ZIP or CSV and our AI will automatically scan for talent that matches our open frontier research roles.
+                    </p>
+                </div>
+                <button className="px-8 py-4 bg-blue-600 text-white rounded-2xl font-bold text-sm hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 flex items-center gap-3 mx-auto">
+                    <Share2 size={18} />
+                    Upload .zip or .csv
+                </button>
             </div>
 
             {/* Recent Referrals Table */}

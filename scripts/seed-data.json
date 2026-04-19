@@ -1,0 +1,88 @@
+import { initializeApp, cert
+} from 'firebase-admin/app';
+import { getFirestore
+} from 'firebase-admin/firestore';
+
+// In a real scenario, you'd use a service account key. 
+// For this environment, we'll use the CLI credentials if possible, 
+// or I'll just use the regular firebase SDK if I can run it in a node env.
+// However, since I have the MCP tools, I can just use them to add documents!
+
+const jobs = [
+    {
+        title: "Frontier Research Engineer (AI)",
+        pay: "$150/hr",
+        hires: "12 hired recently",
+        tags: [
+            "AI",
+            "Research",
+            "Frontier"
+        ],
+        company: "OpenAI",
+        description: "Work on the next generation of large language models.",
+        createdAt: new Date().toISOString()
+    },
+    {
+        title: "Senior Rust Systems Engineer",
+        pay: "$120/hr",
+        hires: "8 hired recently",
+        tags: [
+            "Systems",
+            "Rust",
+            "Crypto"
+        ],
+        company: "Solana",
+        description: "Build high-performance blockchain infrastructure.",
+        createdAt: new Date().toISOString()
+    },
+    {
+        title: "PhD Researcher (Quantum Computing)",
+        pay: "$180/hr",
+        hires: "2 hired recently",
+        tags: [
+            "Quantum",
+            "Research",
+            "PhD"
+        ],
+        company: "Google Quantum AI",
+        description: "Push the boundaries of quantum supremacy.",
+        createdAt: new Date().toISOString()
+    },
+    {
+        title: "Full Stack Engineer (Next.js)",
+        pay: "$90/hr",
+        hires: "25 hired recently",
+        tags: [
+            "Engineering",
+            "Product",
+            "Vercel"
+        ],
+        company: "Linear",
+        description: "Craft beautiful and fast user experiences.",
+        createdAt: new Date().toISOString()
+    }
+];
+
+const assessments = [
+    {
+        id: "technical-proficiency",
+        title: "Technical Proficiency",
+        questions: [
+            { q: "What is the time complexity of a hash map lookup?", a: "O(1)"
+            },
+            { q: "Differences between React 18 and 19?", a: "Compiler, Actions, etc."
+            }
+        ]
+    },
+    {
+        id: "logic-reasoning",
+        title: "Logic & Reasoning",
+        questions: [
+            { q: "If A > B and B > C, is A > C?", a: "Yes"
+            }
+        ]
+    }
+];
+
+// Instead of a script that needs complex setup, I'll just use the MCP tool to add these.
+// I'll call it multiple times.
