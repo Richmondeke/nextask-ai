@@ -41,7 +41,11 @@ function LoginContent() {
             await signInWithPopup(auth, provider);
             router.push(redirectPath);
         } catch (err: any) {
-            setError(err.message || 'Failed to sign in with Google.');
+            if (err.code === 'auth/unauthorized-domain') {
+                setError('This domain is not authorized for Google Sign-In. Please add it to your Firebase Console under Authentication > Settings > Authorized domains.');
+            } else {
+                setError(err.message || 'Failed to sign in with Google.');
+            }
         } finally {
             setIsLoading(false);
         }
