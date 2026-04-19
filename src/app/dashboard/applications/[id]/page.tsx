@@ -584,7 +584,7 @@ export default function ApplicationAssessmentPage() {
                                     onClick={() => handleNext()}
                                     className="px-10 py-4 bg-zinc-900 text-white rounded-2xl text-[13px] font-black transition-all hover:bg-zinc-800 shadow-xl shadow-zinc-200 flex items-center gap-3 w-full justify-center"
                                 >
-                                    Schedule Interview
+                                    Start Interview
                                     <ChevronRight size={18} strokeWidth={3} />
                                 </button>
                                 <p className="mt-4 text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Typical duration: 45 minutes</p>
