@@ -23,15 +23,9 @@ import PhoneVerificationModal from '@/components/PhoneVerificationModal';
 import OnboardingTour from '@/components/OnboardingTour';
 import FadeIn from '@/components/FadeIn';
 
-const MOCK_STATS = [
-    { label: 'Active Applications', value: '4', change: '+2', icon: Briefcase, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { label: 'Pending Reviews', value: '2', change: '0', icon: Clock, color: 'text-orange-600', bg: 'bg-orange-50' },
-    { label: 'Total Earnings', value: '$2,450', change: '+$450', icon: DollarSign, color: 'text-green-600', bg: 'bg-green-50' },
-    { label: 'Opportunities', value: '156', change: '+12', icon: Zap, color: 'text-purple-600', bg: 'bg-purple-50' },
-];
-
 export default function DashboardPage() {
     const [applications, setApplications] = useState<any[]>([]);
+    const [jobCount, setJobCount] = useState(0);
     const [user, setUser] = useState<any>(null);
     const [profile, setProfile] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -60,6 +54,10 @@ export default function DashboardPage() {
                         ...doc.data()
                     }));
                     setApplications(fetchedApps);
+
+                    // Fetch Job Opportunities
+                    const jobsSnapshot = await getDocs(collection(db, 'jobs'));
+                    setJobCount(jobsSnapshot.size);
                 } catch (error) {
                     console.error("Error fetching dashboard data:", error);
                 } finally {
@@ -72,6 +70,41 @@ export default function DashboardPage() {
 
         return () => unsubscribe();
     }, []);
+
+    const stats = [
+        {
+            label: 'Active Applications',
+            value: applications.filter(a => a.status === 'Active' || a.status === 'Pending').length.toString(),
+            change: applications.length > 0 ? `+${applications.length}` : '0',
+            icon: Briefcase,
+            color: 'text-blue-600',
+            bg: 'bg-blue-50'
+        },
+        {
+            label: 'Pending Reviews',
+            value: applications.filter(a => a.status === 'Under Review').length.toString(),
+            change: '0',
+            icon: Clock,
+            color: 'text-orange-600',
+            bg: 'bg-orange-50'
+        },
+        {
+            label: 'Total Earnings',
+            value: profile?.totalEarnings ? `$${profile.totalEarnings.toLocaleString()}` : '$0',
+            change: '+$0',
+            icon: DollarSign,
+            color: 'text-green-600',
+            bg: 'bg-green-50'
+        },
+        {
+            label: 'Opportunities',
+            value: jobCount.toString(),
+            change: jobCount > 0 ? `+${jobCount}` : '0',
+            icon: Zap,
+            color: 'text-purple-600',
+            bg: 'bg-purple-50'
+        },
+    ];
 
     if (loading) {
         return (
@@ -94,7 +127,7 @@ export default function DashboardPage() {
 
                 {/* Stats Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {MOCK_STATS.map((stat, i) => (
+                    {stats.map((stat, i) => (
                         <motion.div
                             key={stat.label}
                             initial={{ opacity: 0, y: 10 }}
@@ -106,9 +139,11 @@ export default function DashboardPage() {
                                 <div className={`p-2.5 rounded-xl ${stat.bg} ${stat.color}`}>
                                     <stat.icon size={20} />
                                 </div>
-                                <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
-                                    {stat.change}
-                                </span>
+                                {stat.change !== '0' && stat.change !== '+$0' && (
+                                    <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                                        {stat.change}
+                                    </span>
+                                )}
                             </div>
                             <div className="mt-4 space-y-1">
                                 <p className="text-sm font-medium text-zinc-500">{stat.label}</p>
