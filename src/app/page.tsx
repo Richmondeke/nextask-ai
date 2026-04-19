@@ -4,6 +4,8 @@ import Hero from "@/components/Hero";
 import Stats from "@/components/Stats";
 import Jobs from "@/components/Jobs";
 import PromptSection from "@/components/PromptSection";
+import Benefits from "@/components/Benefits";
+import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -14,6 +16,8 @@ export default function Home() {
       <Stats />
       <Jobs />
       <PromptSection />
+      <Benefits />
+      <FAQ />
 
       {/* Featured Story Callout */}
       <section className="py-32 bg-white text-zinc-900 border-t border-zinc-100">
