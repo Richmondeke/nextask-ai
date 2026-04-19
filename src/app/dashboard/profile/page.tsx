@@ -6,8 +6,6 @@ import {
     User,
     Mail,
     MapPin,
-    Github,
-    Linkedin,
     Globe,
     Camera,
     Briefcase,
@@ -39,9 +37,9 @@ export default function ProfilePage() {
                         <span className="flex items-center gap-2"><Briefcase size={16} className="text-blue-500" /> Full-time / Contract</span>
                     </div>
                     <div className="flex items-center justify-center md:justify-start gap-3">
-                        <button className="p-2 rounded-xl bg-white/5 border border-white/10 hover:text-white transition-colors"><Github size={20} /></button>
-                        <button className="p-2 rounded-xl bg-white/5 border border-white/10 hover:text-white transition-colors"><Linkedin size={20} /></button>
+                        <button className="p-2 rounded-xl bg-white/5 border border-white/10 hover:text-white transition-colors"><Mail size={20} /></button>
                         <button className="p-2 rounded-xl bg-white/5 border border-white/10 hover:text-white transition-colors"><Globe size={20} /></button>
+                        <button className="p-2 rounded-xl bg-white/5 border border-white/10 hover:text-white transition-colors"><User size={20} /></button>
                         <div className="h-6 w-px bg-white/10 mx-2" />
                         <button className="text-sm font-semibold text-blue-500 hover:text-blue-400 px-2 py-1">Edit Socials</button>
                     </div>
