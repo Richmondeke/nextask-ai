@@ -577,7 +577,7 @@ export default function ApplicationAssessmentPage() {
                         <div className="text-center space-y-4 max-w-sm">
                             <h2 className="text-3xl font-bold text-zinc-900">Domain Expert Interview</h2>
                             <p className="text-sm text-zinc-500 font-medium leading-relaxed">
-                                You've reached the core of our assessment. We'll be matching you with a domain expert for a deeper technical discussion.
+                                You've reached the core of our assessment. Click below to start your technical interview and AI assessment tasks.
                             </p>
                             <div className="pt-6">
                                 <button
