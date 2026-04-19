@@ -69,7 +69,7 @@ export default function ExpertsPage() {
                         title: data.title,
                         location: data.location || "Remote",
                         type: data.type || "Full time",
-                        salary: data.salary || "Competitive",
+                        salary: data.salary || data.pay || "Competitive",
                         tags: data.tags || []
                     };
 

@@ -33,9 +33,9 @@ export default function OpportunitiesPage() {
                     return {
                         id: doc.id,
                         title: data.title,
-                        company: data.companyName || "Nexttask AI",
-                        pay: data.salary || "Competitive",
-                        hires: `${data.applicationCount || 0} applicants`,
+                        company: data.companyName || data.company || "Nexttask AI",
+                        pay: data.salary || data.pay || "Competitive",
+                        hires: data.applicationCount !== undefined ? `${data.applicationCount} applicants` : (data.hires || "0 applicants"),
                         tags: data.tags || [],
                         description: data.description || ""
                     };
