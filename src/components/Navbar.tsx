@@ -8,6 +8,7 @@ const navLinks = [
     { name: "Research", href: "/research" },
     { name: "Enterprise", href: "/enterprise" },
     { name: "Experts", href: "/experts" },
+    { name: "Dashboard", href: "/dashboard" },
 ];
 
 export default function Navbar() {
