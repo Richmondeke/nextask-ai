@@ -5,7 +5,6 @@ import { MoveRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-    { name: "APEX", href: "/apex" },
     { name: "Research", href: "/research" },
     { name: "Enterprise", href: "/enterprise" },
     { name: "Experts", href: "/experts" },

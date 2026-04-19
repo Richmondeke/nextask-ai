@@ -9,7 +9,6 @@ const footerLinks = [
             { name: "Find work", href: "#" },
             { name: "Help center", href: "#" },
             { name: "Stories", href: "#" },
-            { name: "APEX", href: "#" },
         ],
     },
     {
