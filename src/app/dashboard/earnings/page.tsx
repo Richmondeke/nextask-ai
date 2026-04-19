@@ -9,7 +9,8 @@ import {
     Download,
     Calendar,
     CreditCard,
-    ChevronRight
+    ChevronRight,
+    TrendingUp
 } from 'lucide-react';
 
 export default function EarningsPage() {
@@ -21,71 +22,73 @@ export default function EarningsPage() {
     ];
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 pb-20">
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-xl font-bold tracking-tight">Earnings</h1>
+                    <h1 className="text-2xl font-bold tracking-tight text-zinc-900">Earnings</h1>
                     <p className="text-zinc-500 mt-2 text-sm">Manage your payouts, rewards, and transaction history.</p>
                 </div>
-                <button className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-white text-black font-semibold hover:bg-zinc-200 transition-colors">
+                <button className="px-6 py-2.5 rounded-lg bg-zinc-900 text-white text-sm font-bold hover:bg-zinc-800 transition-colors shadow-sm">
                     Withdraw Funds
                 </button>
             </div>
 
             {/* Balance Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="p-8 rounded-3xl bg-white text-black flex flex-col justify-between h-48 relative overflow-hidden">
+                <div className="p-8 rounded-2xl bg-white border border-zinc-200 flex flex-col justify-between h-48 relative overflow-hidden shadow-sm">
                     <div className="flex items-center justify-between relative z-10">
-                        <span className="text-sm font-semibold opacity-60">Available Balance</span>
-                        <DollarSign size={20} className="text-zinc-400" />
+                        <span className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Available Balance</span>
+                        <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                            <DollarSign size={18} />
+                        </div>
                     </div>
                     <div className="relative z-10">
-                        <h2 className="text-3xl font-bold tracking-tight">$2,451.00</h2>
-                        <p className="text-xs font-semibold text-green-600 mt-2 flex items-center gap-1">
-                            +15.5% vs last month <ArrowUpRight size={12} />
-                        </p>
+                        <h2 className="text-3xl font-black text-zinc-900 tracking-tight">$2,451.00</h2>
+                        <div className="flex items-center gap-2 mt-2">
+                            <div className="flex items-center gap-1 text-[10px] font-bold text-green-600 px-1.5 py-0.5 rounded bg-green-50 border border-green-100">
+                                <TrendingUp size={10} /> +15.5%
+                            </div>
+                            <span className="text-[10px] text-zinc-400 font-medium">vs last month</span>
+                        </div>
                     </div>
-                    <motion.div
-                        className="absolute -right-10 -bottom-10 w-40 h-40 bg-zinc-100 rounded-full"
-                    />
                 </div>
 
-                <div className="p-8 rounded-3xl bg-white/5 border border-white/10 flex flex-col justify-between h-48">
+                <div className="p-8 rounded-2xl bg-zinc-50 border border-zinc-200/50 flex flex-col justify-between h-48">
                     <div className="flex items-center justify-between">
-                        <span className="text-sm font-semibold text-zinc-500">Pending Payouts</span>
-                        <Calendar size={20} className="text-zinc-600" />
+                        <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Pending Payouts</span>
+                        <Calendar size={18} className="text-zinc-300" />
                     </div>
                     <div>
-                        <h2 className="text-3xl font-bold text-white">$600.00</h2>
-                        <p className="text-xs text-zinc-500 mt-2">Estimated Arrival: Apr 25</p>
+                        <h2 className="text-3xl font-black text-zinc-800 tracking-tight">$600.00</h2>
+                        <p className="text-[11px] text-zinc-400 font-medium mt-1">Estimated Arrival: Apr 25</p>
                     </div>
                 </div>
 
-                <div className="p-8 rounded-3xl bg-white/5 border border-white/10 flex flex-col justify-between h-48 group cursor-pointer hover:bg-white/10 transition-colors">
+                <div className="p-8 rounded-2xl bg-white border border-zinc-200 flex flex-col justify-between h-48 group cursor-pointer hover:bg-zinc-50 transition-all shadow-sm">
                     <div className="flex items-center justify-between">
-                        <span className="text-sm font-semibold text-zinc-500">Payout Method</span>
-                        <CreditCard size={20} className="text-zinc-600" />
+                        <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider">Payout Method</span>
+                        <CreditCard size={18} className="text-zinc-300" />
                     </div>
                     <div className="flex items-center justify-between">
                         <div>
-                            <h2 className="text-xl font-bold text-white">Bank Transfer</h2>
+                            <h2 className="text-lg font-bold text-zinc-900">Bank Transfer</h2>
                             <p className="text-xs text-zinc-500 mt-1">Ending in •••• 4410</p>
                         </div>
-                        <ChevronRight size={20} className="text-zinc-700 group-hover:text-white transition-colors" />
+                        <ChevronRight size={20} className="text-zinc-300 group-hover:text-zinc-600 transition-colors" />
                     </div>
                 </div>
             </div>
 
             {/* Transactions */}
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
+            <div className="space-y-6 pt-4">
+                <div className="flex items-center justify-between border-b border-zinc-100 pb-4">
                     <div className="flex items-center gap-3">
-                        <History size={20} className="text-blue-500" />
-                        <h2 className="text-xl font-bold">Transaction History</h2>
+                        <History size={20} className="text-zinc-900" />
+                        <h2 className="text-lg font-bold text-zinc-900">Transaction History</h2>
                     </div>
-                    <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-sm hover:text-white transition-colors">
-                        <Download size={16} /> Export CSV
+                    <button className="flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-200 text-xs font-bold text-zinc-600 hover:bg-zinc-50 transition-all">
+                        <Download size={14} /> Export CSV
                     </button>
                 </div>
 
@@ -96,27 +99,29 @@ export default function EarningsPage() {
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.05 }}
-                            className="flex items-center justify-between p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-white/20 transition-all group"
+                            className="flex items-center justify-between p-5 rounded-xl border border-zinc-100 bg-white hover:border-zinc-200 hover:shadow-sm transition-all group"
                         >
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center text-zinc-500">
-                                    <DollarSign size={20} />
+                                <div className="w-10 h-10 rounded-full bg-zinc-50 flex items-center justify-center text-zinc-400">
+                                    <DollarSign size={18} />
                                 </div>
-                                <div>
-                                    <h3 className="font-semibold">{tx.desc}</h3>
-                                    <div className="flex items-center gap-3 text-xs text-zinc-500 mt-1">
+                                <div className="space-y-1">
+                                    <h3 className="font-bold text-zinc-900 text-sm">{tx.desc}</h3>
+                                    <div className="flex items-center gap-3 text-[10px] text-zinc-400 font-medium tracking-wide">
                                         <span>{tx.id}</span>
-                                        <span>•</span>
+                                        <div className="w-1 h-1 rounded-full bg-zinc-200" />
                                         <span>{tx.date}</span>
                                     </div>
                                 </div>
                             </div>
                             <div className="flex items-center gap-6">
                                 <div className="text-right">
-                                    <div className="font-bold text-white">{tx.amount}</div>
-                                    <div className="text-[10px] text-green-500 font-bold uppercase tracking-widest mt-1">{tx.status}</div>
+                                    <div className="font-bold text-zinc-900 text-sm">{tx.amount}</div>
+                                    <div className="text-[9px] text-green-600 font-black uppercase tracking-widest mt-1">
+                                        {tx.status}
+                                    </div>
                                 </div>
-                                <ChevronRight size={18} className="text-zinc-700 group-hover:text-white transition-colors" />
+                                <ChevronRight size={16} className="text-zinc-200 group-hover:text-zinc-400 transition-colors" />
                             </div>
                         </motion.div>
                     ))}

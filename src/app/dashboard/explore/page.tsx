@@ -4,12 +4,13 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
     Search,
-    SlidersHorizontal,
     MapPin,
     DollarSign,
     Clock,
-    ChevronRight,
-    Filter
+    Filter,
+    ChevronDown,
+    Share2,
+    Users
 } from 'lucide-react';
 
 const jobs = [
@@ -20,8 +21,9 @@ const jobs = [
         location: 'San Francisco (Remote)',
         salary: '$180k - $250k',
         type: 'Full-time',
-        tags: ['PyTorch', 'Large Language Models', 'Optimization'],
-        posted: '2 days ago'
+        tags: ['PyTorch', 'LLMs'],
+        posted: '2 days ago',
+        isBestMatch: true
     },
     {
         id: 2,
@@ -30,8 +32,9 @@ const jobs = [
         location: 'New York (Hybrid)',
         salary: '$140k - $190k',
         type: 'Contract',
-        tags: ['React', 'Next.js', 'Typescript'],
-        posted: '5 hours ago'
+        tags: ['React', 'TS'],
+        posted: '5 hours ago',
+        isBestMatch: false
     },
     {
         id: 3,
@@ -40,18 +43,9 @@ const jobs = [
         location: 'Remote',
         salary: '$160k - $220k',
         type: 'Full-time',
-        tags: ['Kubernetes', 'AWS', 'TensorFlow'],
-        posted: '1 day ago'
-    },
-    {
-        id: 4,
-        title: 'Product Designer (Generative)',
-        company: 'Creaton',
-        location: 'San Francisco',
-        salary: '$150k - $210k',
-        type: 'Full-time',
-        tags: ['Product Design', 'UX', 'AI Art'],
-        posted: '3 days ago'
+        tags: ['AWS', 'K8s'],
+        posted: '1 day ago',
+        isBestMatch: false
     }
 ];
 
@@ -60,70 +54,96 @@ export default function ExplorePage() {
 
     return (
         <div className="space-y-8">
-            {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-xl font-bold tracking-tight">Explore Roles</h1>
-                    <p className="text-zinc-500 mt-2 text-sm">Find your next project curated for your expertise.</p>
+            {/* Header & Social Proof */}
+            <div className="space-y-4">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <h1 className="text-2xl font-bold tracking-tight text-zinc-900">Explore Roles</h1>
+                    <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-900 text-white text-sm font-bold hover:bg-zinc-800 transition-colors">
+                        <Share2 size={16} />
+                        Refer & earn
+                    </button>
                 </div>
-                <div className="flex items-center gap-3">
-                    <div className="relative group">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-blue-500 transition-colors" size={18} />
-                        <input
-                            type="text"
-                            placeholder="Search roles, skills..."
-                            className="bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
+                <div className="flex items-center gap-2 text-zinc-500 text-sm">
+                    <div className="flex -space-x-2">
+                        {[1, 2, 3].map((i) => (
+                            <div key={i} className="w-5 h-5 rounded-full border-2 border-white bg-zinc-200 flex items-center justify-center text-[8px] font-bold">
+                                {String.fromCharCode(64 + i)}
+                            </div>
+                        ))}
                     </div>
-                    <button className="p-2.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
-                        <SlidersHorizontal size={20} className="text-zinc-400" />
+                    <span>1,499 Nexttaskers work at these companies</span>
+                </div>
+            </div>
+
+            {/* Filter Bar */}
+            <div className="flex flex-wrap items-center gap-4 py-2">
+                <div className="flex-1 min-w-[300px] relative">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
+                    <input
+                        type="text"
+                        placeholder="Search for job titles, roles or keywords"
+                        className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-zinc-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm placeholder:text-zinc-400"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                </div>
+
+                <div className="flex items-center gap-3">
+                    <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-zinc-200 bg-white text-sm font-medium text-zinc-600 hover:bg-zinc-50 transition-colors">
+                        Best match
+                        <ChevronDown size={16} />
+                    </button>
+                    <button className="p-2.5 rounded-xl border border-zinc-200 bg-white text-zinc-500 hover:bg-zinc-50 transition-colors">
+                        <Filter size={20} />
                     </button>
                 </div>
             </div>
 
-            {/* Filters Bar */}
-            <div className="flex items-center gap-4 overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
-                <button className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium whitespace-nowrap">All Roles</button>
-                <button className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-zinc-400 hover:text-white transition-colors text-sm font-medium whitespace-nowrap">Engineering</button>
-                <button className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-zinc-400 hover:text-white transition-colors text-sm font-medium whitespace-nowrap">Research</button>
-                <button className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-zinc-400 hover:text-white transition-colors text-sm font-medium whitespace-nowrap">Product</button>
-                <button className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-zinc-400 hover:text-white transition-colors text-sm font-medium whitespace-nowrap">Design</button>
-            </div>
-
-            {/* Jobs List */}
-            <div className="space-y-4">
+            {/* Jobs Grid */}
+            <div className="grid grid-cols-1 gap-4">
                 {jobs.map((job, index) => (
                     <motion.div
                         key={job.id}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.05 }}
-                        className="group relative p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-blue-500/30 transition-all duration-300"
+                        className="p-6 rounded-2xl border border-zinc-200 bg-white hover:border-blue-500/30 hover:shadow-sm transition-all duration-300 group"
                     >
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                            <div className="flex items-start gap-5">
-                                <div className="w-14 h-14 rounded-xl bg-blue-600/10 flex items-center justify-center text-blue-500 font-bold text-xl shrink-0">
+                            <div className="flex items-start gap-4">
+                                <div className="w-12 h-12 rounded-xl bg-zinc-50 border border-zinc-100 flex items-center justify-center text-zinc-400 font-bold shrink-0">
                                     {job.company[0]}
                                 </div>
-                                <div className="space-y-2">
-                                    <h3 className="text-xl font-bold group-hover:text-blue-500 transition-colors">{job.title}</h3>
-                                    <div className="flex flex-wrap items-center gap-y-2 gap-x-4 text-sm text-zinc-500">
+                                <div className="space-y-1">
+                                    <div className="flex items-center gap-2">
+                                        <h3 className="text-lg font-bold text-zinc-900 group-hover:text-blue-600 transition-colors">
+                                            {job.title}
+                                        </h3>
+                                        {job.isBestMatch && (
+                                            <span className="px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 text-[10px] font-bold border border-blue-100">
+                                                1-click apply
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-zinc-500">
                                         <span className="flex items-center gap-1.5"><MapPin size={14} /> {job.location}</span>
-                                        <span className="flex items-center gap-1.5"><DollarSign size={14} /> {job.salary}</span>
+                                        <span className="flex items-center gap-1.5 text-zinc-900 font-medium">
+                                            $ {job.salary.replace('$', '')}
+                                        </span>
                                         <span className="flex items-center gap-1.5"><Clock size={14} /> {job.posted}</span>
                                     </div>
                                     <div className="flex flex-wrap gap-2 pt-2">
                                         {job.tags.map(tag => (
-                                            <span key={tag} className="px-2.5 py-1 rounded-md bg-white/5 text-zinc-400 text-xs border border-white/5">{tag}</span>
+                                            <span key={tag} className="px-2 py-0.5 rounded-md bg-zinc-50 text-zinc-500 text-[11px] font-medium border border-zinc-200/50">
+                                                {tag}
+                                            </span>
                                         ))}
                                     </div>
                                 </div>
                             </div>
                             <div className="flex items-center gap-3">
-                                <button className="flex-1 md:flex-none px-6 py-2.5 rounded-xl bg-white text-black font-semibold hover:bg-zinc-200 transition-colors text-sm">
-                                    Quick Apply
+                                <button className="px-6 py-2 rounded-lg border border-zinc-200 text-zinc-700 text-sm font-bold hover:bg-zinc-50 transition-colors">
+                                    Apply
                                 </button>
                             </div>
                         </div>
