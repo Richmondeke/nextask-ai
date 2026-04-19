@@ -10,7 +10,7 @@ import {
     Phone,
     MapPin,
     Globe,
-    Linkedin,
+    Link,
     Calendar,
     Briefcase,
     GraduationCap,
@@ -81,8 +81,8 @@ export default function UserDetailPage() {
                         <p className="text-lg text-zinc-500 font-medium">{user.headline || 'Professional'}</p>
                         <div className="flex items-center gap-4 mt-3">
                             <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${user.status === 'Vetted' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
-                                    user.status === 'Interviewing' ? 'bg-blue-50 text-blue-600 border-blue-100' :
-                                        'bg-amber-50 text-amber-600 border-amber-100'
+                                user.status === 'Interviewing' ? 'bg-blue-50 text-blue-600 border-blue-100' :
+                                    'bg-amber-50 text-amber-600 border-amber-100'
                                 }`}>
                                 {user.status || 'Applied'}
                             </span>
@@ -195,7 +195,7 @@ export default function UserDetailPage() {
                             </div>
                             <div className="flex items-center gap-4 group">
                                 <div className="w-10 h-10 rounded-2xl bg-zinc-50 flex items-center justify-center text-zinc-400 group-hover:bg-purple-50 group-hover:text-purple-600 transition-all">
-                                    <Linkedin size={18} />
+                                    <Link size={18} />
                                 </div>
                                 <div>
                                     <p className="text-[10px] uppercase font-black tracking-widest text-zinc-400">LinkedIn Profile</p>

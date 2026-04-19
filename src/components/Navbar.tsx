@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import Logo from "./ui/Logo";
 
 const navLinks = [
-    { name: "Research", href: "/research" },
+    { name: "Opportunities", href: "/opportunities" },
     { name: "Enterprise", href: "/enterprise" },
     { name: "Experts", href: "/experts" },
 ];

@@ -26,6 +26,7 @@ import Logo from '@/components/ui/Logo';
 import { db, auth as firebaseAuth } from '@/lib/firebase';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { onAuthStateChanged } from 'firebase/auth';
+import FadeIn from '@/components/FadeIn';
 
 const evaluationQuestions = [
     { title: 'Instruction Following', color: 'blue', response: 'A', q: 'How well did the model\'s response adhere to the prompt requirements?' },
@@ -737,233 +738,235 @@ export default function ApplicationAssessmentPage() {
     };
 
     return (
-        <div className="fixed inset-0 bg-white flex flex-col z-[100]">
-            {/* Top Navigation */}
-            <header className="h-16 border-b border-zinc-100 flex items-center justify-between px-8 shrink-0 bg-white/80 backdrop-blur-md">
-                <div className="flex items-center gap-6">
-                    <Link href="/dashboard" className="flex items-center gap-2.5 px-4 py-2 bg-white rounded-xl border border-zinc-200 text-zinc-900 text-[11px] font-black uppercase tracking-widest hover:bg-zinc-50 hover:border-zinc-300 transition-all shadow-sm">
-                        <ChevronLeft size={16} strokeWidth={3} />
-                        Go back
-                    </Link>
-                    <div className="flex items-center gap-2">
-                        <span className="text-zinc-300 text-xs font-bold">Dashboard</span>
-                        <ChevronRight size={12} className="text-zinc-300" strokeWidth={3} />
-                        <span className="text-zinc-500 text-xs font-bold">Applications</span>
-                        <ChevronRight size={12} className="text-zinc-300" strokeWidth={3} />
-                        <span className="text-zinc-900 text-xs font-bold">Expert Application</span>
-                    </div>
-                </div>
-                <div className="flex items-center gap-3">
-                    <button className="px-4 py-2 rounded-xl text-zinc-500 text-[10px] font-black uppercase tracking-widest hover:text-zinc-900 transition-all">
-                        FAQ
-                    </button>
-                    <button className="px-4 py-2 rounded-xl border border-zinc-200 text-zinc-900 text-[10px] font-black uppercase tracking-widest hover:bg-zinc-50 transition-all">
-                        Support
-                    </button>
-                    <div className="h-8 w-px bg-zinc-100 mx-2" />
-                    <button className="w-10 h-10 rounded-full border border-zinc-200 bg-zinc-50 flex items-center justify-center text-zinc-400">
-                        <Monitor size={18} />
-                    </button>
-                </div>
-            </header>
-
-            <div className="flex flex-1 overflow-hidden">
-                {/* Left Sidebar */}
-                <aside className="w-80 border-r border-zinc-100 p-8 flex flex-col shrink-0 overflow-y-auto bg-white custom-scrollbar">
-                    <div className="space-y-5 mb-10">
-                        <Logo />
-                        <h1 className="text-2xl font-bold text-zinc-900 leading-tight tracking-tight mt-6">Expert Assessment</h1>
-                        <div className="space-y-2.5 pt-2">
-                            <div className="flex justify-between items-end">
-                                <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">{currentStepIndex + 1} of {steps.length} steps</span>
-                                <span className="text-[13px] font-black text-blue-600">{progress}%</span>
-                            </div>
-                            <div className="h-2 w-full bg-zinc-100 rounded-full overflow-hidden">
-                                <motion.div
-                                    initial={{ width: 0 }}
-                                    animate={{ width: `${progress}%` }}
-                                    className="h-full bg-blue-600 rounded-full shadow-[0_0_12px_rgba(37,99,235,0.4)]"
-                                />
-                            </div>
+        <FadeIn>
+            <div className="fixed inset-0 bg-white flex flex-col z-[100]">
+                {/* Top Navigation */}
+                <header className="h-16 border-b border-zinc-100 flex items-center justify-between px-8 shrink-0 bg-white/80 backdrop-blur-md">
+                    <div className="flex items-center gap-6">
+                        <Link href="/dashboard" className="flex items-center gap-2.5 px-4 py-2 bg-white rounded-xl border border-zinc-200 text-zinc-900 text-[11px] font-black uppercase tracking-widest hover:bg-zinc-50 hover:border-zinc-300 transition-all shadow-sm">
+                            <ChevronLeft size={16} strokeWidth={3} />
+                            Go back
+                        </Link>
+                        <div className="flex items-center gap-2">
+                            <span className="text-zinc-300 text-xs font-bold">Dashboard</span>
+                            <ChevronRight size={12} className="text-zinc-300" strokeWidth={3} />
+                            <span className="text-zinc-500 text-xs font-bold">Applications</span>
+                            <ChevronRight size={12} className="text-zinc-300" strokeWidth={3} />
+                            <span className="text-zinc-900 text-xs font-bold">Expert Application</span>
                         </div>
                     </div>
+                    <div className="flex items-center gap-3">
+                        <button className="px-4 py-2 rounded-xl text-zinc-500 text-[10px] font-black uppercase tracking-widest hover:text-zinc-900 transition-all">
+                            FAQ
+                        </button>
+                        <button className="px-4 py-2 rounded-xl border border-zinc-200 text-zinc-900 text-[10px] font-black uppercase tracking-widest hover:bg-zinc-50 transition-all">
+                            Support
+                        </button>
+                        <div className="h-8 w-px bg-zinc-100 mx-2" />
+                        <button className="w-10 h-10 rounded-full border border-zinc-200 bg-zinc-50 flex items-center justify-center text-zinc-400">
+                            <Monitor size={18} />
+                        </button>
+                    </div>
+                </header>
 
-                    <nav className="space-y-2">
-                        {steps.map((step, idx) => {
-                            const isCompleted = idx < currentStepIndex;
-                            const isActive = idx === currentStepIndex;
+                <div className="flex flex-1 overflow-hidden">
+                    {/* Left Sidebar */}
+                    <aside className="w-80 border-r border-zinc-100 p-8 flex flex-col shrink-0 overflow-y-auto bg-white custom-scrollbar">
+                        <div className="space-y-5 mb-10">
+                            <Logo />
+                            <h1 className="text-2xl font-bold text-zinc-900 leading-tight tracking-tight mt-6">Expert Assessment</h1>
+                            <div className="space-y-2.5 pt-2">
+                                <div className="flex justify-between items-end">
+                                    <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">{currentStepIndex + 1} of {steps.length} steps</span>
+                                    <span className="text-[13px] font-black text-blue-600">{progress}%</span>
+                                </div>
+                                <div className="h-2 w-full bg-zinc-100 rounded-full overflow-hidden">
+                                    <motion.div
+                                        initial={{ width: 0 }}
+                                        animate={{ width: `${progress}%` }}
+                                        className="h-full bg-blue-600 rounded-full shadow-[0_0_12px_rgba(37,99,235,0.4)]"
+                                    />
+                                </div>
+                            </div>
+                        </div>
 
-                            return (
-                                <button
-                                    key={step.id}
-                                    onClick={() => setCurrentStepIndex(idx)}
-                                    className={`w-full flex items-center justify-between px-4 py-4 rounded-2xl border transition-all duration-300 text-left group ${isActive
-                                        ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-100 scale-[1.02]'
-                                        : isCompleted
-                                            ? 'bg-white border-zinc-100 text-zinc-900 hover:border-zinc-200'
-                                            : 'border-transparent text-zinc-400 hover:bg-zinc-50'
-                                        }`}
-                                >
-                                    <div className="flex items-center gap-4">
-                                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all ${isActive
-                                            ? 'bg-blue-500'
+                        <nav className="space-y-2">
+                            {steps.map((step, idx) => {
+                                const isCompleted = idx < currentStepIndex;
+                                const isActive = idx === currentStepIndex;
+
+                                return (
+                                    <button
+                                        key={step.id}
+                                        onClick={() => setCurrentStepIndex(idx)}
+                                        className={`w-full flex items-center justify-between px-4 py-4 rounded-2xl border transition-all duration-300 text-left group ${isActive
+                                            ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-100 scale-[1.02]'
                                             : isCompleted
-                                                ? 'bg-blue-50 text-blue-600'
-                                                : 'bg-zinc-100 text-zinc-400 group-hover:bg-zinc-200 group-hover:text-zinc-600'}`}>
-                                            <step.icon size={18} strokeWidth={isActive ? 2.5 : 2} />
-                                        </div>
-                                        <div className="flex flex-col">
-                                            <span className={`text-[13px] font-black tracking-tight ${isActive ? 'text-white' : 'text-zinc-900'}`}>
-                                                {step.label}
-                                            </span>
-                                            {step.badge && (
-                                                <span className={`text-[8px] font-black uppercase tracking-widest mt-0.5 ${isActive ? 'text-blue-100' : 'text-zinc-400'}`}>
-                                                    {step.badge} PHASE
+                                                ? 'bg-white border-zinc-100 text-zinc-900 hover:border-zinc-200'
+                                                : 'border-transparent text-zinc-400 hover:bg-zinc-50'
+                                            }`}
+                                    >
+                                        <div className="flex items-center gap-4">
+                                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all ${isActive
+                                                ? 'bg-blue-500'
+                                                : isCompleted
+                                                    ? 'bg-blue-50 text-blue-600'
+                                                    : 'bg-zinc-100 text-zinc-400 group-hover:bg-zinc-200 group-hover:text-zinc-600'}`}>
+                                                <step.icon size={18} strokeWidth={isActive ? 2.5 : 2} />
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <span className={`text-[13px] font-black tracking-tight ${isActive ? 'text-white' : 'text-zinc-900'}`}>
+                                                    {step.label}
                                                 </span>
-                                            )}
+                                                {step.badge && (
+                                                    <span className={`text-[8px] font-black uppercase tracking-widest mt-0.5 ${isActive ? 'text-blue-100' : 'text-zinc-400'}`}>
+                                                        {step.badge} PHASE
+                                                    </span>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                    {isCompleted ? (
-                                        <CheckCircle2 size={16} className={`fill-current ${isActive ? 'text-white' : 'text-blue-600'}`} strokeWidth={3} />
-                                    ) : (
-                                        <div className={`w-2 h-2 rounded-full transition-all ${isActive ? 'bg-white' : 'bg-zinc-200 group-hover:bg-zinc-300'}`} />
-                                    )}
-                                </button>
-                            );
-                        })}
-                    </nav>
+                                        {isCompleted ? (
+                                            <CheckCircle2 size={16} className={`fill-current ${isActive ? 'text-white' : 'text-blue-600'}`} strokeWidth={3} />
+                                        ) : (
+                                            <div className={`w-2 h-2 rounded-full transition-all ${isActive ? 'bg-white' : 'bg-zinc-200 group-hover:bg-zinc-300'}`} />
+                                        )}
+                                    </button>
+                                );
+                            })}
+                        </nav>
 
-                    <div className="mt-auto pt-10">
-                        <div className="p-6 rounded-3xl bg-zinc-50 border border-zinc-100 space-y-4">
-                            <div className="w-10 h-10 rounded-xl bg-white border border-zinc-200 flex items-center justify-center text-zinc-400">
-                                <HelpCircle size={20} />
+                        <div className="mt-auto pt-10">
+                            <div className="p-6 rounded-3xl bg-zinc-50 border border-zinc-100 space-y-4">
+                                <div className="w-10 h-10 rounded-xl bg-white border border-zinc-200 flex items-center justify-center text-zinc-400">
+                                    <HelpCircle size={20} />
+                                </div>
+                                <div>
+                                    <h4 className="text-xs font-bold text-zinc-900">Need assistance?</h4>
+                                    <p className="text-[11px] text-zinc-500 mt-1 font-medium leading-relaxed">Our recruitment team is available 24/7 to help you with the process.</p>
+                                </div>
+                                <button className="w-full py-2.5 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-[10px] font-black uppercase tracking-widest hover:bg-zinc-100 transition-all">
+                                    Chat with Support
+                                </button>
                             </div>
-                            <div>
-                                <h4 className="text-xs font-bold text-zinc-900">Need assistance?</h4>
-                                <p className="text-[11px] text-zinc-500 mt-1 font-medium leading-relaxed">Our recruitment team is available 24/7 to help you with the process.</p>
+                        </div>
+                    </aside>
+
+                    {/* Main Content Area */}
+                    <main className="flex-1 overflow-y-auto bg-white p-12 custom-scrollbar">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={currentStep.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.3, ease: 'easeOut' }}
+                                className="min-h-full"
+                            >
+                                {renderStepContent()}
+                            </motion.div>
+                        </AnimatePresence>
+                    </main>
+                </div>
+
+                {/* Footer Navigation */}
+                <footer className="h-24 border-t border-zinc-100 bg-white flex flex-col shrink-0 px-10 relative z-50">
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-zinc-50">
+                        <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${progress}%` }}
+                            className="h-full bg-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.4)]"
+                        />
+                    </div>
+
+                    <div className="flex-1 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={handleBack}
+                                disabled={currentStepIndex === 0}
+                                className={`px-6 py-3 rounded-2xl border transition-all font-black text-[11px] uppercase tracking-widest flex items-center gap-2 ${currentStepIndex === 0
+                                    ? 'border-zinc-100 text-zinc-300 cursor-not-allowed'
+                                    : 'border-zinc-200 text-zinc-900 hover:bg-zinc-50'
+                                    }`}
+                            >
+                                <ChevronLeft size={16} strokeWidth={3} />
+                                Back
+                            </button>
+                            <span className="text-[10px] font-black text-zinc-300 uppercase tracking-widest px-4 whitespace-nowrap">
+                                {isEvaluationStep
+                                    ? `Question ${currentQuestionIndex + 1} of ${totalEvaluationQuestions}`
+                                    : `Step ${currentStepIndex + 1} of ${steps.length}`
+                                }
+                            </span>
+                        </div>
+
+                        <div className="flex items-center gap-4">
+                            <div className="flex items-center bg-zinc-50 rounded-2xl p-1 shadow-inner border border-zinc-100 max-w-[400px] overflow-x-auto no-scrollbar">
+                                {isEvaluationStep ? (
+                                    Array.from({ length: totalEvaluationQuestions }).map((_, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => setCurrentQuestionIndex(idx)}
+                                            className={`min-w-[32px] h-8 rounded-lg flex items-center justify-center text-[10px] font-black transition-all mx-0.5 ${idx === currentQuestionIndex
+                                                ? 'bg-blue-600 text-white shadow-lg'
+                                                : idx < currentQuestionIndex
+                                                    ? 'text-blue-600 hover:bg-white'
+                                                    : 'text-zinc-400 hover:bg-white'
+                                                }`}
+                                        >
+                                            {idx + 1}
+                                        </button>
+                                    ))
+                                ) : (
+                                    steps.map((_, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => setCurrentStepIndex(idx)}
+                                            className={`w-10 h-10 rounded-xl flex items-center justify-center text-[11px] font-black transition-all ${idx === currentStepIndex
+                                                ? 'bg-blue-600 text-white shadow-lg'
+                                                : idx < currentStepIndex
+                                                    ? 'text-blue-600 hover:bg-white'
+                                                    : 'text-zinc-400 hover:bg-white'
+                                                }`}
+                                        >
+                                            {idx + 1}
+                                        </button>
+                                    ))
+                                )}
                             </div>
-                            <button className="w-full py-2.5 rounded-xl bg-white border border-zinc-200 text-zinc-900 text-[10px] font-black uppercase tracking-widest hover:bg-zinc-100 transition-all">
-                                Chat with Support
+                            <div className="h-10 w-px bg-zinc-100" />
+                            <button className="w-12 h-12 rounded-2xl border border-zinc-100 flex items-center justify-center text-zinc-400 bg-zinc-50 hover:bg-white transition-all">
+                                <Split size={18} strokeWidth={2.5} />
                             </button>
                         </div>
-                    </div>
-                </aside>
 
-                {/* Main Content Area */}
-                <main className="flex-1 overflow-y-auto bg-white p-12 custom-scrollbar">
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={currentStep.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            transition={{ duration: 0.3, ease: 'easeOut' }}
-                            className="min-h-full"
-                        >
-                            {renderStepContent()}
-                        </motion.div>
-                    </AnimatePresence>
-                </main>
-            </div>
-
-            {/* Footer Navigation */}
-            <footer className="h-24 border-t border-zinc-100 bg-white flex flex-col shrink-0 px-10 relative z-50">
-                <div className="absolute top-0 left-0 right-0 h-1 bg-zinc-50">
-                    <motion.div
-                        initial={{ width: 0 }}
-                        animate={{ width: `${progress}%` }}
-                        className="h-full bg-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.4)]"
-                    />
-                </div>
-
-                <div className="flex-1 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
                         <button
-                            onClick={handleBack}
-                            disabled={currentStepIndex === 0}
-                            className={`px-6 py-3 rounded-2xl border transition-all font-black text-[11px] uppercase tracking-widest flex items-center gap-2 ${currentStepIndex === 0
-                                ? 'border-zinc-100 text-zinc-300 cursor-not-allowed'
-                                : 'border-zinc-200 text-zinc-900 hover:bg-zinc-50'
-                                }`}
+                            onClick={handleNext}
+                            className="px-8 py-3 rounded-2xl bg-blue-600 text-white text-[11px] font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 flex items-center gap-2 group"
                         >
-                            <ChevronLeft size={16} strokeWidth={3} />
-                            Back
-                        </button>
-                        <span className="text-[10px] font-black text-zinc-300 uppercase tracking-widest px-4 whitespace-nowrap">
-                            {isEvaluationStep
-                                ? `Question ${currentQuestionIndex + 1} of ${totalEvaluationQuestions}`
-                                : `Step ${currentStepIndex + 1} of ${steps.length}`
-                            }
-                        </span>
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                        <div className="flex items-center bg-zinc-50 rounded-2xl p-1 shadow-inner border border-zinc-100 max-w-[400px] overflow-x-auto no-scrollbar">
-                            {isEvaluationStep ? (
-                                Array.from({ length: totalEvaluationQuestions }).map((_, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => setCurrentQuestionIndex(idx)}
-                                        className={`min-w-[32px] h-8 rounded-lg flex items-center justify-center text-[10px] font-black transition-all mx-0.5 ${idx === currentQuestionIndex
-                                            ? 'bg-blue-600 text-white shadow-lg'
-                                            : idx < currentQuestionIndex
-                                                ? 'text-blue-600 hover:bg-white'
-                                                : 'text-zinc-400 hover:bg-white'
-                                            }`}
-                                    >
-                                        {idx + 1}
-                                    </button>
-                                ))
-                            ) : (
-                                steps.map((_, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => setCurrentStepIndex(idx)}
-                                        className={`w-10 h-10 rounded-xl flex items-center justify-center text-[11px] font-black transition-all ${idx === currentStepIndex
-                                            ? 'bg-blue-600 text-white shadow-lg'
-                                            : idx < currentStepIndex
-                                                ? 'text-blue-600 hover:bg-white'
-                                                : 'text-zinc-400 hover:bg-white'
-                                            }`}
-                                    >
-                                        {idx + 1}
-                                    </button>
-                                ))
-                            )}
-                        </div>
-                        <div className="h-10 w-px bg-zinc-100" />
-                        <button className="w-12 h-12 rounded-2xl border border-zinc-100 flex items-center justify-center text-zinc-400 bg-zinc-50 hover:bg-white transition-all">
-                            <Split size={18} strokeWidth={2.5} />
+                            Next
+                            <ChevronRight size={16} strokeWidth={3} className="group-hover:translate-x-1 transition-transform" />
                         </button>
                     </div>
+                </footer>
 
-                    <button
-                        onClick={handleNext}
-                        className="px-8 py-3 rounded-2xl bg-blue-600 text-white text-[11px] font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 flex items-center gap-2 group"
-                    >
-                        Next
-                        <ChevronRight size={16} strokeWidth={3} className="group-hover:translate-x-1 transition-transform" />
-                    </button>
-                </div>
-            </footer>
-
-            <style jsx global>{`
-                    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
-                    
-                    .custom-scrollbar::-webkit-scrollbar {
-                        width: 5px;
-                    }
-                    .custom-scrollbar::-webkit-scrollbar-track {
-                        background: transparent;
-                    }
-                    .custom-scrollbar::-webkit-scrollbar-thumb {
-                        background: #f4f4f5;
-                        border-radius: 10px;
-                    }
-                    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                        background: #e4e4e7;
-                    }
-                `}</style>
-        </div>
+                <style jsx global>{`
+                        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+                        
+                        .custom-scrollbar::-webkit-scrollbar {
+                            width: 5px;
+                        }
+                        .custom-scrollbar::-webkit-scrollbar-track {
+                            background: transparent;
+                        }
+                        .custom-scrollbar::-webkit-scrollbar-thumb {
+                            background: #f4f4f5;
+                            border-radius: 10px;
+                        }
+                        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                            background: #e4e4e7;
+                        }
+                    `}</style>
+            </div>
+        </FadeIn>
     );
 }

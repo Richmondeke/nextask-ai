@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Minus } from 'lucide-react';
@@ -10,10 +12,6 @@ const faqs = [
     {
         question: "How do I get paid?",
         answer: "Nexttask supports multiple payout methods including direct bank transfers across 15+ African countries, digital wallets, and stablecoins. Payments are made either weekly or monthly depending on the project."
-    },
-    {
-        question: "What is the APEX Program?",
-        answer: "APEX is our elite tier for the top 5% of professionals on the platform. APEX members get access to high-priority frontier research roles, specialized training, and higher base pay rates."
     },
     {
         question: "Is this full-time or part-time?",

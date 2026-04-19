@@ -1,145 +1,226 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Globe, Clock, Zap, Star, LayoutGrid, Cpu } from "lucide-react";
-import Jobs from "@/components/Jobs";
+import React from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import FadeIn from "@/components/FadeIn";
+import {
+    MoveRight,
+    Zap,
+    Heart,
+    MapPin,
+    Shield,
+    Coffee,
+    Clock,
+    Smartphone,
+    Layers,
+    Play,
+    CheckCircle2
+} from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 
-const perks = [
-    {
-        title: "Work Remotely",
-        description: "Join the world's leading AI teams from anywhere on Earth. Flexibility is built into our DNA.",
-        icon: Globe,
-    },
-    {
-        title: "Flexible Hours",
-        description: "Choose your own schedule. Whether you have 10 or 40 hours, there's a place for your expertise.",
-        icon: Clock,
-    },
-    {
-        title: "Top-Tier Pay",
-        description: "Get paid what you're worth. Our experts earn industry-leading rates across all specialized domains.",
-        icon: Zap,
-    },
+const benefits = [
+    { icon: <Zap className="w-6 h-6" />, title: "Equity", desc: "Generous equity grant" },
+    { icon: <Coffee className="w-6 h-6" />, title: "Meals", desc: "A monthly stipend for food" },
+    { icon: <Heart className="w-6 h-6" />, title: "Wellness", desc: "Monthly wellness stipend" },
+    { icon: <MapPin className="w-6 h-6" />, title: "Proximity bonus", desc: "Housing support near office" },
+    { icon: <Shield className="w-6 h-6" />, title: "Insurance", desc: "Premium health coverage" },
+    { icon: <Smartphone className="w-6 h-6" />, title: "Relocation", desc: "Relocation assistance" },
+    { icon: <Clock className="w-6 h-6" />, title: "Time off", desc: "Unlimited paid vacation" },
+    { icon: <Layers className="w-6 h-6" />, title: "401k", desc: "With employer match" },
+    { icon: <CheckCircle2 className="w-6 h-6" />, title: "Parental leave", desc: "For all new parents" },
 ];
+
+const openRoles = {
+    engineering: [
+        { title: "Security Engineer", location: "San Francisco", type: "Full time", salary: "$130K - $500K" },
+        { title: "Infrastructure Engineer", location: "San Francisco", type: "Full time", salary: "$130K - $500K" },
+        { title: "Machine Learning Engineer", location: "San Francisco", type: "Full time", salary: "$130K - $500K" },
+    ],
+    operations: [
+        { title: "People Ops Manager", location: "San Francisco", type: "Full time", salary: "$140K - $160K" },
+        { title: "Strategic Project Lead", location: "San Francisco", type: "Full time", salary: "$120K - $200K" },
+    ]
+};
 
 export default function ExpertsPage() {
     return (
-        <main className="min-h-screen pt-32 pb-20">
-            <div className="max-w-7xl mx-auto px-6">
-                {/* Hero Section */}
-                <div className="flex flex-col md:flex-row items-center gap-16 mb-40">
-                    <div className="flex-1">
-                        <motion.h1
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="text-5xl md:text-7xl font-bold tracking-tight mb-8 leading-tight"
+        <main className="min-h-screen bg-white">
+            <Navbar />
+
+            <FadeIn>
+                {/* Hero */}
+                <section className="pt-32 pb-20 px-6 text-center">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-xs font-bold mb-6">
+                            <span>🚀 Join the fastest-growing company</span>
+                        </div>
+                        <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8">
+                            Work at Nexttask: <br />Build the Future of AI
+                        </h1>
+                        <Link
+                            href="#open-roles"
+                            className="inline-block bg-blue-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-200"
                         >
-                            Work on the <br />
-                            <span className="text-primary italic">leading edge.</span>
-                        </motion.h1>
-                        <motion.p
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.5, delay: 0.1 }}
-                            className="text-xl text-secondary mb-10 max-w-xl leading-relaxed"
-                        >
-                            Nexttask connects the world's most talented developers and researchers
-                            with high-impact AI opportunities. Join thousands of experts building
-                            the future of intelligence.
-                        </motion.p>
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2 }}
-                            className="flex flex-wrap gap-4"
-                        >
-                            <button className="bg-primary text-white scale-110 px-8 py-4 rounded-full font-bold hover:bg-primary/90 transition-all shadow-xl shadow-primary/20">
-                                Apply to join
-                            </button>
-                            <div className="flex items-center gap-3 px-6 py-4 rounded-full border border-border bg-muted/30">
-                                <div className="flex -space-x-2">
-                                    {[1, 2, 3].map((i) => (
-                                        <div key={i} className="w-8 h-8 rounded-full border-2 border-background bg-muted overflow-hidden">
-                                            <img
-                                                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i + 10}`}
-                                                alt="User"
-                                                className="w-full h-full object-cover"
-                                            />
-                                        </div>
+                            View open roles
+                        </Link>
+
+                        <div className="mt-20 rounded-[32px] overflow-hidden bg-zinc-100 aspect-video relative group border-8 border-white shadow-2xl">
+                            <Image
+                                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop"
+                                alt="Team working"
+                                fill
+                                className="object-cover"
+                            />
+                            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                                <button className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+                                    <Play className="w-8 h-8 text-blue-600 fill-blue-600 ml-1" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* About Us */}
+                <section className="py-24 px-6 bg-zinc-50/50">
+                    <div className="max-w-7xl mx-auto">
+                        <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-4">About us</h2>
+                        <h3 className="text-3xl md:text-4xl font-bold mb-12 max-w-3xl">
+                            We connect people with the leading AI labs and enterprises to provide the human expertise essential to AI development.
+                        </h3>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div className="bg-white p-8 rounded-[32px] border border-zinc-100 shadow-sm">
+                                <h4 className="text-3xl font-bold mb-2">$10 billion valuation</h4>
+                                <p className="text-zinc-500">We are a profitable Series C company</p>
+                            </div>
+                            <div className="bg-white p-8 rounded-[32px] border border-zinc-100 shadow-sm">
+                                <h4 className="text-3xl font-bold mb-2">Collaboration</h4>
+                                <p className="text-zinc-500">We work in person from our HQ</p>
+                            </div>
+                            <div className="bg-white p-8 rounded-[32px] border border-zinc-100 shadow-sm">
+                                <h4 className="text-3xl font-bold mb-2">Frontier of AI</h4>
+                                <p className="text-zinc-500">Work directly with leading AI researchers</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Testimonials */}
+                <section className="py-24 px-6 overflow-hidden">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="flex gap-6 overflow-x-auto pb-8 snap-x no-scrollbar">
+                            {[
+                                { name: "Kailash", role: "Product Designer", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop" },
+                                { name: "Abby", role: "ML Engineer", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop" },
+                                { name: "Ayushi", role: "Ops Lead", img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop" },
+                            ].map((person) => (
+                                <div key={person.name} className="flex-shrink-0 w-[350px] aspect-[4/5] bg-zinc-100 rounded-[32px] relative overflow-hidden snap-center group">
+                                    <Image src={person.img} alt={person.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                    <div className="absolute bottom-6 left-6 text-white">
+                                        <p className="font-bold text-xl">{person.name}</p>
+                                        <p className="text-white/80 text-sm">{person.role}</p>
+                                    </div>
+                                    <button className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <Play className="w-6 h-6 text-white fill-white ml-1" />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* Benefits */}
+                <section className="py-24 px-6 bg-zinc-50/50">
+                    <div className="max-w-7xl mx-auto">
+                        <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-4">Benefits</h2>
+                        <p className="text-zinc-600 mb-12 max-w-2xl">
+                            Nexttask is built for people who thrive in high-velocity environments. We welcome builders who want to grow in their career faster than anywhere else.
+                        </p>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            {benefits.map((benefit) => (
+                                <div key={benefit.title} className="bg-white p-8 rounded-[32px] border border-zinc-100 shadow-sm flex items-start gap-4">
+                                    <div className="p-3 bg-zinc-50 rounded-2xl text-blue-600">
+                                        {benefit.icon}
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold mb-1">{benefit.title}</h4>
+                                        <p className="text-sm text-zinc-500">{benefit.desc}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* Open Roles */}
+                <section id="open-roles" className="py-24 px-6 bg-white">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+                            <div className="md:col-span-1">
+                                <h2 className="text-3xl font-bold mb-4">Open Roles</h2>
+                                <p className="text-zinc-600 mb-8">We&apos;re looking for exceptional people to join our growing team.</p>
+                                <div className="space-y-4">
+                                    {["All", "Engineering", "Marketing", "Operations"].map(tag => (
+                                        <button key={tag} className="block text-sm font-bold text-zinc-400 hover:text-blue-600 transition-colors">
+                                            {tag}
+                                        </button>
                                     ))}
                                 </div>
-                                <span className="text-sm font-medium">Joined by 10k+ experts</span>
                             </div>
-                        </motion.div>
-                    </div>
-
-                    <div className="flex-1 relative">
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.8 }}
-                            className="relative z-10 p-8 rounded-[48px] bg-gradient-to-br from-muted/50 to-background border border-border shadow-2xl"
-                        >
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="p-6 rounded-3xl bg-background border border-border flex flex-col items-center justify-center text-center">
-                                    <Star className="w-8 h-8 text-yellow-500 mb-3" />
-                                    <span className="text-3xl font-bold">4.9/5</span>
-                                    <span className="text-xs text-secondary uppercase font-bold tracking-wider">Rating</span>
-                                </div>
-                                <div className="p-6 rounded-3xl bg-background border border-border flex flex-col items-center justify-center text-center">
-                                    <Cpu className="w-8 h-8 text-primary mb-3" />
-                                    <span className="text-3xl font-bold">500+</span>
-                                    <span className="text-xs text-secondary uppercase font-bold tracking-wider">AI Models</span>
-                                </div>
-                                <div className="p-6 rounded-3xl bg-background border border-border flex flex-col items-center justify-center text-center col-span-2">
-                                    <LayoutGrid className="w-8 h-8 text-blue-500 mb-3" />
-                                    <span className="text-2xl font-bold">$10M+</span>
-                                    <span className="text-xs text-secondary uppercase font-bold tracking-wider">Total Payouts</span>
+                            <div className="md:col-span-3">
+                                <div className="space-y-12">
+                                    <div>
+                                        <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-6 border-b border-zinc-100 pb-2">
+                                            Engineering ({openRoles.engineering.length} roles)
+                                        </h3>
+                                        <div className="divide-y divide-zinc-50">
+                                            {openRoles.engineering.map(role => (
+                                                <div key={role.title} className="py-6 flex flex-col sm:flex-row sm:items-center justify-between group cursor-pointer">
+                                                    <div>
+                                                        <h4 className="font-bold text-lg group-hover:text-blue-600 transition-colors">{role.title}</h4>
+                                                        <p className="text-zinc-500 text-sm font-medium">
+                                                            {role.location} · {role.type} · {role.salary}
+                                                        </p>
+                                                    </div>
+                                                    <div className="mt-4 sm:mt-0 text-zinc-400 group-hover:text-blue-600 transition-colors">
+                                                        <MoveRight className="w-5 h-5" />
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-6 border-b border-zinc-100 pb-2">
+                                            Operations ({openRoles.operations.length} roles)
+                                        </h3>
+                                        <div className="divide-y divide-zinc-50">
+                                            {openRoles.operations.map(role => (
+                                                <div key={role.title} className="py-6 flex flex-col sm:flex-row sm:items-center justify-between group cursor-pointer">
+                                                    <div>
+                                                        <h4 className="font-bold text-lg group-hover:text-blue-600 transition-colors">{role.title}</h4>
+                                                        <p className="text-zinc-500 text-sm font-medium">
+                                                            {role.location} · {role.type} · {role.salary}
+                                                        </p>
+                                                    </div>
+                                                    <div className="mt-4 sm:mt-0 text-zinc-400 group-hover:text-blue-600 transition-colors">
+                                                        <MoveRight className="w-5 h-5" />
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </motion.div>
-                        {/* Backdrop glow */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-primary/20 blur-[120px] -z-10 rounded-full" />
-                    </div>
-                </div>
-
-                {/* Benefits Section */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-40">
-                    {perks.map((perk, index) => (
-                        <motion.div
-                            key={perk.title}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className="text-center md:text-left"
-                        >
-                            <div className="w-16 h-16 bg-muted rounded-2xl flex items-center justify-center mb-8 mx-auto md:mx-0">
-                                <perk.icon className="w-8 h-8 text-primary" />
-                            </div>
-                            <h3 className="text-2xl font-bold mb-4">{perk.title}</h3>
-                            <p className="text-secondary leading-relaxed">
-                                {perk.description}
-                            </p>
-                        </motion.div>
-                    ))}
-                </div>
-
-                {/* Reusing Jobs Component for current roles */}
-                <div className="mb-40">
-                    <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-8">
-                        <div>
-                            <h2 className="text-4xl md:text-5xl font-bold mb-4">Latest AI Roles</h2>
-                            <p className="text-secondary italic">Updated every hour. Apply directly with your profile.</p>
                         </div>
-                        <button className="text-primary font-bold flex items-center gap-2 hover:gap-3 transition-all">
-                            Browse all roles <Zap className="w-4 h-4 fill-current" />
-                        </button>
                     </div>
-                    <Jobs />
-                </div>
-            </div>
+                </section>
+            </FadeIn>
+
+            <Footer />
         </main>
     );
 }

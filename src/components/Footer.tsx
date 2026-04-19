@@ -7,17 +7,17 @@ const footerLinks = [
     {
         title: "Platform",
         links: [
-            { name: "Find work", href: "#" },
-            { name: "Help center", href: "#" },
-            { name: "Stories", href: "#" },
+            { name: "Find work", href: "/opportunities" },
+            { name: "Help center", href: "/support" },
+            { name: "Stories", href: "/stories" },
         ],
     },
     {
         title: "Company",
         links: [
-            { name: "Careers", href: "#" },
-            { name: "Blog", href: "#" },
-            { name: "Security", href: "#" },
+            { name: "Careers", href: "/careers" },
+            { name: "Blog", href: "/blog" },
+            { name: "Security", href: "/security" },
         ],
     },
     {
@@ -67,9 +67,9 @@ export default function Footer() {
                         © {new Date().getFullYear()} Nexttask AI. All rights reserved.
                     </p>
                     <div className="flex items-center gap-6">
-                        <Link href="#" className="text-xs text-secondary hover:text-foreground">Terms</Link>
-                        <Link href="#" className="text-xs text-secondary hover:text-foreground">Privacy</Link>
-                        <Link href="#" className="text-xs text-secondary hover:text-foreground">Cookies</Link>
+                        <Link href="/legal/terms" className="text-xs text-secondary hover:text-foreground">Terms</Link>
+                        <Link href="/legal/privacy" className="text-xs text-secondary hover:text-foreground">Privacy</Link>
+                        <Link href="/legal/cookies" className="text-xs text-secondary hover:text-foreground">Cookies</Link>
                     </div>
                 </div>
             </div>

@@ -10,44 +10,70 @@ import {
     ChevronRight,
     Search,
     Loader2,
+    Briefcase,
+    Clock,
+    DollarSign,
+    Zap
 } from 'lucide-react';
 import Link from 'next/link';
 import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { doc, getDoc, collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import PhoneVerificationModal from '@/components/PhoneVerificationModal';
+import OnboardingTour from '@/components/OnboardingTour';
+import FadeIn from '@/components/FadeIn';
+
+const MOCK_STATS = [
+    { label: 'Active Applications', value: '4', change: '+2', icon: Briefcase, color: 'text-blue-600', bg: 'bg-blue-50' },
+    { label: 'Pending Reviews', value: '2', change: '0', icon: Clock, color: 'text-orange-600', bg: 'bg-orange-50' },
+    { label: 'Total Earnings', value: '$2,450', change: '+$450', icon: DollarSign, color: 'text-green-600', bg: 'bg-green-50' },
+    { label: 'Opportunities', value: '156', change: '+12', icon: Zap, color: 'text-purple-600', bg: 'bg-purple-50' },
+];
 
 export default function DashboardPage() {
-    const [activeTab, setActiveTab] = useState('Applications');
+    const [applications, setApplications] = useState<any[]>([]);
     const [user, setUser] = useState<any>(null);
     const [profile, setProfile] = useState<any>(null);
-    const [applicationCount, setApplicationCount] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
     const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false);
 
-    const tabs = ['Contracts', 'Offers', 'Applications', 'Assessments', 'Saved'];
-
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                setUser(user);
-                const profileDoc = await getDoc(doc(db, 'profiles', user.uid));
-                if (profileDoc.exists()) {
-                    setProfile(profileDoc.data());
+        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+            if (currentUser) {
+                setUser(currentUser);
+                try {
+                    // Fetch Profile
+                    const profileDoc = await getDoc(doc(db, 'profiles', currentUser.uid));
+                    if (profileDoc.exists()) {
+                        setProfile(profileDoc.data());
+                    }
+
+                    // Fetch Applications
+                    const q = query(
+                        collection(db, 'applications'),
+                        where('userId', '==', currentUser.uid),
+                        orderBy('createdAt', 'desc')
+                    );
+                    const querySnapshot = await getDocs(q);
+                    const fetchedApps = querySnapshot.docs.map(doc => ({
+                        id: doc.id,
+                        ...doc.data()
+                    }));
+                    setApplications(fetchedApps);
+                } catch (error) {
+                    console.error("Error fetching dashboard data:", error);
+                } finally {
+                    setLoading(false);
                 }
-                const submissionsRef = collection(db, 'submissions');
-                const snapshot = await getDocs(submissionsRef);
-                const count = snapshot.docs.filter(doc => doc.id.startsWith(user.uid)).length;
-                setApplicationCount(count);
-                setIsLoading(false);
             } else {
-                setIsLoading(false);
+                setLoading(false);
             }
         });
+
         return () => unsubscribe();
     }, []);
 
-    if (isLoading) {
+    if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
                 <Loader2 className="animate-spin text-blue-600" size={32} />
@@ -55,149 +81,157 @@ export default function DashboardPage() {
         );
     }
 
-    const tasks = [];
-    if (!profile?.phoneVerified) tasks.push({ id: 'phone', title: 'Verify Your Phone Number', description: 'You must have a valid phone number to use Nexttask', link: '#' });
-    if (!profile?.linkedinUrl && !profile?.noLinkedin) tasks.push({ id: 'linkedin', title: 'Link LinkedIn', description: 'Linking boosts your chances of being matched with opportunities', link: '/dashboard/profile' });
-
     return (
-        <div className="space-y-12 pb-20">
-            {/* Header */}
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight text-zinc-900">
-                    Welcome back, {profile?.fullName?.split(' ')[0] || user?.displayName?.split(' ')[0] || 'Richmond'}!
-                </h1>
-                {tasks.length > 0 && (
-                    <p className="text-zinc-500 mt-2 font-medium">Important Tasks ({tasks.length})</p>
-                )}
-            </div>
+        <FadeIn>
+            <div className="space-y-8">
+                {/* Welcome Message */}
+                <div>
+                    <h1 id="dashboard-welcome" className="text-2xl font-bold tracking-tight text-zinc-900">
+                        Welcome back, {profile?.fullName?.split(' ')[0] || user?.displayName?.split(' ')[0] || 'Expert'}!
+                    </h1>
+                    <p className="text-zinc-500 text-sm mt-1">Here's what's happening with your applications.</p>
+                </div>
 
-            {/* Task Cards */}
-            {tasks.length > 0 && (
-                <div className="flex flex-wrap gap-6">
-                    {tasks.map((task, index) => (
-                        <div
-                            key={task.id}
-                            className="flex-1 min-w-[320px] p-6 rounded-2xl border border-zinc-200 bg-white shadow-sm flex flex-col justify-between"
+                {/* Stats Row */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {MOCK_STATS.map((stat, i) => (
+                        <motion.div
+                            key={stat.label}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.05 }}
+                            className="p-6 rounded-2xl border border-zinc-200 bg-white shadow-sm"
                         >
-                            <div className="flex justify-between items-start mb-4">
+                            <div className="flex items-start justify-between">
+                                <div className={`p-2.5 rounded-xl ${stat.bg} ${stat.color}`}>
+                                    <stat.icon size={20} />
+                                </div>
+                                <span className="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                                    {stat.change}
+                                </span>
+                            </div>
+                            <div className="mt-4 space-y-1">
+                                <p className="text-sm font-medium text-zinc-500">{stat.label}</p>
+                                <p className="text-2xl font-bold text-zinc-900">{stat.value}</p>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Recent Applications */}
+                    <div className="lg:col-span-2 space-y-4">
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-lg font-bold text-zinc-900">Recent Applications</h2>
+                            <Link href="/dashboard/explore" className="text-sm font-medium text-blue-600 hover:text-blue-700">View all</Link>
+                        </div>
+
+                        <div className="space-y-3">
+                            {applications.length > 0 ? (
+                                applications.map((app, i) => (
+                                    <motion.div
+                                        key={app.id}
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: i * 0.05 }}
+                                        className="p-4 rounded-xl border border-zinc-200 bg-white hover:border-zinc-300 transition-all group"
+                                    >
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-10 h-10 rounded-lg bg-zinc-50 border border-zinc-100 flex items-center justify-center font-bold text-zinc-400">
+                                                    {app.company?.[0] || 'N'}
+                                                </div>
+                                                <div>
+                                                    <h3 className="text-sm font-bold text-zinc-900">{app.title}</h3>
+                                                    <p className="text-xs text-zinc-500">{app.company}</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-6">
+                                                <div className="text-right hidden sm:block">
+                                                    <p className={`text-[10px] font-bold uppercase tracking-wider ${app.status === 'Accepted' ? 'text-green-600' : app.status === 'Rejected' ? 'text-red-600' : 'text-orange-600'}`}>
+                                                        {app.status}
+                                                    </p>
+                                                    <p className="text-[10px] text-zinc-400">Recently</p>
+                                                </div>
+                                                <ChevronRight size={16} className="text-zinc-300 group-hover:text-zinc-500 transition-colors" />
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                ))
+                            ) : (
+                                <div className="p-12 text-center text-zinc-500 bg-white rounded-2xl border border-zinc-200 border-dashed">
+                                    <div className="space-y-4">
+                                        <p className="text-sm">You haven't applied to any roles yet.</p>
+                                        <Link
+                                            href="/dashboard/explore"
+                                            className="inline-flex items-center gap-2 px-6 py-2 rounded-lg bg-zinc-900 text-white text-xs font-bold hover:bg-zinc-800 transition-colors"
+                                        >
+                                            Explore Opportunities
+                                        </Link>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Quick Referral */}
+                    <div className="space-y-4">
+                        <h2 className="text-lg font-bold text-zinc-900">Quick Referral</h2>
+                        <div className="p-6 rounded-2xl bg-zinc-900 text-white space-y-6 relative overflow-hidden">
+                            <div className="relative z-10 space-y-4">
+                                <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
+                                    <Zap size={20} className="text-blue-400" />
+                                </div>
                                 <div className="space-y-1">
-                                    <h3 className="font-bold text-zinc-900">{task.title}</h3>
-                                    <p className="text-xs text-zinc-500 leading-relaxed max-w-[200px]">
-                                        {task.description}
+                                    <h3 className="text-lg font-bold">Earn $100 per expert</h3>
+                                    <p className="text-xs text-zinc-400 leading-relaxed">
+                                        Invite your colleagues to Nextask and earn rewards for every successful placement.
                                     </p>
                                 </div>
-                                {task.id === 'linkedin' && (
-                                    <div className="p-2 rounded-lg bg-zinc-50 border border-zinc-100 italic font-serif text-zinc-400 font-bold text-xs">
-                                        in
-                                    </div>
-                                )}
-                            </div>
-                            <div className="flex justify-end mt-4">
-                                <button
-                                    onClick={() => task.id === 'phone' ? setIsPhoneModalOpen(true) : null}
-                                    className="px-6 py-2.5 rounded-xl bg-blue-700 text-white text-xs font-bold hover:bg-blue-800 transition-colors"
-                                >
-                                    {task.id === 'phone' ? 'Verify now' : 'Link now'}
+                                <button className="w-full py-2.5 rounded-xl bg-white text-zinc-900 text-xs font-bold hover:bg-zinc-100 transition-colors">
+                                    Copy Referral Link
                                 </button>
                             </div>
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/20 blur-[50px] -mr-16 -mt-16" />
+                            <div className="absolute bottom-0 left-0 w-24 h-24 bg-purple-500/20 blur-[40px] -ml-12 -mb-12" />
                         </div>
-                    ))}
-                </div>
-            )}
 
-            {/* Tabs Navigation */}
-            <div className="border-b border-zinc-100">
-                <div className="flex gap-8">
-                    {tabs.map((tab) => (
-                        <button
-                            key={tab}
-                            onClick={() => setActiveTab(tab)}
-                            className={`pb-4 text-[13px] font-bold transition-all relative ${activeTab === tab ? 'text-blue-600' : 'text-zinc-400 hover:text-zinc-600'
-                                }`}
-                        >
-                            {tab}{tab === 'Applications' && applicationCount > 0 && <span className="ml-2 px-1.5 py-0.5 rounded-md bg-zinc-100 text-zinc-500 text-[10px]">{applicationCount}</span>}
-                            {activeTab === tab && (
-                                <motion.div
-                                    layoutId="tabUnderline"
-                                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"
-                                />
-                            )}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            {/* Tabs Content */}
-            <AnimatePresence mode="wait">
-                {activeTab === 'Applications' && (
-                    <motion.div
-                        key="applications"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="space-y-4"
-                    >
-                        {applicationCount === 0 ? (
-                            <div className="py-20 flex flex-col items-center justify-center text-center space-y-6">
-                                <div className="w-16 h-16 rounded-full bg-zinc-50 flex items-center justify-center border border-zinc-100">
-                                    <ClipboardList size={28} className="text-zinc-300" strokeWidth={1.5} />
-                                </div>
-                                <h2 className="text-lg font-bold text-zinc-900">You don't have any active applications</h2>
-                                <Link
-                                    href="/dashboard/explore"
-                                    className="px-8 py-2.5 rounded-xl border border-zinc-200 text-zinc-700 text-sm font-bold hover:bg-zinc-50 transition-colors"
-                                >
-                                    Explore Opportunities
-                                </Link>
-                            </div>
-                        ) : (
-                            <div className="group p-6 rounded-2xl border border-zinc-200 bg-white hover:border-blue-500/30 transition-all flex items-center justify-between">
-                                <div className="flex items-center gap-6">
-                                    <div className="w-12 h-12 rounded-xl bg-zinc-50 border border-zinc-100 flex items-center justify-center">
-                                        <Search size={24} className="text-zinc-400" />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-zinc-900">Generalist Expert</h3>
-                                        <div className="flex items-center gap-2 text-xs text-zinc-500 mt-1">
-                                            <span>$25 - $50 / hour</span>
-                                            <span>•</span>
-                                            <span>Hourly contract</span>
-                                            <span>•</span>
-                                            <span>Mercor</span>
+                        {/* Recent Activity Mini */}
+                        <div className="p-6 rounded-2xl border border-zinc-200 bg-white space-y-4">
+                            <h3 className="text-sm font-bold text-zinc-900">Platform Activity</h3>
+                            <div className="space-y-4">
+                                {[
+                                    { text: "Identity verified successfully", time: "1h ago" },
+                                    { text: "New high-pay roles added", time: "3h ago" }
+                                ].map((activity, i) => (
+                                    <div key={i} className="flex gap-3">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0" />
+                                        <div className="space-y-0.5">
+                                            <p className="text-[11px] text-zinc-600 leading-tight">{activity.text}</p>
+                                            <p className="text-[10px] text-zinc-400">{activity.time}</p>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="flex items-center gap-8">
-                                    <div className="flex flex-col items-end gap-1 text-[11px]">
-                                        <span className="text-zinc-400">Started on 04/18/24</span>
-                                        <span className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 font-bold uppercase tracking-wider scale-90 origin-right">
-                                            3 of 4 steps completed
-                                        </span>
-                                    </div>
-                                    <ChevronRight size={20} className="text-zinc-300" />
-                                </div>
+                                ))}
                             </div>
-                        )}
-
-                        <div className="pt-8 mt-8 border-t border-zinc-100">
-                            <button className="flex items-center gap-2 text-zinc-400 hover:text-zinc-600 transition-colors text-sm font-medium">
-                                <ChevronRight size={16} className="rotate-0 transition-transform" />
-                                <span>Past applications (9)</span>
-                                <div className="w-4 h-4 rounded-full bg-zinc-100 flex items-center justify-center text-[10px] text-zinc-500">
-                                    !
-                                </div>
-                            </button>
                         </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                    </div>
+                </div>
 
-            {/* Phone Verification Modal - Placeholder for now, will implement properly later */}
-            <AnimatePresence>
-                {isPhoneModalOpen && (
-                    <PhoneVerificationModal onClose={() => setIsPhoneModalOpen(false)} />
+                {/* Phone Verification Modal */}
+                <AnimatePresence>
+                    {isPhoneModalOpen && (
+                        <PhoneVerificationModal onClose={() => setIsPhoneModalOpen(false)} />
+                    )}
+                </AnimatePresence>
+
+                {/* Onboarding Tour */}
+                {!loading && profile && !profile.onboardingCompleted && (
+                    <OnboardingTour
+                        userId={user?.uid}
+                        onComplete={() => setProfile({ ...profile, onboardingCompleted: true })}
+                    />
                 )}
-            </AnimatePresence>
-        </div>
+            </div>
+        </FadeIn>
     );
 }
-

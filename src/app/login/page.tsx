@@ -1,16 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
 import Logo from '@/components/ui/Logo';
 import { auth } from '@/lib/firebase';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
-export default function LoginPage() {
+function LoginContent() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const redirectPath = searchParams.get('redirect') || '/dashboard';
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -23,7 +25,7 @@ export default function LoginPage() {
         setError('');
         try {
             await signInWithEmailAndPassword(auth, email, password);
-            router.push('/dashboard');
+            router.push(redirectPath);
         } catch (err: any) {
             setError(err.message || 'Failed to sign in. Please check your credentials.');
         } finally {
@@ -37,7 +39,7 @@ export default function LoginPage() {
         const provider = new GoogleAuthProvider();
         try {
             await signInWithPopup(auth, provider);
-            router.push('/dashboard');
+            router.push(redirectPath);
         } catch (err: any) {
             setError(err.message || 'Failed to sign in with Google.');
         } finally {
@@ -178,5 +180,17 @@ export default function LoginPage() {
                 <Link href="#" className="hover:text-zinc-400">Terms of Service</Link>
             </div>
         </div>
+    );
+}
+
+export default function LoginPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-white flex items-center justify-center">
+                <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+            </div>
+        }>
+            <LoginContent />
+        </Suspense>
     );
 }

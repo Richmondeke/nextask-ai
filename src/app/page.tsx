@@ -7,17 +7,22 @@ import PromptSection from "@/components/PromptSection";
 import Benefits from "@/components/Benefits";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
+import FadeIn from "@/components/FadeIn";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-white">
       <Navbar />
-      <Hero />
-      <Stats />
-      <Jobs />
+      <FadeIn>
+        <Hero />
+      </FadeIn>
+      <FadeIn delay={0.2}>
+        <Stats />
+      </FadeIn>
+      <FadeIn>
+        <Jobs />
+      </FadeIn>
       <PromptSection />
-      <Benefits />
-      <FAQ />
 
       {/* Featured Story Callout */}
       <section className="py-32 bg-white text-zinc-900 border-t border-zinc-100">
@@ -31,10 +36,10 @@ export default function Home() {
               <p className="text-lg text-zinc-600 mb-10 leading-relaxed max-w-lg">
                 Nexttask connects the world's top AI professionals with leading AI labs
                 and enterprises. We are powering frontier research, RLHF data, and AI
-                agent training at scale through our specialized APEX program.
+                agent training at scale.
               </p>
               <Link href="/signup" className="inline-block bg-blue-600 text-white px-10 py-4 rounded-full font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/10">
-                Join the APEX Program
+                Get Started Now
               </Link>
             </div>
             <div className="grid grid-cols-2 gap-6">
@@ -53,6 +58,12 @@ export default function Home() {
         </div>
       </section>
 
+      <FadeIn>
+        <Benefits />
+      </FadeIn>
+      <FadeIn>
+        <FAQ />
+      </FadeIn>
       <Footer />
     </main>
   );

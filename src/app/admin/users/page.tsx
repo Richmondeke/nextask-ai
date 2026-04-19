@@ -11,6 +11,7 @@ import {
     limit
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import Link from 'next/link';
 import {
     Search,
     Filter,

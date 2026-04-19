@@ -98,6 +98,7 @@ export default function DashboardSidebar({ isOpen, onClose }: { isOpen?: boolean
                         return (
                             <Link
                                 key={link.name}
+                                id={`sidebar-link-${link.name.toLowerCase()}`}
                                 href={link.href}
                                 className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 group ${isActive
                                     ? 'bg-blue-50 text-blue-600 font-semibold'
