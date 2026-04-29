@@ -25,15 +25,15 @@ export default function Home() {
       <PromptSection />
 
       {/* Featured Story Callout */}
-      <section className="py-32 bg-stripe-dark text-white border-t border-stripe-border">
+      <section className="py-32 bg-[#f6f9fc] text-[#0a2540] border-t border-[#e6ebf1]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
             <div>
               <h2 className="text-[40px] md:text-[56px] font-light tracking-[-1.4px] mb-8 leading-[1.03]">
                 Shape how the next generation <br />
-                <span className="text-zinc-400 italic">of A.I. thinks.</span>
+                <span className="text-zinc-500 italic">of A.I. thinks.</span>
               </h2>
-              <p className="text-[18px] text-[rgba(255,255,255,0.7)] font-light mb-10 leading-[1.4] max-w-lg">
+              <p className="text-[18px] text-[#425466] font-light mb-10 leading-[1.4] max-w-lg">
                 Onionlabel connects the world's top AI professionals with leading AI labs
                 and enterprises. We are powering frontier research, RLHF data, and AI
                 agent training at scale.
@@ -42,7 +42,7 @@ export default function Home() {
                 Get Started Now
               </Link>
             </div>
-            <div className="relative w-full rounded-md bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden shadow-stripe-ambient">
+            <div className="relative w-full rounded-md bg-black/5 border border-black/10 flex items-center justify-center overflow-hidden shadow-stripe-ambient">
               <img src="/Onionhit.gif" alt="Onionlabel AI Showcase" className="w-full h-auto object-cover" />
             </div>
           </div>
