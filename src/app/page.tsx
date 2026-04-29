@@ -42,7 +42,7 @@ export default function Home() {
                 Get Started Now
               </Link>
             </div>
-            <div className="relative w-full rounded-md bg-black/5 border border-black/10 flex items-center justify-center overflow-hidden shadow-stripe-ambient">
+            <div className="relative w-full flex items-center justify-center">
               <img src="/Onionhit.gif" alt="Onionlabel AI Showcase" className="w-full h-auto object-cover" />
             </div>
           </div>
