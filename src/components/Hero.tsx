@@ -60,7 +60,7 @@ export default function Hero() {
                 className="w-full max-w-[520px] mx-auto px-6 flex justify-center items-end"
             >
                 <img
-                    src="/Onionhit.gif"
+                    src="/lamine.gif"
                     alt="Onionlabel Hero"
                     width="1200"
                     height="1200"

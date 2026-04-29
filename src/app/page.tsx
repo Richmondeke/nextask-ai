@@ -42,17 +42,8 @@ export default function Home() {
                 Get Started Now
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-6">
-              {[
-                "/showcase/collab-1.png",
-                "/showcase/research-1.png",
-                "/showcase/workspace-1.png",
-                "/talent/backend-1.png"
-              ].map((img, i) => (
-                <div key={i} className="aspect-square rounded-md bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden relative shadow-stripe-ambient">
-                  <img src={img} alt="Showcase" className="object-cover w-full h-full hover:scale-105 transition-transform duration-500" />
-                </div>
-              ))}
+            <div className="relative w-full rounded-md bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden shadow-stripe-ambient">
+              <img src="/Onionhit.gif" alt="Onionlabel AI Showcase" className="w-full h-auto object-cover" />
             </div>
           </div>
         </div>
