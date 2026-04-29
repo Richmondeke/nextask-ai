@@ -9,21 +9,23 @@ import {
     ClipboardList,
     ChevronRight,
     Search,
-    Loader2,
     Briefcase,
     Clock,
     DollarSign,
     Zap
 } from 'lucide-react';
 import Link from 'next/link';
-import { auth, db } from '@/lib/firebase';
+import { useRouter } from 'next/navigation';
 import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc, collection, getDocs, query, where, orderBy } from 'firebase/firestore';
-import PhoneVerificationModal from '@/components/PhoneVerificationModal';
+import { doc, getDoc, collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import { auth, db } from '@/lib/firebase';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import OnboardingTour from '@/components/OnboardingTour';
 import FadeIn from '@/components/FadeIn';
+import PhoneVerificationModal from '@/components/PhoneVerificationModal';
 
 export default function DashboardPage() {
+    const router = useRouter();
     const [applications, setApplications] = useState<any[]>([]);
     const [jobCount, setJobCount] = useState(0);
     const [user, setUser] = useState<any>(null);
@@ -58,18 +60,77 @@ export default function DashboardPage() {
                     // Fetch Job Opportunities
                     const jobsSnapshot = await getDocs(collection(db, 'jobs'));
                     setJobCount(jobsSnapshot.size);
+
                 } catch (error) {
                     console.error("Error fetching dashboard data:", error);
-                } finally {
-                    setLoading(false);
                 }
             } else {
-                setLoading(false);
+                router.push('/login');
             }
+            setLoading(false);
         });
 
         return () => unsubscribe();
-    }, []);
+    }, [router]);
+
+    // Helper for relative time
+    const getRelativeTime = (dateString: string) => {
+        if (!dateString) return 'Recently';
+        try {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+            if (diffInSeconds < 60) return 'Just now';
+            const diffInMinutes = Math.floor(diffInSeconds / 60);
+            if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+            const diffInHours = Math.floor(diffInMinutes / 60);
+            if (diffInHours < 24) return `${diffInHours}h ago`;
+            const diffInDays = Math.floor(diffInHours / 24);
+            return `${diffInDays}d ago`;
+        } catch (err) {
+            return 'Recently';
+        }
+    };
+
+    // Derive Activity Feed
+    const activityFeed = React.useMemo(() => {
+        const feed: any[] = [];
+
+        // Add Application Events
+        applications.forEach(app => {
+            feed.push({
+                text: `Applied to ${app.title}`,
+                time: getRelativeTime(app.createdAt),
+                timestamp: new Date(app.createdAt).getTime(),
+                type: 'application',
+                href: `/dashboard/applications/${app.id}`
+            });
+        });
+
+        // Add Profile Event (Mocked timestamp for consistency with mockup)
+        if (profile) {
+            feed.push({
+                text: "Identity verified successfully",
+                time: "1h ago",
+                timestamp: Date.now() - (3600 * 1000),
+                type: 'profile',
+                href: '/dashboard/settings'
+            });
+        }
+
+        // Platform Events (Fallback or periodic)
+        feed.push({
+            text: "New high-pay roles added",
+            time: "3h ago",
+            timestamp: Date.now() - (3 * 3600 * 1000),
+            type: 'platform',
+            href: '/dashboard/jobs'
+        });
+
+        // Sort by timestamp and take top 4
+        return feed.sort((a, b) => b.timestamp - a.timestamp).slice(0, 4);
+    }, [applications, profile]);
 
     const stats = [
         {
@@ -109,7 +170,7 @@ export default function DashboardPage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
-                <Loader2 className="animate-spin text-blue-600" size={32} />
+                <LoadingSpinner size={40} />
             </div>
         );
     }
@@ -117,13 +178,40 @@ export default function DashboardPage() {
     return (
         <FadeIn>
             <div className="space-y-8">
-                {/* Welcome Message */}
-                <div>
-                    <h1 id="dashboard-welcome" className="text-2xl font-bold tracking-tight text-zinc-900">
-                        Welcome back, {profile?.fullName?.split(' ')[0] || user?.displayName?.split(' ')[0] || 'Expert'}!
-                    </h1>
-                    <p className="text-zinc-500 text-sm mt-1">Here's what's happening with your applications.</p>
-                </div>
+                {/* Dashboard Banner */}
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="relative h-64 w-full rounded-3xl overflow-hidden shadow-2xl border border-zinc-200"
+                >
+                    <img
+                        src="/ff.png"
+                        alt="Dashboard Banner"
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/80 via-zinc-900/40 to-transparent flex flex-col justify-center px-12 z-10">
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.2 }}
+                            className="space-y-4"
+                        >
+                            <div className="flex items-center gap-3">
+                                <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] font-black tracking-widest text-white uppercase flex items-center gap-2">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></div>
+                                    VERIFIED EXPERT
+                                </span>
+                            </div>
+
+                            <h1 className="text-4xl md:text-5xl font-black text-white tracking-tight leading-none">
+                                Welcome back, <span className="text-white drop-shadow-md">{profile?.fullName?.split(' ')[0] || user?.displayName?.split(' ')[0] || 'Expert'}</span>!
+                            </h1>
+                            <p className="text-zinc-300 font-medium text-lg max-w-md leading-relaxed">
+                                You have {applications.filter(a => a.status === 'Active' || a.status === 'Pending').length} active applications and {jobCount} new opportunities today.
+                            </p>
+                        </motion.div>
+                    </div>
+                </motion.div>
 
                 {/* Stats Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -158,7 +246,7 @@ export default function DashboardPage() {
                     <div className="lg:col-span-2 space-y-4">
                         <div className="flex items-center justify-between">
                             <h2 className="text-lg font-bold text-zinc-900">Recent Applications</h2>
-                            <Link href="/dashboard/explore" className="text-sm font-medium text-blue-600 hover:text-blue-700">View all</Link>
+                            <Link href="/dashboard/applications" className="text-sm font-medium text-blue-600 hover:text-blue-700">View all</Link>
                         </div>
 
                         <div className="space-y-3">
@@ -220,7 +308,7 @@ export default function DashboardPage() {
                                 <div className="space-y-1">
                                     <h3 className="text-lg font-bold">Earn $100 per expert</h3>
                                     <p className="text-xs text-zinc-400 leading-relaxed">
-                                        Invite your colleagues to Nextask and earn rewards for every successful placement.
+                                        Invite your colleagues to Onionlabel and earn rewards for every successful placement.
                                     </p>
                                 </div>
                                 <button className="w-full py-2.5 rounded-xl bg-white text-zinc-900 text-xs font-bold hover:bg-zinc-100 transition-colors">
@@ -231,19 +319,16 @@ export default function DashboardPage() {
                             <div className="absolute bottom-0 left-0 w-24 h-24 bg-purple-500/20 blur-[40px] -ml-12 -mb-12" />
                         </div>
 
-                        {/* Recent Activity Mini */}
+                        {/* Platform Activity Feed */}
                         <div className="p-6 rounded-2xl border border-zinc-200 bg-white space-y-4">
                             <h3 className="text-sm font-bold text-zinc-900">Platform Activity</h3>
                             <div className="space-y-4">
-                                {[
-                                    { text: "Identity verified successfully", time: "1h ago" },
-                                    { text: "New high-pay roles added", time: "3h ago" }
-                                ].map((activity, i) => (
-                                    <div key={i} className="flex gap-3">
+                                {activityFeed.map((activity, i) => (
+                                    <div key={i} className="flex gap-3 items-start animate-in fade-in slide-in-from-left-2 duration-300 fill-mode-both" style={{ animationDelay: `${i * 100}ms` }}>
                                         <div className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0" />
                                         <div className="space-y-0.5">
-                                            <p className="text-[11px] text-zinc-600 leading-tight">{activity.text}</p>
-                                            <p className="text-[10px] text-zinc-400">{activity.time}</p>
+                                            <p className="text-[11px] text-zinc-600 leading-tight font-medium">{activity.text}</p>
+                                            <p className="text-[10px] text-zinc-400 font-bold">{activity.time}</p>
                                         </div>
                                     </div>
                                 ))}

@@ -29,7 +29,7 @@ export default function SupportPage() {
                     <div className="max-w-3xl mx-auto text-center">
                         <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">Help Center</h1>
                         <p className="text-lg text-zinc-600 mb-10">
-                            Everything you need to know about working on Nexttask.
+                            Everything you need to know about working on Onionlabel.
                         </p>
                         <div className="relative max-w-xl mx-auto">
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" size={20} />

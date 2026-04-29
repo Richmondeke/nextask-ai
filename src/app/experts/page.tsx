@@ -15,9 +15,9 @@ import {
     Smartphone,
     Layers,
     Play,
-    CheckCircle2,
-    Loader2
+    CheckCircle2
 } from "lucide-react";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import Link from "next/link";
 import Image from "next/image";
 import { db } from "@/lib/firebase";
@@ -110,7 +110,7 @@ export default function ExpertsPage() {
                             <span>🚀 Join the fastest-growing company</span>
                         </div>
                         <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8">
-                            Work at Nexttask: <br />Build the Future of AI
+                            Work at Onionlabel: <br />Build the Future of AI
                         </h1>
                         <Link
                             href="#open-roles"
@@ -190,7 +190,7 @@ export default function ExpertsPage() {
                     <div className="max-w-7xl mx-auto">
                         <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-4">Benefits</h2>
                         <p className="text-zinc-600 mb-12 max-w-2xl">
-                            Nexttask is built for people who thrive in high-velocity environments. We welcome builders who want to grow in their career faster than anywhere else.
+                            Onionlabel is built for people who thrive in high-velocity environments. We welcome builders who want to grow in their career faster than anywhere else.
                         </p>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -232,7 +232,7 @@ export default function ExpertsPage() {
                             <div className="md:col-span-3">
                                 {loading ? (
                                     <div className="flex items-center justify-center py-20">
-                                        <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+                                        <LoadingSpinner size={32} />
                                     </div>
                                 ) : (
                                     <div className="space-y-12">

@@ -9,7 +9,7 @@ const stories = [
     {
         name: "Dr. Sarah Chen",
         role: "AI Ethics Researcher",
-        content: "Nexttask allowed me to contribute to frontier safety research while maintaining my academic position. The flexibility is unmatched.",
+        content: "Onionlabel allowed me to contribute to frontier safety research while maintaining my academic position. The flexibility is unmatched.",
         image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop"
     },
     {

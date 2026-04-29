@@ -15,7 +15,7 @@ export default function SecurityPage() {
                         <div className="w-20 h-20 bg-blue-50 text-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-8">
                             <ShieldCheck size={40} />
                         </div>
-                        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8">Security at Nexttask</h1>
+                        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8">Security at Onionlabel</h1>
                         <p className="text-xl text-zinc-600">
                             We take security seriously. Our platform is built to protect the sensitive research and data of our partners and experts.
                         </p>
@@ -46,7 +46,7 @@ export default function SecurityPage() {
                     <div className="max-w-3xl mx-auto">
                         <h2 className="text-3xl font-bold mb-8">Reporting Vulnerabilities</h2>
                         <p className="text-lg text-zinc-600 mb-6">
-                            If you believe you have discovered a security vulnerability in Nexttask, please contact our security team at <span className="text-blue-600 font-bold">security@nexttask.ai</span>.
+                            If you believe you have discovered a security vulnerability in Onionlabel, please contact our security team at <span className="text-blue-600 font-bold">security@onionlabel.ai</span>.
                         </p>
                         <p className="text-lg text-zinc-600">
                             We appreciate your help in keeping our platform and community safe.

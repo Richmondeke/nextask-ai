@@ -7,8 +7,8 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import {
     Menu,
-    Loader2
 } from 'lucide-react';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import DashboardSidebar from '@/components/DashboardSidebar';
 import Logo from '@/components/ui/Logo';
 
@@ -42,7 +42,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     if (isLoading) {
         return (
             <div className="min-h-screen bg-white flex items-center justify-center">
-                <Loader2 className="w-8 h-8 text-zinc-300 animate-spin" />
+                <LoadingSpinner size={32} />
             </div>
         );
     }

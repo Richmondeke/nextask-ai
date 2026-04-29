@@ -37,16 +37,40 @@ export default function TalentPoolPage() {
 
     const fetchUsers = async () => {
         try {
+            // Fetch all profiles
             const profilesRef = collection(db, 'profiles');
-            const q = query(
-                profilesRef,
-                orderBy('createdAt', 'desc')
-            );
+            const q = query(profilesRef, orderBy('createdAt', 'desc'));
             const querySnapshot = await getDocs(q);
-            const userData = querySnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
+
+            // Fetch all applications to map roles
+            const appsRef = collection(db, 'applications');
+            const appsSnapshot = await getDocs(appsRef);
+            const userApps: Record<string, any[]> = {};
+            appsSnapshot.docs.forEach(doc => {
+                const data = doc.data();
+                if (data.userId) {
+                    if (!userApps[data.userId]) userApps[data.userId] = [];
+                    userApps[data.userId].push({ id: doc.id, ...data });
+                }
+            });
+
+            const userData = querySnapshot.docs.map(doc => {
+                const data = doc.data();
+                const apps = userApps[doc.id] || [];
+                // Sort by lastAssessmentAt or createdAt to find the latest
+                const latestApp = apps.sort((a, b) => {
+                    const timeA = a.lastAssessmentAt || a.appliedAt || 0;
+                    const timeB = b.lastAssessmentAt || b.appliedAt || 0;
+                    return new Date(timeB).getTime() - new Date(timeA).getTime();
+                })[0];
+
+                return {
+                    id: doc.id,
+                    ...data,
+                    latestRole: latestApp?.jobTitle || data.headline || 'Professional',
+                    applicationCount: apps.length
+                };
+            });
             setUsers(userData);
         } catch (error) {
             console.error('Error fetching users:', error);
@@ -145,9 +169,16 @@ export default function TalentPoolPage() {
                                         </div>
                                     </td>
                                     <td className="px-8 py-6">
-                                        <span className="text-sm font-medium text-zinc-600">
-                                            {user.headline || 'Professional'}
-                                        </span>
+                                        <div className="flex flex-col">
+                                            <span className="text-sm font-bold text-zinc-900">
+                                                {user.latestRole}
+                                            </span>
+                                            {user.applicationCount > 1 && (
+                                                <span className="text-[10px] text-zinc-400 font-medium">
+                                                    + {user.applicationCount - 1} other applications
+                                                </span>
+                                            )}
+                                        </div>
                                     </td>
                                     <td className="px-8 py-6 text-center">
                                         {user.assessmentScore !== undefined ? (

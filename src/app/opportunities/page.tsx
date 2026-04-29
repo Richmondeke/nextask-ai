@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FadeIn from "@/components/FadeIn";
-import { MoveRight, Search, Briefcase, DollarSign, Users, ArrowRight, Loader2 } from "lucide-react";
+import { MoveRight, Search, Briefcase, DollarSign, Users, ArrowRight } from "lucide-react";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import Link from "next/link";
 import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { db } from "@/lib/firebase";
@@ -33,7 +34,7 @@ export default function OpportunitiesPage() {
                     return {
                         id: doc.id,
                         title: data.title,
-                        company: data.companyName || data.company || "Nexttask AI",
+                        company: data.companyName || data.company || "Onionlabel AI",
                         pay: data.salary || data.pay || "Competitive",
                         hires: data.applicationCount !== undefined ? `${data.applicationCount} applicants` : (data.hires || "0 applicants"),
                         tags: data.tags || [],
@@ -67,7 +68,7 @@ export default function OpportunitiesPage() {
                         </h1>
                         <p className="text-xl text-zinc-600 max-w-2xl mx-auto mb-10">
                             Find top-tier, remote, AI roles for your expertise.
-                            Available only on Nexttask.
+                            Available only on Onionlabel.
                         </p>
 
                         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -106,7 +107,7 @@ export default function OpportunitiesPage() {
 
                         {isLoading ? (
                             <div className="flex flex-col items-center justify-center py-20">
-                                <Loader2 className="w-10 h-10 text-blue-600 animate-spin mb-4" />
+                                <LoadingSpinner size={40} />
                                 <p className="text-zinc-500 font-medium">Loading opportunities...</p>
                             </div>
                         ) : (

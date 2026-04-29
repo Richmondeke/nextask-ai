@@ -16,16 +16,17 @@ import {
     Plus,
     Search,
     Filter,
-    MoreVertical,
+    MoreHorizontal,
     Briefcase,
     Users,
     Clock,
     CheckCircle2,
     XCircle,
     AlertCircle,
-    Loader2,
-    ExternalLink
+    Zap,
+    Edit3
 } from 'lucide-react';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { motion } from 'framer-motion';
 
 export default function JobManagerPage() {
@@ -34,6 +35,8 @@ export default function JobManagerPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [showPostModal, setShowPostModal] = useState(false);
     const [isPosting, setIsPosting] = useState(false);
+    const [editingJobId, setEditingJobId] = useState<string | null>(null);
+    const [isGenerating, setIsGenerating] = useState(false);
     const [newJob, setNewJob] = useState({
         title: '',
         companyName: '',
@@ -41,7 +44,10 @@ export default function JobManagerPage() {
         type: 'Full-time',
         salary: '',
         tags: '',
-        description: ''
+        description: '',
+        testType: 'Practical / Case Study',
+        questions: [] as any[],
+        questionCount: 3
     });
 
     useEffect(() => {
@@ -65,19 +71,29 @@ export default function JobManagerPage() {
         }
     };
 
-    const handlePostJob = async (e: React.FormEvent) => {
+    const handleSaveJob = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             setIsPosting(true);
-            const jobToAdd = {
+            const jobData = {
                 ...newJob,
-                tags: newJob.tags.split(',').map(tag => tag.trim()),
+                tags: typeof newJob.tags === 'string' ? newJob.tags.split(',').map(tag => tag.trim()) : newJob.tags,
                 status: 'Active',
-                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
                 applicationCount: 0
             };
-            await addDoc(collection(db, 'jobs'), jobToAdd);
+
+            if (editingJobId) {
+                await updateDoc(doc(db, 'jobs', editingJobId), jobData);
+            } else {
+                await addDoc(collection(db, 'jobs'), {
+                    ...jobData,
+                    createdAt: new Date().toISOString(),
+                });
+            }
+
             setShowPostModal(false);
+            setEditingJobId(null);
             setNewJob({
                 title: '',
                 companyName: '',
@@ -85,14 +101,55 @@ export default function JobManagerPage() {
                 type: 'Full-time',
                 salary: '',
                 tags: '',
-                description: ''
+                description: '',
+                testType: 'Practical / Case Study',
+                questions: [],
+                questionCount: 3
             });
             fetchJobs();
         } catch (error) {
-            console.error('Error posting job:', error);
+            console.error('Error saving job:', error);
         } finally {
             setIsPosting(false);
         }
+    };
+
+    const handleEditClick = (job: any) => {
+        setEditingJobId(job.id);
+        setNewJob({
+            title: job.title || '',
+            companyName: job.companyName || '',
+            location: job.location || '',
+            type: job.type || 'Full-time',
+            salary: job.salary || '',
+            tags: Array.isArray(job.tags) ? job.tags.join(', ') : job.tags || '',
+            description: job.description || '',
+            testType: job.testType || 'Practical / Case Study',
+            questions: job.questions || [],
+            questionCount: job.questions?.length || 3
+        });
+        setShowPostModal(true);
+    };
+
+    const generateAIQuestions = async () => {
+        if (!newJob.title || !newJob.description) return;
+
+        setIsGenerating(true);
+        // Simulate AI generation delay
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        const mockQuestions = Array.from({ length: newJob.questionCount }).map((_, i) => ({
+            id: i + 1,
+            question: i === 0
+                ? `Based on the ${newJob.title} role, how would you approach a critical system failure during a peak traffic hour?`
+                : i === 1
+                    ? `Given the description: "${newJob.description.substring(0, 50)}...", what are the top 3 technical priorities you would set in your first 30 days?`
+                    : `Task ${i + 1}: Implementation plan for a scalable ${newJob.tags.split(',')[0] || 'AI'} system.`,
+            type: 'text'
+        }));
+
+        setNewJob(prev => ({ ...prev, questions: mockQuestions }));
+        setIsGenerating(false);
     };
 
     const toggleJobStatus = async (jobId: string, currentStatus: string) => {
@@ -116,7 +173,7 @@ export default function JobManagerPage() {
     if (loading) {
         return (
             <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4">
-                <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
+                <LoadingSpinner size={40} />
                 <p className="text-zinc-500 font-medium">Loading job listings...</p>
             </div>
         );
@@ -127,7 +184,7 @@ export default function JobManagerPage() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-zinc-900 mb-2">Job Manager</h1>
-                    <p className="text-zinc-500 font-medium">Create, edit, and manage all job postings on Nexttask.</p>
+                    <p className="text-zinc-500 font-medium">Create, edit, and manage all job postings on Onionlabel.</p>
                 </div>
 
                 <div className="flex items-center gap-4">
@@ -161,18 +218,23 @@ export default function JobManagerPage() {
                     >
                         <div className="flex items-center justify-between mb-8">
                             <div>
-                                <h2 className="text-2xl font-bold text-zinc-900">Post New Role</h2>
-                                <p className="text-zinc-500 font-medium text-sm">Fill in the details for the new job listing.</p>
+                                <h2 className="text-2xl font-bold text-zinc-900">{editingJobId ? 'Edit Role' : 'Post New Role'}</h2>
+                                <p className="text-zinc-500 font-medium text-sm">
+                                    {editingJobId ? 'Update the details for this job listing.' : 'Fill in the details for the new job listing.'}
+                                </p>
                             </div>
                             <button
-                                onClick={() => setShowPostModal(false)}
+                                onClick={() => {
+                                    setShowPostModal(false);
+                                    setEditingJobId(null);
+                                }}
                                 className="p-2 hover:bg-zinc-50 rounded-xl transition-all"
                             >
                                 <XCircle className="text-zinc-400" size={24} />
                             </button>
                         </div>
 
-                        <form onSubmit={handlePostJob} className="space-y-6">
+                        <form onSubmit={handleSaveJob} className="space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label className="block text-xs font-black uppercase tracking-widest text-zinc-400 mb-2">Job Title</label>
@@ -190,7 +252,7 @@ export default function JobManagerPage() {
                                     <input
                                         required
                                         type="text"
-                                        placeholder="e.g. Nextask AI"
+                                        placeholder="e.g. Onionlabel AI"
                                         className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-50 focus:bg-white transition-all font-medium"
                                         value={newJob.companyName}
                                         onChange={(e) => setNewJob({ ...newJob, companyName: e.target.value })}
@@ -255,10 +317,69 @@ export default function JobManagerPage() {
                                 />
                             </div>
 
+                            <div className="pt-6 border-t border-zinc-100">
+                                <label className="block text-xs font-black uppercase tracking-widest text-zinc-400 mb-4">Assessment Settings</label>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                    <div>
+                                        <label className="block text-[10px] font-bold text-zinc-500 mb-2">Test Type</label>
+                                        <select
+                                            className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-50 focus:bg-white transition-all font-medium appearance-none"
+                                            value={newJob.testType}
+                                            onChange={(e) => setNewJob({ ...newJob, testType: e.target.value })}
+                                        >
+                                            <option>Practical / Case Study</option>
+                                            <option>Multiple Choice Quiz</option>
+                                            <option>Video Introduction</option>
+                                            <option>Coding Challenge</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] font-bold text-zinc-500 mb-2">Question Count</label>
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            max="10"
+                                            className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-50 focus:bg-white transition-all font-medium"
+                                            value={newJob.questionCount}
+                                            onChange={(e) => setNewJob({ ...newJob, questionCount: parseInt(e.target.value) || 1 })}
+                                        />
+                                    </div>
+                                    <div className="flex items-end md:col-span-2">
+                                        <button
+                                            type="button"
+                                            onClick={generateAIQuestions}
+                                            disabled={isGenerating || !newJob.title}
+                                            className="w-full py-3 bg-zinc-100 text-zinc-900 rounded-xl font-bold hover:bg-zinc-200 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                                        >
+                                            {isGenerating ? (
+                                                <LoadingSpinner size={16} />
+                                            ) : (
+                                                <Zap size={16} className="text-blue-600 fill-blue-600" />
+                                            )}
+                                            {newJob.questions.length > 0 ? 'Regenerate Questions' : 'AI Generate Questions'}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {newJob.questions.length > 0 && (
+                                    <div className="space-y-3 bg-zinc-50 p-4 rounded-2xl border border-zinc-100">
+                                        <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider mb-2">Generated Questions ({newJob.questions.length})</p>
+                                        {newJob.questions.map((q, i) => (
+                                            <div key={i} className="bg-white p-3 rounded-lg border border-zinc-100 text-xs font-medium text-zinc-600 shadow-sm">
+                                                {q.question}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+
                             <div className="flex items-center gap-4 pt-4">
                                 <button
                                     type="button"
-                                    onClick={() => setShowPostModal(false)}
+                                    onClick={() => {
+                                        setShowPostModal(false);
+                                        setEditingJobId(null);
+                                    }}
                                     className="flex-1 py-4 bg-zinc-50 text-zinc-500 rounded-2xl font-bold hover:bg-zinc-100 transition-all active:scale-95"
                                 >
                                     Cancel
@@ -268,8 +389,8 @@ export default function JobManagerPage() {
                                     disabled={isPosting}
                                     className="flex-1 py-4 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
                                 >
-                                    {isPosting ? <Loader2 size={18} className="animate-spin" /> : <Plus size={18} />}
-                                    Create Job Post
+                                    {isPosting ? <LoadingSpinner size={18} /> : editingJobId ? <CheckCircle2 size={18} /> : <Plus size={18} />}
+                                    {editingJobId ? 'Save Changes' : 'Create Job Post'}
                                 </button>
                             </div>
                         </form>
@@ -348,13 +469,20 @@ export default function JobManagerPage() {
                                 {/* Actions */}
                                 <div className="flex items-center gap-2 pt-3 sm:pt-0 border-t sm:border-0 border-zinc-100">
                                     <button
+                                        onClick={() => handleEditClick(job)}
+                                        className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold bg-zinc-50 text-zinc-600 hover:bg-zinc-100 transition-all"
+                                    >
+                                        <Edit3 className="w-4 h-4" />
+                                        <span>Edit</span>
+                                    </button>
+                                    <button
                                         onClick={() => toggleJobStatus(job.id, job.status)}
-                                        className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold transition-all ${job.status === 'active'
+                                        className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold transition-all ${job.status === 'Active'
                                             ? 'bg-red-50 text-red-600 hover:bg-red-100'
                                             : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
                                             }`}
                                     >
-                                        {job.status === 'active' ? (
+                                        {job.status === 'Active' ? (
                                             <>
                                                 <XCircle className="w-4 h-4" />
                                                 <span>Close</span>
@@ -365,9 +493,6 @@ export default function JobManagerPage() {
                                                 <span>Activate</span>
                                             </>
                                         )}
-                                    </button>
-                                    <button className="p-2 text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 rounded-lg transition-all">
-                                        <ExternalLink className="w-4 h-4" />
                                     </button>
                                 </div>
                             </div>

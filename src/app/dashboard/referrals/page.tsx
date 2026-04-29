@@ -11,12 +11,12 @@ import {
     TrendingUp,
     Share2,
     Check,
-    Loader2,
     Users,
     Link,
     ShieldCheck,
     ChevronRight
 } from 'lucide-react';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, collection, query, where, getDocs, updateDoc } from 'firebase/firestore';
@@ -89,7 +89,7 @@ export default function ReferralsPage() {
     if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
-                <Loader2 className="animate-spin text-blue-600" size={32} />
+                <LoadingSpinner size={32} />
             </div>
         );
     }
@@ -123,11 +123,14 @@ export default function ReferralsPage() {
                             </div>
                         </div>
 
-                        <div className="hidden md:block w-1/3 max-w-[240px]">
-                            <img
-                                src="/referral_header.png"
-                                alt="Referrals"
-                                className="w-full h-auto rounded-2xl shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500"
+                        <div className="hidden lg:block absolute bottom-0 right-10 h-[105%] w-1/3 max-w-[280px]">
+                            <motion.img
+                                initial={{ opacity: 0, y: 100 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, ease: "circOut" }}
+                                src="/ff.png"
+                                alt="Onionlabel Premium"
+                                className="w-full h-full object-contain object-bottom filter drop-shadow-[0_-5px_30px_rgba(255,255,255,0.2)] mix-blend-multiply"
                             />
                         </div>
                     </div>
@@ -140,7 +143,7 @@ export default function ReferralsPage() {
                     {[
                         {
                             title: "1. Upload connections",
-                            desc: "Export your LinkedIn ZIP or CSV and upload it to Nexttask.",
+                            desc: "Export your LinkedIn ZIP or CSV and upload it to Onionlabel.",
                             icon: <Link size={24} />,
                             color: "bg-blue-50 text-blue-600"
                         },

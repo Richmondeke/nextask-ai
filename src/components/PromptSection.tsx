@@ -56,18 +56,18 @@ export default function PromptSection() {
         <section className="py-24 bg-white overflow-hidden">
             <div className="max-w-7xl mx-auto px-6">
                 {/* Tab Headers */}
-                <div className="flex flex-wrap items-center justify-center gap-2 mb-16 p-2 rounded-full bg-zinc-50 border border-zinc-100 w-fit mx-auto">
+                <div className="flex flex-wrap items-center justify-center gap-2 mb-16 p-2 rounded-md bg-zinc-50 border border-zinc-100 w-fit mx-auto">
                     {tabs.map((tab) => (
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab)}
-                            className={`px-8 py-3 rounded-full text-sm font-bold transition-all relative ${activeTab.id === tab.id ? "text-zinc-900" : "text-zinc-400 hover:text-zinc-600"
+                            className={`px-8 py-3 rounded-md text-sm font-medium transition-all relative ${activeTab.id === tab.id ? "text-stripe-navy" : "text-zinc-500 hover:text-stripe-navy"
                                 }`}
                         >
                             {activeTab.id === tab.id && (
                                 <motion.div
                                     layoutId="activeTab"
-                                    className="absolute inset-0 bg-white shadow-md border border-zinc-100 rounded-full"
+                                    className="absolute inset-0 bg-white shadow-sm border border-zinc-200 rounded-md"
                                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                                 />
                             )}
@@ -77,7 +77,7 @@ export default function PromptSection() {
                 </div>
 
                 {/* Content Area */}
-                <div className="bg-gradient-to-br from-orange-50/50 via-white to-blue-50/50 rounded-[48px] p-8 md:p-16 border border-zinc-100 shadow-sm relative">
+                <div className="bg-white rounded-lg p-8 md:p-16 border border-zinc-200 shadow-stripe-ambient relative">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={activeTab.id}
@@ -88,19 +88,19 @@ export default function PromptSection() {
                             className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
                         >
                             <div className="space-y-12">
-                                <h3 className="text-4xl md:text-[56px] font-bold tracking-tight text-zinc-900 leading-[1.1]">
+                                <h3 className="text-4xl md:text-[56px] font-light tracking-[-1.4px] text-stripe-navy leading-[1.1]">
                                     {activeTab.content.title}
                                 </h3>
 
                                 <div className="space-y-8">
                                     <div>
-                                        <p className="text-sm font-bold uppercase tracking-widest text-zinc-400 mb-3">Why</p>
+                                        <p className="text-sm font-medium uppercase tracking-widest text-zinc-500 mb-3">Why</p>
                                         <p className="text-lg text-zinc-600 leading-relaxed max-w-lg">
                                             {activeTab.content.why}
                                         </p>
                                     </div>
                                     <div>
-                                        <p className="text-sm font-bold uppercase tracking-widest text-zinc-400 mb-3">How</p>
+                                        <p className="text-sm font-medium uppercase tracking-widest text-zinc-500 mb-3">How</p>
                                         <p className="text-lg text-zinc-600 leading-relaxed max-w-lg whitespace-pre-line">
                                             {activeTab.content.how}
                                         </p>
@@ -110,29 +110,29 @@ export default function PromptSection() {
 
                             <div className="relative">
                                 {/* Visual Mockup */}
-                                <div className="bg-white rounded-3xl border border-zinc-100 shadow-2xl p-8 relative z-10">
-                                    <div className="flex items-center gap-2 mb-8 border-b border-zinc-50 pb-4">
-                                        <div className="w-3 h-3 rounded-full bg-zinc-100" />
-                                        <div className="w-3 h-3 rounded-full bg-zinc-100" />
-                                        <div className="w-3 h-3 rounded-full bg-zinc-100" />
-                                        <span className="ml-2 text-xs font-bold text-zinc-400 uppercase tracking-widest">
+                                <div className="bg-white rounded-md border border-zinc-200 shadow-stripe-deep p-8 relative z-10">
+                                    <div className="flex items-center gap-2 mb-8 border-b border-zinc-100 pb-4">
+                                        <div className="w-3 h-3 rounded-full bg-zinc-200" />
+                                        <div className="w-3 h-3 rounded-full bg-zinc-200" />
+                                        <div className="w-3 h-3 rounded-full bg-zinc-200" />
+                                        <span className="ml-2 text-xs font-medium text-zinc-500 uppercase tracking-widest">
                                             {activeTab.label}
                                         </span>
                                     </div>
 
                                     <div className="space-y-4 mb-8">
-                                        <div className="h-4 bg-zinc-50 rounded-full w-full" />
-                                        <div className="h-4 bg-zinc-50 rounded-full w-5/6" />
-                                        <div className="h-4 bg-zinc-50 rounded-full w-4/6" />
+                                        <div className="h-4 bg-zinc-100 rounded-sm w-full" />
+                                        <div className="h-4 bg-zinc-100 rounded-sm w-5/6" />
+                                        <div className="h-4 bg-zinc-100 rounded-sm w-4/6" />
                                     </div>
 
-                                    <div className="p-6 rounded-2xl border-2 border-orange-500/20 bg-orange-50/10">
-                                        <p className="text-sm font-bold mb-6 text-zinc-900">Prompt Checklist</p>
+                                    <div className="p-6 rounded-md border border-zinc-200 bg-zinc-50">
+                                        <p className="text-sm font-medium mb-6 text-stripe-navy">Prompt Checklist</p>
                                         <div className="space-y-4">
                                             {activeTab.content.checklist.map((item, idx) => (
-                                                <div key={idx} className="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-zinc-50">
+                                                <div key={idx} className="flex items-center gap-4 bg-white p-4 rounded-md shadow-sm border border-zinc-200">
                                                     {idx === 0 ? (
-                                                        <Check className="w-5 h-5 text-green-500" />
+                                                        <Check className="w-5 h-5 text-stripe-purple" />
                                                     ) : (
                                                         <Circle className="w-5 h-5 text-zinc-300" />
                                                     )}
@@ -143,7 +143,7 @@ export default function PromptSection() {
                                     </div>
                                 </div>
                                 {/* Decorative Blur */}
-                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-100/30 blur-[100px] -z-10 rounded-full" />
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-stripe-purple/10 blur-[100px] -z-10 rounded-full" />
                             </div>
                         </motion.div>
                     </AnimatePresence>

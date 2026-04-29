@@ -70,6 +70,7 @@ export default function ApplicationAssessmentPage() {
     const [assessmentResponses, setAssessmentResponses] = useState<Record<string, any>>({});
     const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState<any>(null);
+    const [job, setJob] = useState<any>(null);
     const [formData, setFormData] = useState<any>({
         phone: '',
         verificationMethod: 'SMS',
@@ -101,19 +102,26 @@ export default function ApplicationAssessmentPage() {
                 setUser(currentUser);
                 setFormData((prev: any) => ({ ...prev, email: currentUser.email || '' }));
 
-                // Fetch existing submission
+                // Fetch Job Details
                 if (applicationId) {
                     try {
+                        const jobRef = doc(db, 'jobs', applicationId);
+                        const jobSnap = await getDoc(jobRef);
+                        if (jobSnap.exists()) {
+                            setJob(jobSnap.data());
+                        }
+
+                        // Fetch existing submission
                         const docRef = doc(db, 'submissions', `${currentUser.uid}_${applicationId}`);
                         const docSnap = await getDoc(docRef);
                         if (docSnap.exists()) {
                             const data = docSnap.data();
                             setFormData((prev: any) => ({ ...prev, ...data }));
-                            if (data.currentStepIndex) setCurrentStepIndex(data.currentStepIndex);
-                            if (data.currentQuestionIndex) setCurrentQuestionIndex(data.currentQuestionIndex);
+                            if (data.currentStepIndex !== undefined) setCurrentStepIndex(data.currentStepIndex);
+                            if (data.currentQuestionIndex !== undefined) setCurrentQuestionIndex(data.currentQuestionIndex);
                         }
                     } catch (error) {
-                        console.error("Error fetching submission:", error);
+                        console.error("Error fetching assessment data:", error);
                     }
                 }
             } else {
@@ -129,12 +137,13 @@ export default function ApplicationAssessmentPage() {
         if (!user || !applicationId) return;
 
         try {
+            const now = new Date().toISOString();
             const docRef = doc(db, 'submissions', `${user.uid}_${applicationId}`);
             const updateData: Record<string, unknown> = {
                 ...formData,
                 currentStepIndex: nextStepIdx,
                 currentQuestionIndex: nextQuestionIdx,
-                updatedAt: new Date().toISOString()
+                updatedAt: now
             };
             if (score !== undefined) {
                 updateData.assessmentScore = score;
@@ -142,32 +151,63 @@ export default function ApplicationAssessmentPage() {
                 const profileRef = doc(db, 'profiles', user.uid);
                 await updateDoc(profileRef, {
                     assessmentScore: score,
-                    lastAssessmentAt: new Date().toISOString()
+                    lastAssessmentAt: now
                 }).catch(err => console.error("Error mirroring score to profile:", err));
             }
             await setDoc(docRef, updateData, { merge: true });
+
+            // Sync to 'applications' collection for dashboard visibility
+            const appRef = doc(db, 'applications', `${user.uid}_${applicationId}`);
+            await setDoc(appRef, {
+                userId: user.uid,
+                jobId: applicationId,
+                title: job?.title || 'Unknown Role',
+                company: job?.company || 'Onionlabel',
+                status: nextStepIdx >= steps.length - 1 ? 'Under Review' : 'Active',
+                createdAt: formData.createdAt || now,
+                updatedAt: now,
+                assessmentScore: score !== undefined ? score : (formData.assessmentScore || 0)
+            }, { merge: true });
+
         } catch (error) {
             console.error("Error saving progress:", error);
         }
     };
 
-    const isEvaluationStep = currentStep.id === 'evaluation';
-    const totalEvaluationQuestions = evaluationQuestions.length;
+    const interviewQuestions = job?.questions && job.questions.length > 0
+        ? job.questions.map((q: any) => ({
+            title: 'Expert Interview',
+            type: 'text',
+            q: q.question,
+            id: q.id
+        }))
+        : [];
 
-    const progress = isEvaluationStep
-        ? Math.round(((currentStepIndex + (currentQuestionIndex / totalEvaluationQuestions)) / steps.length) * 100)
+    const currentQuestions = currentStep.id === 'interview' ? interviewQuestions : evaluationQuestions;
+    const totalQuestions = currentQuestions.length;
+
+    const progress = currentStep.id === 'evaluation' || currentStep.id === 'interview'
+        ? Math.round(((currentStepIndex + (currentQuestionIndex / totalQuestions)) / steps.length) * 100)
         : Math.round((currentStepIndex / (steps.length - 1)) * 100);
 
     const handleNext = async (scoreOverride?: number) => {
         let nextStepIdx = currentStepIndex;
         let nextQuestionIdx = currentQuestionIndex;
 
-        // Finalize score if assessment steps are complete
         const finalScore = scoreOverride !== undefined ? scoreOverride : formData.assessmentScore;
 
-        // Special handling for steps that have sub-questions (like evaluation)
-        if (currentStep.id === 'evaluation') {
-            if (currentQuestionIndex < totalEvaluationQuestions - 1) {
+        // Special handling for steps that have sub-questions
+        if (currentStep.id === 'interview') {
+            if (interviewQuestions.length > 0 && currentQuestionIndex < interviewQuestions.length - 1) {
+                nextQuestionIdx = currentQuestionIndex + 1;
+                setCurrentQuestionIndex(nextQuestionIdx);
+            } else {
+                nextStepIdx = currentStepIndex + 1;
+                setCurrentStepIndex(nextStepIdx);
+                nextQuestionIdx = 0;
+            }
+        } else if (currentStep.id === 'evaluation') {
+            if (currentQuestionIndex < evaluationQuestions.length - 1) {
                 nextQuestionIdx = currentQuestionIndex + 1;
                 setCurrentQuestionIndex(nextQuestionIdx);
             } else {
@@ -569,6 +609,56 @@ export default function ApplicationAssessmentPage() {
                     </div>
                 );
             case 'interview':
+                const currentInterviewQ = interviewQuestions[currentQuestionIndex];
+
+                if (interviewQuestions.length > 0) {
+                    return (
+                        <div className="max-w-3xl mx-auto space-y-12 py-10">
+                            <div className="flex items-center gap-6 mb-12">
+                                <div className="w-16 h-16 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0">
+                                    <Monitor className="text-blue-600" size={32} strokeWidth={1.5} />
+                                </div>
+                                <div className="space-y-1">
+                                    <h2 className="text-2xl font-bold text-zinc-900 tracking-tight">Technical Interview</h2>
+                                    <p className="text-sm font-medium text-zinc-500">Based on the {job?.title || 'requested role'} requirements.</p>
+                                </div>
+                            </div>
+
+                            <motion.div
+                                key={currentQuestionIndex}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className="space-y-8"
+                            >
+                                <div className="flex gap-6">
+                                    <div className="w-10 h-10 rounded-xl bg-zinc-900 text-white flex items-center justify-center text-sm font-black shrink-0">
+                                        {currentQuestionIndex + 1}
+                                    </div>
+                                    <div className="space-y-6 flex-1">
+                                        <h3 className="text-xl font-bold text-zinc-900 leading-snug pt-1">
+                                            {currentInterviewQ.q}
+                                        </h3>
+                                        <div className="relative">
+                                            <textarea
+                                                placeholder="Provide your detailed technical response..."
+                                                className="w-full h-64 p-8 rounded-3xl border border-zinc-200 bg-white text-zinc-900 text-[14px] font-medium focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-50 transition-all resize-none shadow-sm"
+                                            />
+                                            <div className="flex justify-between pt-4">
+                                                <div className="flex items-center gap-2 text-zinc-400">
+                                                    <AlertCircle size={14} />
+                                                    <span className="text-[10px] font-bold uppercase tracking-widest">Submit in plain text</span>
+                                                </div>
+                                                <span className="text-[10px] text-zinc-400 font-black uppercase tracking-widest">0 / 2,000 characters</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+                    );
+                }
+
                 return (
                     <div className="max-w-2xl mx-auto space-y-10 py-10 flex flex-col items-center justify-center min-h-[500px]">
                         <div className="w-24 h-24 rounded-3xl bg-blue-50 border border-blue-100 flex items-center justify-center mb-6">
@@ -689,7 +779,7 @@ export default function ApplicationAssessmentPage() {
                         <section className="space-y-8 pb-32">
                             <div className="flex items-center gap-3 py-4">
                                 <div className="h-px flex-1 bg-zinc-100" />
-                                <span className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em]">Evaluation Dimension {currentQuestionIndex + 1} of {totalEvaluationQuestions}</span>
+                                <span className="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em]">Evaluation Dimension {currentQuestionIndex + 1} of {totalQuestions}</span>
                                 <div className="h-px flex-1 bg-zinc-100" />
                             </div>
 
@@ -824,7 +914,7 @@ export default function ApplicationAssessmentPage() {
                                     href="/dashboard"
                                     className="inline-flex items-center gap-3 px-10 py-4 bg-zinc-900 text-white rounded-2xl text-[13px] font-black hover:bg-zinc-800 transition-all shadow-xl shadow-zinc-200"
                                 >
-                                    Return to Dashboard
+                                    View Applications
                                     <ChevronRight size={18} strokeWidth={3} />
                                 </Link>
                             </div>
@@ -991,8 +1081,8 @@ export default function ApplicationAssessmentPage() {
                                 Back
                             </button>
                             <span className="text-[10px] font-black text-zinc-300 uppercase tracking-widest px-4 whitespace-nowrap">
-                                {isEvaluationStep
-                                    ? `Question ${currentQuestionIndex + 1} of ${totalEvaluationQuestions}`
+                                {currentStep.id === 'evaluation' || currentStep.id === 'interview'
+                                    ? `Question ${currentQuestionIndex + 1} of ${totalQuestions}`
                                     : `Step ${currentStepIndex + 1} of ${steps.length}`
                                 }
                             </span>
@@ -1000,8 +1090,8 @@ export default function ApplicationAssessmentPage() {
 
                         <div className="flex items-center gap-4">
                             <div className="flex items-center bg-zinc-50 rounded-2xl p-1 shadow-inner border border-zinc-100 max-w-[400px] overflow-x-auto no-scrollbar">
-                                {isEvaluationStep ? (
-                                    Array.from({ length: totalEvaluationQuestions }).map((_, idx) => (
+                                {currentStep.id === 'evaluation' || currentStep.id === 'interview' ? (
+                                    Array.from({ length: totalQuestions }).map((_, idx) => (
                                         <button
                                             key={idx}
                                             onClick={() => setCurrentQuestionIndex(idx)}

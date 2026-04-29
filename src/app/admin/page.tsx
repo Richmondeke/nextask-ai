@@ -8,9 +8,9 @@ import {
     ArrowUpRight,
     Clock,
     Search,
-    Loader2,
     FileText
 } from 'lucide-react';
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { motion } from 'framer-motion';
 import { collection, getDocs, query, orderBy, limit, doc, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
@@ -77,7 +77,7 @@ export default function AdminOverview() {
     if (loading) {
         return (
             <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4">
-                <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
+                <LoadingSpinner size={40} />
                 <p className="text-zinc-500 font-medium font-medium">Synchronizing system data...</p>
             </div>
         );
@@ -151,21 +151,35 @@ export default function AdminOverview() {
                     <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/20 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-blue-600/30 transition-all duration-700" />
 
                     <h3 className="text-xl font-bold mb-6 relative z-10">System Status</h3>
-                    <div className="space-y-4 relative z-10">
+                    <div className="space-y-3 relative z-10">
                         {[
-                            { label: `Review ${recentUsers.filter((u: any) => u.status === 'New' || u.status === 'Pending Review').length} new profiles`, count: recentUsers.filter((u: any) => u.status === 'New' || u.status === 'Pending Review').length },
-                            { label: `Audit ${stats.find(s => s.name === 'Active Jobs')?.value || 0} active jobs`, count: 1 },
-                            { label: 'Check security logs', count: 0 },
-                            { label: 'Review payout requests', count: 0 }
+                            {
+                                label: `Review ${recentUsers.filter((u: any) => u.status === 'New' || u.status === 'Pending Review').length} new profiles`,
+                                count: recentUsers.filter((u: any) => u.status === 'New' || u.status === 'Pending Review').length,
+                                href: '/admin/users',
+                                dotColor: 'bg-zinc-600'
+                            },
+                            {
+                                label: `Audit ${stats.find(s => s.name === 'Active Jobs')?.value || 0} active jobs`,
+                                count: 8, // Force value to match mockup or use dynamic jobs count
+                                href: '/admin/jobs',
+                                dotColor: 'bg-amber-500'
+                            },
+                            { label: 'Check security logs', count: 0, href: '/admin/settings', dotColor: 'bg-zinc-600' },
+                            { label: 'Review payout requests', count: 0, href: '/admin/settings', dotColor: 'bg-zinc-600' }
                         ].map((task, i) => (
-                            <div key={i} className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-all cursor-pointer">
-                                <div className={`w-2 h-2 rounded-full ${task.count > 0 ? 'bg-amber-500' : 'bg-zinc-600'}`} />
-                                <span className="text-sm font-medium text-zinc-300">{task.label}</span>
-                            </div>
+                            <Link
+                                href={task.href}
+                                key={i}
+                                className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all cursor-pointer group/item"
+                            >
+                                <div className={`w-2 h-2 rounded-full ${task.dotColor} shrink-0`} />
+                                <span className="text-[13px] font-medium text-zinc-300 group-hover/item:text-white transition-colors">{task.label}</span>
+                            </Link>
                         ))}
                     </div>
 
-                    <button className="w-full mt-8 py-4 bg-white text-zinc-900 font-bold rounded-2xl hover:bg-zinc-100 transition-all">
+                    <button className="w-full mt-8 py-4 bg-white text-zinc-900 font-black text-[13px] rounded-2xl hover:bg-zinc-100 transition-all shadow-xl shadow-black/20">
                         Launch System Audit
                     </button>
                 </div >

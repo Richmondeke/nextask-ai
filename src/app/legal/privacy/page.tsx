@@ -22,7 +22,7 @@ export default function PrivacyPage() {
 
                             <h2 className="text-3xl font-bold">2. How We Use Your Information</h2>
                             <p className="text-zinc-600 leading-relaxed">
-                                We use the information we collect to provide, maintain, and improve our services, to process applications, and to communicate with you about Nexttask.
+                                We use the information we collect to provide, maintain, and improve our services, to process applications, and to communicate with you about Onionlabel.
                             </p>
 
                             <h2 className="text-3xl font-bold">3. Data Security</h2>

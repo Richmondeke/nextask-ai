@@ -17,7 +17,7 @@ export default function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-zinc-100">
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-stripe-border">
             <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
                 <div className="flex items-center gap-10">
                     <Logo />
@@ -26,7 +26,7 @@ export default function Navbar() {
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className="text-sm font-medium text-zinc-600 hover:text-blue-600 transition-colors"
+                                className="text-[15px] font-medium text-stripe-body hover:text-stripe-navy transition-colors tracking-normal"
                             >
                                 {link.name}
                             </Link>
@@ -37,20 +37,20 @@ export default function Navbar() {
                     <div className="hidden md:flex items-center gap-4">
                         <Link
                             href="/login"
-                            className="text-sm font-medium text-zinc-600 hover:text-blue-600 transition-colors"
+                            className="text-[15px] font-medium text-stripe-body hover:text-stripe-navy transition-colors"
                         >
                             Log in
                         </Link>
                         <Link
                             href="/signup"
-                            className="bg-blue-600 text-white px-5 py-2.5 rounded-full text-sm font-bold flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/10"
+                            className="bg-stripe-purple text-white px-4 py-2 rounded text-[16px] font-normal flex items-center gap-2 hover:bg-stripe-purple-hover transition-all"
                         >
-                            Join Nexttask <MoveRight className="w-4 h-4" />
+                            Join Onionlabel <MoveRight className="w-4 h-4" />
                         </Link>
                     </div>
 
                     <button
-                        className="p-2 -mr-2 md:hidden text-zinc-600"
+                        className="p-2 -mr-2 md:hidden text-stripe-body hover:text-stripe-navy transition-colors"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     >
                         {isMobileMenuOpen ? <X /> : <Menu />}
@@ -65,7 +65,7 @@ export default function Navbar() {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden bg-white border-b border-zinc-100 overflow-hidden"
+                        className="md:hidden bg-white border-b border-stripe-border overflow-hidden"
                     >
                         <div className="px-6 py-8 space-y-6">
                             {navLinks.map((link) => (
@@ -73,25 +73,25 @@ export default function Navbar() {
                                     key={link.name}
                                     href={link.href}
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="block text-lg font-bold text-zinc-900"
+                                    className="block text-lg font-normal text-stripe-navy"
                                 >
                                     {link.name}
                                 </Link>
                             ))}
-                            <div className="pt-6 border-t border-zinc-100 space-y-4">
+                            <div className="pt-6 border-t border-stripe-border space-y-4">
                                 <Link
                                     href="/login"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="block text-lg font-bold text-zinc-900"
+                                    className="block text-lg font-normal text-stripe-navy"
                                 >
                                     Log in
                                 </Link>
                                 <Link
                                     href="/signup"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="block w-full bg-blue-600 text-white px-6 py-4 rounded-2xl text-center font-bold"
+                                    className="block w-full bg-stripe-purple text-white px-6 py-3 rounded text-center text-[16px] font-normal"
                                 >
-                                    Join Nexttask
+                                    Join Onionlabel
                                 </Link>
                             </div>
                         </div>
@@ -101,3 +101,4 @@ export default function Navbar() {
         </nav>
     );
 }
+

@@ -22,7 +22,7 @@ const jobs = [
     },
     {
         title: 'Backend Scalability Expert',
-        company: 'Nextask',
+        company: 'Onionlabel',
         location: 'Hybrid',
         type: 'Full-time',
         salary: '$160k - $220k',
@@ -43,7 +43,7 @@ async function seedData() {
     /*
     await setDoc(doc(db, 'profiles', 'SUPERADMIN_UID'), {
         fullName: 'Super Admin',
-        email: 'admin@nextask.ai',
+        email: 'admin@onionlabel.ai',
         role: 'superadmin',
         createdAt: new Date().toISOString(),
         status: 'Vetted'

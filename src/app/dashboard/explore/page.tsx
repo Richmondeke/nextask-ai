@@ -117,7 +117,7 @@ export default function ExplorePage() {
                                 </div>
                             ))}
                         </div>
-                        <span>1,499 Nexttaskers work at these companies</span>
+                        <span>1,499 Onionlabelers work at these companies</span>
                     </div>
                 </div>
 

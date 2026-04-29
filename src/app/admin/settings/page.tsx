@@ -9,15 +9,15 @@ import {
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import {
-    Save,
-    Shield,
-    Globe,
-    Bell,
-    CreditCard,
     Zap,
-    Loader2,
-    CheckCircle2
+    CheckCircle2,
+    Save,
+    Globe,
+    Shield,
+    CreditCard,
+    Bell
 } from 'lucide-react';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { motion } from 'framer-motion';
 
 export default function AdminSettingsPage() {
@@ -25,12 +25,12 @@ export default function AdminSettingsPage() {
     const [saving, setSaving] = useState(false);
     const [saved, setSaved] = useState(false);
     const [settings, setSettings] = useState({
-        platformName: 'Nexttask.ai',
+        platformName: 'Onionlabel.ai',
         maintenanceMode: false,
         allowNewSignups: true,
         platformFee: 10,
         featuredJobsLimit: 5,
-        supportEmail: 'support@nextask.ai'
+        supportEmail: 'support@onionlabel.ai'
     });
 
     useEffect(() => {
@@ -70,7 +70,7 @@ export default function AdminSettingsPage() {
     if (loading) {
         return (
             <div className="min-h-[60vh] flex flex-col items-center justify-center space-y-4">
-                <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
+                <LoadingSpinner size={40} />
                 <p className="text-zinc-500 font-medium">Loading platform configuration...</p>
             </div>
         );
@@ -88,11 +88,11 @@ export default function AdminSettingsPage() {
                     onClick={handleSave}
                     disabled={saving}
                     className={`flex items-center gap-2 px-8 py-3 rounded-2xl font-bold transition-all shadow-lg active:scale-95 ${saved
-                            ? 'bg-emerald-500 text-white shadow-emerald-500/20'
-                            : 'bg-zinc-900 text-white shadow-zinc-900/20 hover:bg-zinc-800'
+                        ? 'bg-emerald-500 text-white shadow-emerald-500/20'
+                        : 'bg-zinc-900 text-white shadow-zinc-900/20 hover:bg-zinc-800'
                         }`}
                 >
-                    {saving ? <Loader2 size={18} className="animate-spin" /> : saved ? <CheckCircle2 size={18} /> : <Save size={18} />}
+                    {saving ? <LoadingSpinner size={18} /> : saved ? <CheckCircle2 size={18} /> : <Save size={18} />}
                     {saving ? 'Saving...' : saved ? 'Settings Saved' : 'Save Changes'}
                 </button>
             </div>

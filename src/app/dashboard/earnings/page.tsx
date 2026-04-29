@@ -11,9 +11,9 @@ import {
     CreditCard,
     ChevronRight,
     TrendingUp,
-    Loader2,
     Wallet
 } from 'lucide-react';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, collection, query, orderBy, getDocs, limit } from 'firebase/firestore';
@@ -83,7 +83,7 @@ export default function EarningsPage() {
     if (isLoading) {
         return (
             <div className="h-full flex items-center justify-center py-40">
-                <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+                <LoadingSpinner size={32} />
             </div>
         );
     }

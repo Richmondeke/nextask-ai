@@ -10,7 +10,7 @@ const stats = [
 
 export default function Stats() {
     return (
-        <section className="py-20 bg-zinc-50 border-y border-zinc-200">
+        <section className="py-20 bg-white border-y border-stripe-border">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                     {stats.map((stat, i) => (
@@ -22,10 +22,10 @@ export default function Stats() {
                             viewport={{ once: true }}
                             className="flex flex-col items-center text-center"
                         >
-                            <span className="text-sm font-semibold text-zinc-500 mb-3 uppercase tracking-[0.2em]">
+                            <span className="text-sm font-semibold text-stripe-label mb-3 uppercase tracking-[0.2em]">
                                 {stat.label}
                             </span>
-                            <span className="text-5xl font-bold tracking-tight text-zinc-900">
+                            <span className="text-[48px] font-light tracking-[-0.96px] text-stripe-navy">
                                 {stat.prefix}{stat.value}
                                 <span className="text-2xl text-zinc-400 font-medium ml-1">{stat.suffix}</span>
                             </span>

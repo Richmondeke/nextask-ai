@@ -18,7 +18,6 @@ import {
     Save,
     CheckCircle2,
     AlertCircle,
-    Loader2,
     ChevronRight,
     Camera,
     Upload,
@@ -35,6 +34,7 @@ import {
     Lock,
     Zap
 } from 'lucide-react';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { auth, db, storage } from '@/lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
@@ -214,7 +214,7 @@ export default function ProfilePage() {
     if (isLoading) {
         return (
             <div className="h-full flex items-center justify-center py-40">
-                <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+                <LoadingSpinner size={32} />
             </div>
         );
     }
@@ -250,7 +250,7 @@ export default function ProfilePage() {
                             disabled={isSaving}
                             className="w-full md:w-auto px-8 py-3 bg-zinc-900 text-white rounded-2xl font-bold hover:bg-zinc-800 transition-all shadow-lg shadow-zinc-900/10 flex items-center justify-center gap-2 disabled:opacity-50"
                         >
-                            {isSaving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
+                            {isSaving ? <LoadingSpinner size={18} /> : <Save size={18} />}
                             {saveSuccess ? 'Changes Saved!' : 'Save Changes'}
                         </button>
                     </div>

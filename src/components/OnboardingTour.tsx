@@ -17,8 +17,8 @@ interface Step {
 const steps: Step[] = [
     {
         id: 'welcome',
-        title: 'Welcome to Nextask AI! 🚀',
-        description: 'Nexttask AI connects you with the world\'s most exciting opportunities. Let\'s quickly set you up for success.',
+        title: 'Welcome to Onionlabel AI! 🚀',
+        description: 'Onionlabel AI connects you with the world\'s most exciting opportunities. Let\'s quickly set you up for success.',
         position: 'center'
     },
     {
@@ -38,7 +38,7 @@ const steps: Step[] = [
     {
         id: 'refer',
         title: 'Refer & Earn',
-        description: 'Invite your friends to Nextask AI and earn bonuses for every successfully matched referral. Share the success!',
+        description: 'Invite your friends to Onionlabel AI and earn bonuses for every successfully matched referral. Share the success!',
         targetId: 'sidebar-link-referrals',
         position: 'right'
     }

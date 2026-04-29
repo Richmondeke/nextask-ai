@@ -1,12 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #000000;
-  --primary: #2563eb;
-  --secondary: #64748b;
-  --muted: #f1f5f9;
-  --border: #e2e8f0;
+  --background: #07080a;
+  --foreground: #f9f9f9;
+  --primary: #ff6363;
+  --secondary: #55b3ff;
+  --muted: #1b1c1e;
+  --border: rgba(255, 255, 255, 0.06);
+  --ring: #ff6363;
+  --radius: 0.5rem;
 }
 
 @theme inline {
@@ -16,13 +18,54 @@
   --color-secondary: var(--secondary);
   --color-muted: var(--muted);
   --color-border: var(--border);
-  --font-sans: var(--font-manrope), system-ui, sans-serif;
-}
+  --color-ring: var(--ring);
+  --radius-md: var(--radius);
+  --radius-lg: 1rem;
+  --radius-full: 9999px;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
 
-/* Removed dark mode overrides to maintain consistent light theme as requested */
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0.2px;
+  --tracking-wide: 0.4px;
+
+  /* Brand Colors */
+  --color-stripe-purple: #0b2a37;
+  --color-stripe-purple-hover: #071a22;
+  --color-stripe-navy: #000000;
+  --color-stripe-dark: #000000;
+  --color-stripe-body: #333333;
+  --color-stripe-label: #000000;
+  --color-stripe-border: #e5e7eb;
+  --color-stripe-ruby: #0b2a37;
+  --color-stripe-magenta: #0b2a37;
+  --color-stripe-success: #15be53;
+  --color-stripe-success-text: #108c3d;
+  --color-stripe-warning: #9b6829;
+
+  /* Stripe Shadows */
+  --shadow-stripe-ambient: 0px 3px 6px rgba(23, 23, 23, 0.06);
+  --shadow-stripe-blue: 0px 30px 45px -30px rgba(50, 50, 93, 0.25), 0px 18px 36px -18px rgba(0, 0, 0, 0.1);
+  --shadow-stripe-deep: 0px 14px 21px -14px rgba(3, 3, 39, 0.25), 0px 8px 17px -8px rgba(0, 0, 0, 0.1);
+}
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  letter-spacing: var(--tracking-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss01";
+}
+
+/* Raycast-style depth utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.shadow-mac {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 1px rgba(255, 255, 255, 0.1);
 }

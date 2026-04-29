@@ -11,11 +11,11 @@ const faqs = [
     },
     {
         question: "How do I get paid?",
-        answer: "Nexttask supports multiple payout methods including direct bank transfers across 15+ African countries, digital wallets, and stablecoins. Payments are made either weekly or monthly depending on the project."
+        answer: "Onionlabel supports multiple payout methods including direct bank transfers across 15+ African countries, digital wallets, and stablecoins. Payments are made either weekly or monthly depending on the project."
     },
     {
         question: "Is this full-time or part-time?",
-        answer: "Both! Many of our professionals work full-time on specific lab projects, while others use Nexttask to earn extra income alongside their existing jobs or studies. You set your availability."
+        answer: "Both! Many of our professionals work full-time on specific lab projects, while others use Onionlabel to earn extra income alongside their existing jobs or studies. You set your availability."
     },
     {
         question: "What kind of tasks will I perform?",
@@ -30,19 +30,19 @@ export default function FAQ() {
         <section className="py-32 bg-white">
             <div className="max-w-4xl mx-auto px-6">
                 <div className="text-center mb-20">
-                    <h2 className="text-4xl font-bold tracking-tight text-zinc-900 mb-6 font-bold">Frequently asked questions</h2>
-                    <p className="text-zinc-500 font-medium font-medium">Everything you need to know about working with Nexttask.</p>
+                    <h2 className="text-4xl font-light tracking-[-1.4px] text-stripe-navy mb-6">Frequently asked questions</h2>
+                    <p className="text-zinc-600 font-normal">Everything you need to know about working with Onionlabel.</p>
                 </div>
 
                 <div className="space-y-4">
                     {faqs.map((faq, i) => (
-                        <div key={i} className="border border-zinc-100 rounded-[32px] overflow-hidden">
+                        <div key={i} className="border border-zinc-200 rounded-md overflow-hidden">
                             <button
                                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
                                 className="w-full p-8 flex items-center justify-between text-left hover:bg-zinc-50/50 transition-all group"
                             >
-                                <span className="font-bold text-lg text-zinc-900">{faq.question}</span>
-                                <div className={`p-2 rounded-full transition-all ${openIndex === i ? 'bg-zinc-900 text-white' : 'bg-zinc-100 text-zinc-400 group-hover:bg-zinc-200'}`}>
+                                <span className="font-medium text-lg text-stripe-navy">{faq.question}</span>
+                                <div className={`p-2 rounded-full transition-all ${openIndex === i ? 'bg-stripe-navy text-white' : 'bg-zinc-100 text-zinc-500 group-hover:bg-zinc-200'}`}>
                                     {openIndex === i ? <Minus size={18} /> : <Plus size={18} />}
                                 </div>
                             </button>
@@ -56,7 +56,7 @@ export default function FAQ() {
                                         className="overflow-hidden"
                                     >
                                         <div className="px-8 pb-8">
-                                            <p className="text-zinc-500 text-lg leading-relaxed font-medium">
+                                            <p className="text-zinc-600 text-lg leading-relaxed font-normal">
                                                 {faq.answer}
                                             </p>
                                         </div>

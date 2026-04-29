@@ -33,7 +33,7 @@ export default function ForgotPasswordPage() {
                             <path d="M16 4H20V12L8 20H4V16L16 4Z" fill="white" fillOpacity="0.5" />
                         </svg>
                     </div>
-                    <span className="text-2xl font-bold tracking-tighter">Nexttask</span>
+                    <span className="text-2xl font-bold tracking-tighter">Onionlabel</span>
                 </Link>
             </motion.div>
 

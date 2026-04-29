@@ -11,6 +11,7 @@ import {
     User,
     Bell,
     Cookie,
+    Briefcase,
     Settings,
     X,
     LogOut
@@ -25,6 +26,7 @@ import { useRouter } from 'next/navigation';
 const userLinks = [
     { name: 'Explore', href: '/dashboard/explore', icon: Search },
     { name: 'Home', href: '/dashboard', icon: Home },
+    { name: 'Applications', href: '/dashboard/applications', icon: Briefcase },
     { name: 'Referrals', href: '/dashboard/referrals', icon: Users },
     { name: 'Earnings', href: '/dashboard/earnings', icon: Wallet },
     { name: 'Profile', href: '/dashboard/profile', icon: User },
@@ -82,15 +84,15 @@ export default function DashboardSidebar({ isOpen, onClose }: { isOpen?: boolean
                 )}
             </AnimatePresence>
 
-            <div className={`w-64 h-screen bg-white border-r border-zinc-200 flex flex-col fixed left-0 top-0 transition-transform duration-300 z-[70] 
+            <div className={`w-64 h-screen bg-[#07080a] border-r border-white/[0.06] flex flex-col fixed left-0 top-0 transition-transform duration-300 z-[70] 
                 ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
             `}>
                 {/* Logo & Close (Mobile) */}
                 <div className="p-6 flex items-center justify-between">
-                    <Logo />
+                    <Logo dark />
                     <button
                         onClick={onClose}
-                        className="p-2 text-zinc-400 hover:text-zinc-600 lg:hidden"
+                        className="p-2 text-[#6a6b6c] hover:text-[#f9f9f9] lg:hidden"
                     >
                         <X size={20} />
                     </button>
@@ -100,34 +102,24 @@ export default function DashboardSidebar({ isOpen, onClose }: { isOpen?: boolean
                 <nav className="flex-1 px-4 space-y-1 mt-4 overflow-y-auto">
                     {/* User Links Section */}
                     <div className="space-y-1">
-                        {pathname.startsWith('/dashboard') && (
-                            <div className="px-3 mb-2">
-                                <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">User Menu</span>
-                            </div>
-                        )}
+                        <div className="px-3 mb-2">
+                            <span className="text-[10px] font-bold text-[#6a6b6c] uppercase tracking-widest">Workspace</span>
+                        </div>
                         {userLinks.map((link) => {
                             const isActive = pathname === link.href;
                             const Icon = link.icon;
-
-                            // Only show user links if we are in dashboard OR if specifically needed
-                            // For simplicity, we show them if we are in /dashboard
-                            if (!pathname.startsWith('/dashboard') && !pathname.startsWith('/admin')) {
-                                // Default fallback if needed
-                            }
-
-                            if (pathname.startsWith('/admin')) return null;
 
                             return (
                                 <Link
                                     key={link.name}
                                     id={`sidebar-link-${link.name.toLowerCase()}`}
                                     href={link.href}
-                                    className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 group ${isActive
-                                        ? 'bg-blue-50 text-blue-600 font-semibold'
-                                        : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
+                                    className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-200 group ${isActive
+                                        ? 'bg-[#ff6363]/10 text-[#ff6363] font-semibold'
+                                        : 'text-[#9c9c9d] hover:bg-white/5 hover:text-[#f9f9f9]'
                                         }`}
                                 >
-                                    <Icon size={20} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-blue-600' : 'text-zinc-500 group-hover:text-zinc-700'} />
+                                    <Icon size={18} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-[#ff6363]' : 'text-[#6a6b6c] group-hover:text-[#9c9c9d]'} />
                                     <span className="text-sm">{link.name}</span>
                                 </Link>
                             );
@@ -136,92 +128,68 @@ export default function DashboardSidebar({ isOpen, onClose }: { isOpen?: boolean
 
                     {/* Admin Links Section */}
                     {(profile?.role === 'admin' || profile?.role === 'superadmin') && (
-                        <div className={`space-y-1 ${pathname.startsWith('/dashboard') ? 'mt-8 pt-4 border-t border-zinc-100' : ''}`}>
+                        <div className="space-y-1 mt-8 pt-6 border-t border-white/[0.06]">
                             <div className="px-3 mb-2 flex items-center justify-between">
-                                <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Admin Panel</span>
-                                {pathname.startsWith('/dashboard') && (
-                                    <span className="flex h-2 w-2 rounded-full bg-blue-500" />
-                                )}
+                                <span className="text-[10px] font-bold text-[#6a6b6c] uppercase tracking-widest">Governance</span>
+                                <span className="flex h-1.5 w-1.5 rounded-full bg-[#55b3ff] animate-pulse" />
                             </div>
 
-                            {pathname.startsWith('/admin') ? (
-                                // Show all admin links when in admin section
-                                adminLinks.map((link) => {
-                                    const isActive = pathname === link.href || (link.href !== '/admin' && pathname.startsWith(link.href));
-                                    const Icon = link.icon;
+                            {adminLinks.map((link) => {
+                                const isActive = pathname === link.href || (link.href !== '/admin' && pathname.startsWith(link.href));
+                                const Icon = link.icon;
 
-                                    return (
-                                        <Link
-                                            key={link.name}
-                                            href={link.href}
-                                            className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 group ${isActive
-                                                ? 'bg-zinc-900 text-white font-semibold shadow-md'
-                                                : 'text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900'
-                                                }`}
-                                        >
-                                            <Icon size={20} strokeWidth={isActive ? 2 : 1.5} />
-                                            <span className="text-sm">{link.name}</span>
-                                        </Link>
-                                    );
-                                })
-                            ) : (
-                                // Show only "Switch to Admin" when in dashboard
-                                <Link
-                                    href="/admin"
-                                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 transition-all duration-200 group"
-                                >
-                                    <Settings size={20} />
-                                    <span className="text-sm">Go to Admin View</span>
-                                </Link>
-                            )}
-
-                            {/* Back to Dashboard Link (Only when in Admin) */}
-                            {pathname.startsWith('/admin') && (
-                                <Link
-                                    href="/dashboard"
-                                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-blue-600 hover:bg-blue-50 transition-all duration-200 group mt-4 font-medium border border-blue-100 bg-blue-50/30"
-                                >
-                                    <Home size={20} />
-                                    <span className="text-sm">Back to User App</span>
-                                </Link>
-                            )}
+                                return (
+                                    <Link
+                                        key={link.name}
+                                        href={link.href}
+                                        className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-200 group ${isActive
+                                            ? 'bg-white/10 text-white font-semibold shadow-mac'
+                                            : 'text-[#9c9c9d] hover:bg-white/5 hover:text-[#f9f9f9]'
+                                            }`}
+                                    >
+                                        <Icon size={18} strokeWidth={isActive ? 2 : 1.5} className={isActive ? 'text-white' : 'text-[#6a6b6c] group-hover:text-[#9c9c9d]'} />
+                                        <span className="text-sm">{link.name}</span>
+                                    </Link>
+                                );
+                            })}
                         </div>
                     )}
                 </nav>
 
                 {/* User Section */}
-                <div className="p-4 mt-auto border-t border-zinc-100 bg-zinc-50/50">
+                <div className="p-4 mt-auto border-t border-white/[0.06] bg-white/[0.02]">
                     <div className="flex items-center gap-3 px-2 mb-4">
-                        <button className="p-2 text-zinc-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
+                        <button className="p-2 text-[#6a6b6c] hover:text-[#55b3ff] hover:bg-[#55b3ff]/10 rounded-lg transition-all">
                             <Cookie size={18} />
                         </button>
                         <div className="relative">
-                            <button className="p-2 text-zinc-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
+                            <button className="p-2 text-[#6a6b6c] hover:text-[#55b3ff] hover:bg-[#55b3ff]/10 rounded-lg transition-all">
                                 <Bell size={18} />
                             </button>
-                            <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-red-500 rounded-full border border-white" />
+                            <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-[#ff6363] rounded-full border border-[#07080a]" />
                         </div>
                     </div>
 
                     <div className="flex items-center gap-3 px-2">
-                        <div className="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-bold shadow-sm shadow-blue-200 uppercase">
+                        <div className="w-9 h-9 rounded-full bg-[#ff6363] flex items-center justify-center text-white text-xs font-bold shadow-mac uppercase">
                             {profile?.fullName?.[0] || user?.displayName?.[0] || user?.email?.[0] || 'U'}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-sm font-semibold text-zinc-900 truncate">
+                            <p className="text-sm font-semibold text-[#f9f9f9] truncate">
                                 {profile?.fullName || user?.displayName || 'User'}
                             </p>
-                            <p className="text-xs text-zinc-500 truncate">{user?.email}</p>
+                            <p className="text-[11px] text-[#6a6b6c] truncate tracking-normal ">{user?.email}</p>
                         </div>
                         <button
                             onClick={handleLogout}
-                            className="p-2 text-zinc-400 hover:text-red-600 transition-colors"
+                            className="p-2 text-[#6a6b6c] hover:text-red-500 transition-colors"
                         >
                             <LogOut size={16} />
                         </button>
                     </div>
                 </div>
             </div>
+
         </>
     );
 }

@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { X, CreditCard, Landmark, Check, Loader2 } from 'lucide-react';
+import { X, CreditCard, Landmark, Check } from 'lucide-react';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { db } from '@/lib/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 
@@ -153,7 +154,7 @@ export default function PayoutModal({ uid, isOpen, onClose, currentMethod, onSuc
                             className="w-full bg-blue-600 text-white font-bold h-14 rounded-2xl hover:bg-blue-700 transition-all active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 shadow-xl shadow-blue-100"
                         >
                             {isLoading ? (
-                                <Loader2 className="animate-spin" size={20} />
+                                <LoadingSpinner size={20} />
                             ) : (
                                 <>
                                     <Check size={20} strokeWidth={3} />
@@ -168,7 +169,7 @@ export default function PayoutModal({ uid, isOpen, onClose, currentMethod, onSuc
                     <div className="flex items-start gap-3">
                         <div className="w-5 h-5 rounded-full bg-zinc-200 flex items-center justify-center text-[10px] font-black shrink-0 mt-0.5">i</div>
                         <p className="text-[10px] text-zinc-400 font-medium leading-relaxed uppercase tracking-wider">
-                            By linking your account, you agree to NexTask's payment terms. Payouts are typically processed within 3-5 business days of task completion.
+                            By linking your account, you agree to Onionlabel's payment terms. Payouts are typically processed within 3-5 business days of task completion.
                         </p>
                     </div>
                 </div>

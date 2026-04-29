@@ -54,11 +54,11 @@ export default function Benefits() {
         <section className="py-32 bg-zinc-50">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="text-center max-w-3xl mx-auto mb-20">
-                    <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 mb-6">
+                    <h2 className="text-4xl md:text-5xl font-light tracking-[-1.4px] text-stripe-navy mb-6">
                         Why the world's best <br />
-                        <span className="text-blue-600">choose Nexttask.</span>
+                        <span className="text-stripe-purple">choose Onionlabel.</span>
                     </h2>
-                    <p className="text-lg text-zinc-600 font-medium">
+                    <p className="text-lg text-zinc-600 font-normal">
                         We provide the infrastructure and opportunities for Africa's most brilliant minds to excel in the global AI race.
                     </p>
                 </div>
@@ -71,13 +71,13 @@ export default function Benefits() {
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: i * 0.1 }}
                             viewport={{ once: true }}
-                            className="bg-white p-10 rounded-[40px] border border-zinc-100 shadow-sm hover:shadow-xl hover:shadow-zinc-200/50 transition-all group"
+                            className="bg-white p-10 rounded-md border border-zinc-200 shadow-stripe-ambient hover:shadow-stripe-blue transition-all group"
                         >
-                            <div className={`w-14 h-14 rounded-2xl ${benefit.bg} ${benefit.color} flex items-center justify-center mb-8 group-hover:scale-110 transition-transform`}>
+                            <div className={`w-14 h-14 rounded-md ${benefit.bg} ${benefit.color} flex items-center justify-center mb-8 group-hover:scale-110 transition-transform`}>
                                 <benefit.icon size={28} />
                             </div>
-                            <h3 className="text-xl font-bold text-zinc-900 mb-4">{benefit.title}</h3>
-                            <p className="text-zinc-500 leading-relaxed font-medium">
+                            <h3 className="text-xl font-medium text-stripe-navy mb-4">{benefit.title}</h3>
+                            <p className="text-zinc-600 leading-relaxed font-normal">
                                 {benefit.description}
                             </p>
                         </motion.div>

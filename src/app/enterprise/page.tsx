@@ -166,7 +166,7 @@ export default function EnterprisePage() {
                     <div className="bg-blue-600 rounded-[48px] p-12 md:p-24 text-white text-center shadow-2xl shadow-blue-500/10">
                         <h2 className="text-4xl md:text-6xl font-bold mb-8 tracking-tight">Ready to evolve?</h2>
                         <p className="text-blue-100 text-lg md:text-xl mb-12 max-w-2xl mx-auto opacity-90">
-                            Join the world's most innovative enterprises building their future with Nexttask AI.
+                            Join the world's most innovative enterprises building their future with Onionlabel AI.
                         </p>
                         <button className="bg-white text-blue-600 px-10 py-5 rounded-full font-bold text-lg hover:bg-zinc-50 transition-all shadow-xl">
                             Schedule an onboarding call
