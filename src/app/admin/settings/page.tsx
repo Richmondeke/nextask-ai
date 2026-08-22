@@ -99,7 +99,7 @@ export default function AdminSettingsPage() {
 
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-xs font-black uppercase tracking-widest text-zinc-400 mb-2">Platform Name</label>
+                            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">Platform Name</label>
                             <input
                                 type="text"
                                 className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-50 focus:bg-white transition-all font-medium"
@@ -108,7 +108,7 @@ export default function AdminSettingsPage() {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-black uppercase tracking-widest text-zinc-400 mb-2">Support Email</label>
+                            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">Support Email</label>
                             <input
                                 type="email"
                                 className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-50 focus:bg-white transition-all font-medium"
@@ -164,7 +164,7 @@ export default function AdminSettingsPage() {
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-xs font-black uppercase tracking-widest text-zinc-400 mb-2">Platform Fee (%)</label>
+                            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">Platform Fee (%)</label>
                             <input
                                 type="number"
                                 className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-50 focus:bg-white transition-all font-bold"
@@ -173,7 +173,7 @@ export default function AdminSettingsPage() {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-black uppercase tracking-widest text-zinc-400 mb-2">Featured Limit</label>
+                            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">Featured Limit</label>
                             <input
                                 type="number"
                                 className="w-full bg-zinc-50 border border-zinc-100 rounded-xl px-4 py-3 focus:outline-none focus:ring-4 focus:ring-blue-50 focus:bg-white transition-all font-bold"

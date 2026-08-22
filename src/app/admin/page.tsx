@@ -110,8 +110,8 @@ export default function AdminOverview() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <div className="flex items-center gap-2">
-                        <h1 className="text-3xl font-black tracking-tight text-zinc-900">Platform Overview</h1>
-                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">Platform Overview</h1>
+                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
                             Live Firebase DB
                         </span>
                     </div>
@@ -120,14 +120,14 @@ export default function AdminOverview() {
                 <div className="flex items-center gap-3">
                     <button
                         onClick={fetchLiveFirebaseData}
-                        className="inline-flex items-center gap-2 px-3.5 py-2.5 bg-white hover:bg-zinc-50 text-zinc-900 border border-zinc-200 text-xs font-bold rounded-xl transition-all shadow-sm"
+                        className="inline-flex items-center gap-2 px-3.5 py-2.5 bg-white hover:bg-zinc-50 text-zinc-900 border border-zinc-200 text-xs font-semibold rounded-xl transition-all shadow-sm"
                     >
                         <GlowIcon name="gear" size={14} />
                         Refresh Live DB
                     </button>
                     <Link
                         href="/admin/leads"
-                        className="inline-flex items-center gap-2 px-4 py-2.5 bg-zinc-900 hover:bg-black text-white text-xs font-bold rounded-xl transition-all shadow-sm"
+                        className="inline-flex items-center gap-2 px-4 py-2.5 bg-zinc-900 hover:bg-black text-white text-xs font-semibold rounded-xl transition-all shadow-sm"
                     >
                         <GlowIcon name="layers" size={14} />
                         Lead Pipeline CRM ↗
@@ -146,15 +146,15 @@ export default function AdminOverview() {
                         className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm"
                     >
                         <div className="flex items-center justify-between mb-4">
-                            <div className="w-10 h-10 rounded-xl bg-zinc-100 text-zinc-900 flex items-center justify-center font-bold">
+                            <div className="w-10 h-10 rounded-xl bg-zinc-100 text-zinc-900 flex items-center justify-center font-semibold">
                                 <GlowIcon name={stat.iconName} size={20} />
                             </div>
-                            <span className="text-[11px] font-bold text-zinc-600 bg-zinc-100 px-2 py-0.5 rounded-md">
+                            <span className="text-[11px] font-semibold text-zinc-600 bg-zinc-100 px-2 py-0.5 rounded-md">
                                 {stat.change}
                             </span>
                         </div>
-                        <p className="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-1">{stat.name}</p>
-                        <h3 className="text-2xl font-black text-zinc-900">{stat.value}</h3>
+                        <p className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-1">{stat.name}</p>
+                        <h3 className="text-2xl font-semibold text-zinc-900">{stat.value}</h3>
                     </motion.div>
                 ))}
             </div>
@@ -165,8 +165,8 @@ export default function AdminOverview() {
                 <div className="p-6 border-b border-zinc-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div>
                         <div className="flex items-center gap-3">
-                            <h2 className="text-xl font-bold text-zinc-900">Registered Users & Auth Profiles</h2>
-                            <span className="text-xs font-bold px-2.5 py-0.5 bg-zinc-100 text-zinc-700 rounded-full">
+                            <h2 className="text-xl font-semibold text-zinc-900">Registered Users & Auth Profiles</h2>
+                            <span className="text-xs font-semibold px-2.5 py-0.5 bg-zinc-100 text-zinc-700 rounded-full">
                                 {filteredUsers.length} in database
                             </span>
                         </div>

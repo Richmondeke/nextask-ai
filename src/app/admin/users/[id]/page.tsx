@@ -60,10 +60,10 @@ export default function UserDetailPage() {
                         {user.fullName?.[0] || 'U'}
                     </div>
                     <div>
-                        <h1 className="text-4xl font-black tracking-tight text-zinc-900">{user.fullName}</h1>
-                        <p className="text-lg text-zinc-500 font-medium">{user.headline || 'Professional'}</p>
+                        <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">{user.fullName}</h1>
+                        <p className="text-base text-zinc-500 font-medium">{user.headline || 'Professional'}</p>
                         <div className="flex items-center gap-4 mt-3">
-                            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${user.status === 'Vetted' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
+                            <span className={`px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider border ${user.status === 'Vetted' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
                                 user.status === 'Interviewing' ? 'bg-blue-50 text-blue-600 border-blue-100' :
                                     'bg-amber-50 text-amber-600 border-amber-100'
                                 }`}>

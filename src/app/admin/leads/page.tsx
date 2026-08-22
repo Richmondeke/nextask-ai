@@ -263,7 +263,7 @@ export default function AdminLeadsCRMPage() {
                         </span>
                         <span className="text-xs text-zinc-400 font-medium">B2B Data Client Acquisition</span>
                     </div>
-                    <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900">
+                    <h1 className="text-3xl font-semibold tracking-tight text-zinc-900">
                         Data Sourcing Leads & LinkedIn CRM
                     </h1>
                     <p className="text-sm text-zinc-500 font-medium mt-0.5">
@@ -275,20 +275,20 @@ export default function AdminLeadsCRMPage() {
                     {leads.length === 0 && (
                         <button
                             onClick={handleSeedDemoData}
-                            className="flex items-center gap-1.5 px-3.5 py-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-900 text-xs font-bold rounded-xl border border-zinc-200 transition-colors"
+                            className="flex items-center gap-1.5 px-3.5 py-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-900 text-xs font-semibold rounded-xl border border-zinc-200 transition-colors"
                         >
                             <GlowIcon name="star" size={14} /> Seed Sample Leads
                         </button>
                     )}
                     <button
                         onClick={handleExportCsv}
-                        className="flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-zinc-50 text-zinc-900 text-xs font-bold rounded-xl border border-zinc-300 transition-all shadow-xs"
+                        className="flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-zinc-50 text-zinc-900 text-xs font-semibold rounded-xl border border-zinc-300 transition-all shadow-xs"
                     >
                         <GlowIcon name="download-cloud" size={14} /> Export CSV
                     </button>
                     <button
                         onClick={() => { setLeadToEdit(null); setIsLeadModalOpen(true); }}
-                        className="flex items-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-bold rounded-xl shadow-sm transition-all"
+                        className="flex items-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-semibold rounded-xl shadow-sm transition-all"
                     >
                         <GlowIcon name="plus" size={16} /> Track New Company
                     </button>
@@ -298,25 +298,25 @@ export default function AdminLeadsCRMPage() {
             {/* Metrics Ribbon */}
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div className="bg-white p-5 rounded-2xl border border-zinc-200 shadow-xs">
-                    <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider block mb-1">Total Pipeline</span>
+                    <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider block mb-1">Total Pipeline</span>
                     <div className="flex items-baseline justify-between">
-                        <h3 className="text-2xl font-black text-zinc-900">{metrics.total}</h3>
-                        <span className="text-xs font-semibold text-zinc-500">Accounts</span>
+                        <h3 className="text-2xl font-semibold text-zinc-900">{metrics.total}</h3>
+                        <span className="text-xs font-medium text-zinc-500">Accounts</span>
                     </div>
                 </div>
 
                 <div className="bg-white p-5 rounded-2xl border border-zinc-200 shadow-xs">
-                    <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider block mb-1">Active Outreach</span>
+                    <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider block mb-1">Active Outreach</span>
                     <div className="flex items-baseline justify-between">
-                        <h3 className="text-2xl font-black text-zinc-900">{metrics.activeOutreach}</h3>
+                        <h3 className="text-2xl font-semibold text-zinc-900">{metrics.activeOutreach}</h3>
                         <span className="text-[10px] font-semibold px-2 py-0.5 bg-zinc-100 text-zinc-700 rounded-md border border-zinc-200">Active</span>
                     </div>
                 </div>
 
                 <div className="bg-white p-5 rounded-2xl border border-zinc-200 shadow-xs">
-                    <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider block mb-1">Follow-ups Due</span>
+                    <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider block mb-1">Follow-ups Due</span>
                     <div className="flex items-baseline justify-between">
-                        <h3 className="text-2xl font-black text-zinc-900">
+                        <h3 className="text-2xl font-semibold text-zinc-900">
                             {metrics.dueTodayOrOverdue}
                         </h3>
                         <span className="text-[10px] font-semibold px-2 py-0.5 bg-zinc-100 text-zinc-700 rounded-md border border-zinc-200">Pending</span>
@@ -324,17 +324,17 @@ export default function AdminLeadsCRMPage() {
                 </div>
 
                 <div className="bg-white p-5 rounded-2xl border border-zinc-200 shadow-xs">
-                    <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider block mb-1">Closed Won</span>
+                    <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider block mb-1">Closed Won</span>
                     <div className="flex items-baseline justify-between">
-                        <h3 className="text-2xl font-black text-zinc-900">{metrics.closedWon}</h3>
+                        <h3 className="text-2xl font-semibold text-zinc-900">{metrics.closedWon}</h3>
                         <span className="text-[10px] font-semibold px-2 py-0.5 bg-zinc-100 text-zinc-700 rounded-md border border-zinc-200">Won</span>
                     </div>
                 </div>
 
                 <div className="bg-white p-5 rounded-2xl border border-zinc-200 shadow-xs col-span-2 md:col-span-1">
-                    <span className="text-xs font-bold text-zinc-400 uppercase tracking-wider block mb-1">Pipeline Volume</span>
+                    <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider block mb-1">Pipeline Volume</span>
                     <div className="flex items-baseline justify-between">
-                        <h3 className="text-2xl font-black text-zinc-900">${metrics.totalPipelineValue.toLocaleString()}</h3>
+                        <h3 className="text-2xl font-semibold text-zinc-900">${metrics.totalPipelineValue.toLocaleString()}</h3>
                     </div>
                 </div>
             </div>
