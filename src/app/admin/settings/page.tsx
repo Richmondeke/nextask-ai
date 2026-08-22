@@ -8,15 +8,7 @@ import {
     updateDoc
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import {
-    Zap,
-    CheckCircle2,
-    Save,
-    Globe,
-    Shield,
-    CreditCard,
-    Bell
-} from 'lucide-react';
+import GlowIcon from '@/components/ui/GlowIcon';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { motion } from 'framer-motion';
 
@@ -92,7 +84,7 @@ export default function AdminSettingsPage() {
                         : 'bg-zinc-900 text-white shadow-zinc-900/20 hover:bg-zinc-800'
                         }`}
                 >
-                    {saving ? <LoadingSpinner size={18} /> : saved ? <CheckCircle2 size={18} /> : <Save size={18} />}
+                    {saving ? <LoadingSpinner size={18} /> : saved ? <GlowIcon name="checkmark-circle" size={18}  /> : <GlowIcon name="save" size={18}  />}
                     {saving ? 'Saving...' : saved ? 'Settings Saved' : 'Save Changes'}
                 </button>
             </div>
@@ -101,7 +93,7 @@ export default function AdminSettingsPage() {
                 {/* General Settings */}
                 <div className="bg-white p-8 rounded-[40px] border border-zinc-100 shadow-sm space-y-6">
                     <div className="flex items-center gap-3 text-zinc-900 mb-2">
-                        <Globe size={20} className="text-blue-600" />
+                        <GlowIcon name="compass" size={20} className="text-blue-600"  />
                         <h2 className="text-lg font-bold">General</h2>
                     </div>
 
@@ -130,7 +122,7 @@ export default function AdminSettingsPage() {
                 {/* System Controls */}
                 <div className="bg-zinc-900 p-8 rounded-[40px] text-white space-y-6">
                     <div className="flex items-center gap-3 mb-2">
-                        <Shield size={20} className="text-blue-400" />
+                        <GlowIcon name="shield" size={20} className="text-blue-400"  />
                         <h2 className="text-lg font-bold text-white">System Controls</h2>
                     </div>
 
@@ -166,7 +158,7 @@ export default function AdminSettingsPage() {
                 {/* Market Settings */}
                 <div className="bg-white p-8 rounded-[40px] border border-zinc-100 shadow-sm space-y-6">
                     <div className="flex items-center gap-3 text-zinc-900 mb-2">
-                        <CreditCard size={20} className="text-emerald-600" />
+                        <GlowIcon name="credit-card" size={20} className="text-emerald-600"  />
                         <h2 className="text-lg font-bold">Marketplace</h2>
                     </div>
 
@@ -195,13 +187,13 @@ export default function AdminSettingsPage() {
                 {/* Notification Settings */}
                 <div className="bg-white p-8 rounded-[40px] border border-zinc-100 shadow-sm space-y-6">
                     <div className="flex items-center gap-3 text-zinc-900 mb-2">
-                        <Bell size={20} className="text-purple-600" />
+                        <GlowIcon name="bell" size={20} className="text-purple-600"  />
                         <h2 className="text-lg font-bold">Notifications</h2>
                     </div>
 
                     <div className="p-6 bg-purple-50 rounded-2xl border border-purple-100">
                         <div className="flex items-center gap-3 text-purple-700 mb-2">
-                            <Zap size={16} />
+                            <GlowIcon name="zap" size={16}  />
                             <p className="text-sm font-bold">Real-time alerts active</p>
                         </div>
                         <p className="text-xs text-purple-600/80 leading-relaxed font-medium">

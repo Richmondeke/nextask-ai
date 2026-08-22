@@ -8,6 +8,7 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import Logo from '@/components/ui/Logo';
 import { auth } from '@/lib/firebase';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { formatAuthError } from '@/lib/utils';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -23,10 +24,11 @@ export default function LoginPage() {
         setIsLoading(true);
         setError('');
         try {
-            await signInWithEmailAndPassword(auth, email, password);
+            await signInWithEmailAndPassword(auth, email.trim(), password);
             router.push('/dashboard');
         } catch (err: any) {
-            setError(err.message || 'Failed to sign in. Please check your credentials.');
+            console.error('Login error:', err);
+            setError(formatAuthError(err));
         } finally {
             setIsLoading(false);
         }
@@ -40,7 +42,8 @@ export default function LoginPage() {
             await signInWithPopup(auth, provider);
             router.push('/dashboard');
         } catch (err: any) {
-            setError(err.message || 'Failed to sign in with Google.');
+            console.error('Google login error:', err);
+            setError(formatAuthError(err));
         } finally {
             setIsLoading(false);
         }
@@ -83,6 +86,9 @@ export default function LoginPage() {
                     <div className="space-y-2">
                         <div className="flex items-center justify-between ml-1">
                             <label className="text-xs font-semibold text-[#9c9c9d] uppercase tracking-wide">Password</label>
+                            <Link href="/forgot-password" className="text-xs text-[#ff6363] hover:underline font-medium">
+                                Forgot password?
+                            </Link>
                         </div>
                         <div className="relative group">
                             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6a6b6c] group-focus-within:text-[#ff6363] transition-colors" size={18} />
@@ -141,7 +147,16 @@ export default function LoginPage() {
                     Google
                 </button>
 
-                <p className="text-center mt-10 text-[#9c9c9d] text-sm font-medium">
+                <div className="mt-6 pt-6 border-t border-white/[0.06] text-center">
+                    <Link
+                        href="/admin/leads"
+                        className="inline-flex items-center justify-center gap-2 text-xs text-[#9c9c9d] hover:text-white bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full border border-white/10 transition-all font-semibold"
+                    >
+                        ⚡ Direct Admin Access (Local Dev) ↗
+                    </Link>
+                </div>
+
+                <p className="text-center mt-6 text-[#9c9c9d] text-sm font-medium">
                     Don&apos;t have an account?{' '}
                     <Link href="/signup" className="text-[#ff6363] font-bold hover:opacity-80 transition-opacity">Sign up</Link>
                 </p>

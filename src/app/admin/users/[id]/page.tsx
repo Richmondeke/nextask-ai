@@ -4,24 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import {
-    ArrowLeft,
-    Mail,
-    Phone,
-    MapPin,
-    Globe,
-    Link,
-    Calendar,
-    Briefcase,
-    GraduationCap,
-    Award,
-    CheckCircle2,
-    Clock,
-    XCircle,
-    User,
-    ChevronRight,
-    FileText
-} from 'lucide-react';
+import GlowIcon from '@/components/ui/GlowIcon';
 
 export default function UserDetailPage() {
     const params = useParams();
@@ -67,7 +50,7 @@ export default function UserDetailPage() {
                 onClick={() => router.back()}
                 className="flex items-center gap-2 text-zinc-500 hover:text-zinc-900 transition-colors font-bold text-sm"
             >
-                <ArrowLeft size={18} />
+                <GlowIcon name="arrow-left" size={18}  />
                 Back to Talent Pool
             </button>
 
@@ -87,7 +70,7 @@ export default function UserDetailPage() {
                                 {user.status || 'Applied'}
                             </span>
                             <div className="flex items-center gap-1.5 text-zinc-400 text-xs font-medium">
-                                <Calendar size={14} />
+                                <GlowIcon name="calendar" size={14}  />
                                 Joined {user.createdAt?.seconds
                                     ? new Date(user.createdAt.seconds * 1000).toLocaleDateString()
                                     : user.createdAt
@@ -125,7 +108,7 @@ export default function UserDetailPage() {
                     <section className="bg-white rounded-[40px] p-10 border border-zinc-100 shadow-sm">
                         <div className="flex items-center justify-between mb-8">
                             <h3 className="text-xl font-bold">Work Experience</h3>
-                            <Briefcase className="text-zinc-200" size={24} />
+                            <GlowIcon name="bag" className="text-zinc-200" size={24}  />
                         </div>
                         <div className="space-y-8">
                             {user.experience?.length > 0 ? (
@@ -148,7 +131,7 @@ export default function UserDetailPage() {
                     <section className="bg-white rounded-[40px] p-10 border border-zinc-100 shadow-sm">
                         <div className="flex items-center justify-between mb-8">
                             <h3 className="text-xl font-bold">Assessment Performance</h3>
-                            <Award className="text-zinc-200" size={24} />
+                            <GlowIcon name="medal" className="text-zinc-200" size={24}  />
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {[
@@ -181,7 +164,7 @@ export default function UserDetailPage() {
                         <div className="space-y-6">
                             <div className="flex items-center gap-4 group">
                                 <div className="w-10 h-10 rounded-2xl bg-zinc-50 flex items-center justify-center text-zinc-400 group-hover:bg-blue-50 group-hover:text-blue-600 transition-all">
-                                    <Mail size={18} />
+                                    <GlowIcon name="mail" size={18}  />
                                 </div>
                                 <div>
                                     <p className="text-[10px] uppercase font-black tracking-widest text-zinc-400">Email Address</p>
@@ -190,7 +173,7 @@ export default function UserDetailPage() {
                             </div>
                             <div className="flex items-center gap-4 group">
                                 <div className="w-10 h-10 rounded-2xl bg-zinc-50 flex items-center justify-center text-zinc-400 group-hover:bg-green-50 group-hover:text-green-600 transition-all">
-                                    <Phone size={18} />
+                                    <GlowIcon name="phone" size={18}  />
                                 </div>
                                 <div>
                                     <p className="text-[10px] uppercase font-black tracking-widest text-zinc-400">Phone Number</p>
@@ -199,7 +182,7 @@ export default function UserDetailPage() {
                             </div>
                             <div className="flex items-center gap-4 group">
                                 <div className="w-10 h-10 rounded-2xl bg-zinc-50 flex items-center justify-center text-zinc-400 group-hover:bg-purple-50 group-hover:text-purple-600 transition-all">
-                                    <Link size={18} />
+                                    <GlowIcon name="link" size={18} />
                                 </div>
                                 <div>
                                     <p className="text-[10px] uppercase font-black tracking-widest text-zinc-400">LinkedIn Profile</p>
@@ -208,7 +191,7 @@ export default function UserDetailPage() {
                             </div>
                             <div className="flex items-center gap-4 group">
                                 <div className="w-10 h-10 rounded-2xl bg-zinc-50 flex items-center justify-center text-zinc-400 group-hover:bg-zinc-100 group-hover:text-zinc-900 transition-all">
-                                    <FileText size={18} />
+                                    <GlowIcon name="doc" size={18}  />
                                 </div>
                                 <div>
                                     <p className="text-[10px] uppercase font-black tracking-widest text-zinc-400">Resume / CV</p>

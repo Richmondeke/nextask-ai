@@ -5,12 +5,11 @@ import { useRouter, usePathname } from 'next/navigation';
 import { auth, db } from '@/lib/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
-import {
-    Menu,
-} from 'lucide-react';
+import GlowIcon from '@/components/ui/GlowIcon';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import DashboardSidebar from '@/components/DashboardSidebar';
 import Logo from '@/components/ui/Logo';
+import { isAdminEmail } from '@/lib/constants';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter();
@@ -20,18 +19,35 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            // In local dev, allow instant direct access
+            if (process.env.NODE_ENV === 'development') {
+                setIsAuthorized(true);
+                setIsLoading(false);
+                return;
+            }
+
             if (!user) {
                 router.push('/login');
                 return;
             }
 
-            const profileDoc = await getDoc(doc(db, 'profiles', user.uid));
-            const profileData = profileDoc.data();
+            const isAdminByEmail = isAdminEmail(user.email);
 
-            if (profileData?.role === 'admin' || profileData?.role === 'superadmin') {
-                setIsAuthorized(true);
-            } else {
-                router.push('/dashboard');
+            try {
+                const profileDoc = await getDoc(doc(db, 'profiles', user.uid));
+                const profileData = profileDoc.data();
+
+                if (isAdminByEmail || profileData?.role === 'admin' || profileData?.role === 'superadmin') {
+                    setIsAuthorized(true);
+                } else {
+                    router.push('/dashboard');
+                }
+            } catch (e) {
+                if (isAdminByEmail) {
+                    setIsAuthorized(true);
+                } else {
+                    router.push('/dashboard');
+                }
             }
             setIsLoading(false);
         });
@@ -60,7 +76,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     onClick={() => setIsSidebarOpen(true)}
                     className="p-2 text-zinc-500 hover:text-zinc-900"
                 >
-                    <Menu size={24} />
+                    <GlowIcon name="menu" size={24}  />
                 </button>
             </header>
 

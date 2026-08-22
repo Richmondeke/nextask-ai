@@ -9,7 +9,7 @@ import Logo from '@/components/ui/Logo';
 import { auth, db } from '@/lib/firebase';
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, updateProfile } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { generateReferralCode } from '@/lib/utils';
+import { generateReferralCode, formatAuthError } from '@/lib/utils';
 
 import { Suspense } from 'react';
 
@@ -45,7 +45,8 @@ function SignupContent() {
 
             router.push('/dashboard');
         } catch (err: any) {
-            setError(err.message || 'Failed to create account. Please try again.');
+            console.error('Signup error:', err);
+            setError(formatAuthError(err));
         } finally {
             setIsLoading(false);
         }
@@ -59,7 +60,8 @@ function SignupContent() {
             await signInWithPopup(auth, provider);
             router.push('/dashboard');
         } catch (err: any) {
-            setError(err.message || 'Failed to sign in with Google.');
+            console.error('Google signup error:', err);
+            setError(formatAuthError(err));
         } finally {
             setIsLoading(false);
         }

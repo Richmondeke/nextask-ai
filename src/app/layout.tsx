@@ -1,11 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "Onionlabel.ai | Shaping the Future of AI",
@@ -23,9 +17,18 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} h-full antialiased font-sans`}
+      className="h-full antialiased font-sans"
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col font-sans select-none">{children}</body>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700,800,900&display=swap"
+        />
+      </head>
+      <body className="min-h-full flex flex-col font-sans select-none" suppressHydrationWarning>
+        {children}
+      </body>
     </html>
   );
 }

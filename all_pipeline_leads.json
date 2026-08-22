@@ -1,0 +1,1472 @@
+[
+  {
+    "companyName": "Plata Card",
+    "website": "https://platacard.mx",
+    "industry": "Financial Services",
+    "companySize": "157 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "urgent",
+    "stage": "decision_maker_found",
+    "contactName": "Mario Suarez",
+    "contactRole": "Fiscal",
+    "linkedinUrl": "https://www.linkedin.com/in/mario-suarez-846325b6",
+    "contactEmail": "mario.suarez@platacard.mx",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "request_sent",
+    "notes": [
+      {
+        "id": "note-apify-0",
+        "text": "Extracted via Apify / Apollo. Location: Mexico City, Mexico. Org Revenue: < 500k.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Plata Card",
+    "website": "https://platacard.mx",
+    "industry": "Financial Services",
+    "companySize": "157 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "Miguel Briones",
+    "contactRole": "Brand Ambassador",
+    "linkedinUrl": "https://www.linkedin.com/in/mobriones",
+    "contactEmail": "miguel.briones@platacard.mx",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-20",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-1",
+        "text": "Extracted via Apify / Apollo. Location: Ciudad Obregón, Mexico. Org Revenue: < 500k.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Jamison Private Wealth Management",
+    "website": "https://jamisonwealth.com",
+    "industry": "Financial Services,Financial Services",
+    "companySize": "6 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "Jack Miller",
+    "contactRole": "Wealth Advisor",
+    "linkedinUrl": "https://www.linkedin.com/in/jack-miller-2023",
+    "contactEmail": "jackmiller@jamisonwealth.com, jack@jamisonwealth.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-21",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-2",
+        "text": "Extracted via Apify / Apollo. Location: Alpharetta, United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Tempero Bio",
+    "website": "https://temperobio.com",
+    "industry": "Pharmaceutical Manufacturing",
+    "companySize": "3 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "high",
+    "stage": "sourced",
+    "contactName": "Paul Johnson",
+    "contactRole": "Chief Executive Officer",
+    "linkedinUrl": "https://www.linkedin.com/in/paul-johnson-60883b3",
+    "contactEmail": "paul@temperobio.com",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-3",
+        "text": "Extracted via Apify / Apollo. Location: Moorestown, United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Prairie Sky Financial Group",
+    "website": "https://prairieskyfg.com",
+    "industry": "Financial Services,Financial Services",
+    "companySize": "5 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "urgent",
+    "stage": "sourced",
+    "contactName": "Mark Lucaccioni",
+    "contactRole": "Principal",
+    "linkedinUrl": "https://www.linkedin.com/in/mark-lucaccioni-cfp%C2%AE-07731914",
+    "contactEmail": "marklucaccioni@prairieskyfg.com, mark@prairieskyfg.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-20",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-4",
+        "text": "Extracted via Apify / Apollo. Location: Westchester, United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Fort Bend County EDC",
+    "website": "https://fortbendcounty.com",
+    "industry": "International Trade and Development",
+    "companySize": "10 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "decision_maker_found",
+    "contactName": "Lauren Fuller",
+    "contactRole": "Research & Policy Coordinator",
+    "linkedinUrl": "https://www.linkedin.com/in/lauren-fuller-mpp-0a0832216",
+    "contactEmail": "",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-21",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-5",
+        "text": "Extracted via Apify / Apollo. Location: Houston, United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Columbia Discount",
+    "website": "https://columbia.com",
+    "industry": "Appliances, Electrical, and Electronics Manufacturing,Software",
+    "companySize": "7 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "high",
+    "stage": "sourced",
+    "contactName": "Sean Reilly",
+    "contactRole": "Radiological controls technician",
+    "linkedinUrl": "https://www.linkedin.com/in/sean-reilly-9a6a29215",
+    "contactEmail": "sreilly@columbia.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-6",
+        "text": "Extracted via Apify / Apollo. Location: , US. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Plata Card",
+    "website": "https://platacard.mx",
+    "industry": "Financial Services",
+    "companySize": "157 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "linkedin_sent",
+    "contactName": "Rodolfo Garcia",
+    "contactRole": "Nesting coach",
+    "linkedinUrl": "https://www.linkedin.com/in/rodolfo-garcia-ba777224b",
+    "contactEmail": "rodolfo.garcia@platacard.mx",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-20",
+    "linkedinStatus": "request_sent",
+    "notes": [
+      {
+        "id": "note-apify-7",
+        "text": "Extracted via Apify / Apollo. Location: Miguel Hidalgo, Mexico. Org Revenue: < 500k.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Fort Bend County EDC",
+    "website": "https://fortbendcounty.com",
+    "industry": "International Trade and Development",
+    "companySize": "10 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "urgent",
+    "stage": "sourced",
+    "contactName": "Rachelle Kanak",
+    "contactRole": "Executive Vice President of Marketing & Operations",
+    "linkedinUrl": "https://www.linkedin.com/in/rachelle-kanak-bb580564",
+    "contactEmail": "",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-21",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-8",
+        "text": "Extracted via Apify / Apollo. Location: Houston, United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Columbia Discount",
+    "website": "https://columbia.com",
+    "industry": "Appliances, Electrical, and Electronics Manufacturing,Software",
+    "companySize": "7 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "high",
+    "stage": "sourced",
+    "contactName": "Benjamin West",
+    "contactRole": "Manager - Digital and Supply Chain Technology",
+    "linkedinUrl": "https://www.linkedin.com/in/thebenwest",
+    "contactEmail": "bwest@columbia.com",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-9",
+        "text": "Extracted via Apify / Apollo. Location: Gresham, United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Columbia Discount",
+    "website": "https://columbia.com",
+    "industry": "Appliances, Electrical, and Electronics Manufacturing,Software",
+    "companySize": "7 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "decision_maker_found",
+    "contactName": "Steve Loftin",
+    "contactRole": "owner",
+    "linkedinUrl": "https://www.linkedin.com/in/steve-loftin-93bab643",
+    "contactEmail": "stevel@columbia.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-20",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-10",
+        "text": "Extracted via Apify / Apollo. Location: nashville, united states. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Prairie Sky Financial Group",
+    "website": "https://prairieskyfg.com",
+    "industry": "Financial Services,Financial Services",
+    "companySize": "5 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "Brennan Harrington",
+    "contactRole": "Wealth Advisor",
+    "linkedinUrl": "https://www.linkedin.com/in/brennanharrington",
+    "contactEmail": "brennan@prairieskyfg.com",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-21",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-11",
+        "text": "Extracted via Apify / Apollo. Location: Lake Bluff, United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Jamison Private Wealth Management",
+    "website": "https://jamisonwealth.com",
+    "industry": "Financial Services,Financial Services",
+    "companySize": "6 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "urgent",
+    "stage": "sourced",
+    "contactName": "John Hansford",
+    "contactRole": "Advisory Associate",
+    "linkedinUrl": "https://www.linkedin.com/in/johnh0305",
+    "contactEmail": "johnhansford@jamisonwealth.com, john@jamisonwealth.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-12",
+        "text": "Extracted via Apify / Apollo. Location: Atlanta Metropolitan Area, United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Fort Bend County EDC",
+    "website": "https://fortbendcounty.com",
+    "industry": "International Trade and Development",
+    "companySize": "10 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "Patrick Cooper",
+    "contactRole": "business attraction and research",
+    "linkedinUrl": "https://www.linkedin.com/in/patrick-cooper-850216234",
+    "contactEmail": "",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-20",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-13",
+        "text": "Extracted via Apify / Apollo. Location: houston, united states. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Prairie Sky Financial Group",
+    "website": "https://prairieskyfg.com",
+    "industry": "Financial Services,Financial Services",
+    "companySize": "5 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "linkedin_sent",
+    "contactName": "Jennifer Sapp",
+    "contactRole": "Operations Manager",
+    "linkedinUrl": "https://www.linkedin.com/in/jennifer-sapp-a7a8983",
+    "contactEmail": "jeasapp@aol.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-21",
+    "linkedinStatus": "request_sent",
+    "notes": [
+      {
+        "id": "note-apify-14",
+        "text": "Extracted via Apify / Apollo. Location: Westchester, United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Plata Card",
+    "website": "https://platacard.mx",
+    "industry": "Financial Services",
+    "companySize": "157 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "high",
+    "stage": "decision_maker_found",
+    "contactName": "OMAR ARMENTA",
+    "contactRole": "Embajador de marca",
+    "linkedinUrl": "https://www.linkedin.com/in/omar-ambrosio-armenta-640a34133",
+    "contactEmail": "omar.armenta@platacard.mx",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-15",
+        "text": "Extracted via Apify / Apollo. Location: Privada Villa Corregidora, Mexico. Org Revenue: < 500k.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Plata Card",
+    "website": "https://platacard.mx",
+    "industry": "Financial Services",
+    "companySize": "157 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "urgent",
+    "stage": "sourced",
+    "contactName": "Mariana M.",
+    "contactRole": "Social Media Supervisor",
+    "linkedinUrl": "https://www.linkedin.com/in/mariana-m-1a2610170",
+    "contactEmail": "",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-20",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-16",
+        "text": "Extracted via Apify / Apollo. Location: Mexico City, Mexico. Org Revenue: < 500k.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Columbia Discount",
+    "website": "https://columbia.com",
+    "industry": "Appliances, Electrical, and Electronics Manufacturing,Software",
+    "companySize": "7 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "Jackie Swarts",
+    "contactRole": "Senior Information Technology Program Manager",
+    "linkedinUrl": "https://www.linkedin.com/in/jackieswarts",
+    "contactEmail": "jswarts@columbia.com",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-21",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-17",
+        "text": "Extracted via Apify / Apollo. Location: Portland, United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Columbia Discount",
+    "website": "https://columbia.com",
+    "industry": "Appliances, Electrical, and Electronics Manufacturing,Software",
+    "companySize": "7 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "high",
+    "stage": "sourced",
+    "contactName": "Bill Weide",
+    "contactRole": "Senior Information Security Engineering Manager",
+    "linkedinUrl": "https://www.linkedin.com/in/bill-weide-979b9b5b",
+    "contactEmail": "bweide@columbia.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-18",
+        "text": "Extracted via Apify / Apollo. Location: , United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Fort Bend County EDC",
+    "website": "https://fortbendcounty.com",
+    "industry": "International Trade and Development",
+    "companySize": "10 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "Nicole Brennan",
+    "contactRole": "Marketing and Communications Coordinator",
+    "linkedinUrl": "https://www.linkedin.com/in/nicole-brennan-4a637a1b6",
+    "contactEmail": "",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-20",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-19",
+        "text": "Extracted via Apify / Apollo. Location: Houston, United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Triumph Car Wash Parts",
+    "website": "https://triumphcwp.com",
+    "industry": "Manufacturing",
+    "companySize": "2 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "urgent",
+    "stage": "decision_maker_found",
+    "contactName": "Anne Strilec",
+    "contactRole": "Administrative Extraordinaire",
+    "linkedinUrl": "https://www.linkedin.com/in/astrilec",
+    "contactEmail": "anne@triumphcwp.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-21",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-20",
+        "text": "Extracted via Apify / Apollo. Location: Oakville, Canada. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "TIOGA COUNTY PARTNERSHIP FOR COMMUNITY HEALTH",
+    "website": "https://tiogapartnership.org",
+    "industry": "Other",
+    "companySize": "1 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "high",
+    "stage": "linkedin_sent",
+    "contactName": "Sue Sticklin",
+    "contactRole": "Executive Director",
+    "linkedinUrl": "https://www.linkedin.com/in/sue-sticklin-7492074b",
+    "contactEmail": "sue@tiogapartnership.org",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "request_sent",
+    "notes": [
+      {
+        "id": "note-apify-21",
+        "text": "Extracted via Apify / Apollo. Location: Wellsboro, United States. Org Revenue: Not Available.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Triumph Car Wash Parts",
+    "website": "https://triumphcwp.com",
+    "industry": "Manufacturing",
+    "companySize": "2 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "Vince MacNeil",
+    "contactRole": "Chief Executive Officer",
+    "linkedinUrl": "https://www.linkedin.com/in/vince-macneil-54833428",
+    "contactEmail": "vince@triumphcwp.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-20",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-22",
+        "text": "Extracted via Apify / Apollo. Location: , Canada. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Tempero Bio",
+    "website": "https://temperobio.com",
+    "industry": "Pharmaceutical Manufacturing",
+    "companySize": "3 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "John Wagner",
+    "contactRole": "Chief Medical Officer",
+    "linkedinUrl": "https://www.linkedin.com/in/johnwagnermdphd",
+    "contactEmail": "john@temperobio.com",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-21",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-23",
+        "text": "Extracted via Apify / Apollo. Location: Cambridge, United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Todd County Animal Clinic",
+    "website": "https://toddcountyanimal.com",
+    "industry": "Research Services,Scientific Research",
+    "companySize": "1 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "urgent",
+    "stage": "sourced",
+    "contactName": "John Laster",
+    "contactRole": "Business Owner",
+    "linkedinUrl": "https://www.linkedin.com/in/john-laster-71970896",
+    "contactEmail": "john@toddcountyanimal.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-24",
+        "text": "Extracted via Apify / Apollo. Location: Elkton, United States. Org Revenue: < 500k.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "FORCE Automation INC",
+    "website": "https://forceautomationusa.com",
+    "industry": "Industrial Machinery Manufacturing,Architecture Firm\b Engineering Firm",
+    "companySize": "2 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "decision_maker_found",
+    "contactName": "Klimentsi Manko",
+    "contactRole": "Engineering Manager",
+    "linkedinUrl": "https://www.linkedin.com/in/klimentsi-manko-72041545",
+    "contactEmail": "klimentsi@forceautomationusa.com",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-20",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-25",
+        "text": "Extracted via Apify / Apollo. Location: Southington, United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Space Theory",
+    "website": "https://spacetheory.com",
+    "industry": "Design Services,Architecture Firm\b Engineering Firm",
+    "companySize": "2 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "Virginie Remy",
+    "contactRole": "Creative Director",
+    "linkedinUrl": "https://www.linkedin.com/in/virginie-remy-88aa1222",
+    "contactEmail": "virginie.est@gmail.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-21",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-26",
+        "text": "Extracted via Apify / Apollo. Location: New York, United States. Org Revenue: < 500k.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Kairos Pharma Ltd. (NYSE: KAPA)",
+    "website": "https://kairospharma.com",
+    "industry": "Biotechnology",
+    "companySize": "2 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "high",
+    "stage": "sourced",
+    "contactName": "John Yu",
+    "contactRole": "Chief Executive Officer",
+    "linkedinUrl": "https://www.linkedin.com/in/john-yu-37630614a",
+    "contactEmail": "john@kairospharma.com",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-27",
+        "text": "Extracted via Apify / Apollo. Location: Los Angeles, United States. Org Revenue: < 500k.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Camber",
+    "website": "https://cambercloud.com",
+    "industry": "Software Development",
+    "companySize": "2 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "urgent",
+    "stage": "linkedin_sent",
+    "contactName": "Lauren Davidowski",
+    "contactRole": "Creative Ops & Strategy",
+    "linkedinUrl": "https://www.linkedin.com/in/lauren-davidowski-5ab57a6",
+    "contactEmail": "ldavidowski@gmail.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-20",
+    "linkedinStatus": "request_sent",
+    "notes": [
+      {
+        "id": "note-apify-28",
+        "text": "Extracted via Apify / Apollo. Location: San Francisco Bay Area, United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "FORCE Automation INC",
+    "website": "https://forceautomationusa.com",
+    "industry": "Industrial Equipment",
+    "companySize": "2 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "Lukasz Poplawski",
+    "contactRole": "Company Owner",
+    "linkedinUrl": "https://www.linkedin.com/in/lukasz-poplawski-703a25138",
+    "contactEmail": "mlody06053@gmail.com",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-21",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-29",
+        "text": "Extracted via Apify / Apollo. Location: , US. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "FullCtl",
+    "website": "https://fullctl.com",
+    "industry": "Technology, Information and Internet,Internet",
+    "companySize": "1 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "high",
+    "stage": "decision_maker_found",
+    "contactName": "Shawna Bong",
+    "contactRole": "Human Resources Manager",
+    "linkedinUrl": "https://www.linkedin.com/in/shawna-bong",
+    "contactEmail": "shawna@fullctl.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-30",
+        "text": "Extracted via Apify / Apollo. Location: Greater Madison Area, United States. Org Revenue: < 500k.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Camber",
+    "website": "https://cambercloud.com",
+    "industry": "Software Development",
+    "companySize": "2 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "Chen Chen",
+    "contactRole": "Co-Founder",
+    "linkedinUrl": "https://www.linkedin.com/in/cchen9331",
+    "contactEmail": "chen@cambercloud.com",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-20",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-31",
+        "text": "Extracted via Apify / Apollo. Location: San Francisco Bay Area, United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Meros Investment Management, LP",
+    "website": "https://merosinv.com",
+    "industry": "Investment Management,Investment Bank Securities Brokerage",
+    "companySize": "1 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "urgent",
+    "stage": "sourced",
+    "contactName": "Timothy Chatard",
+    "contactRole": "Chief Investment Officer",
+    "linkedinUrl": "https://www.linkedin.com/in/timothy-chatard-cfa-71103a6",
+    "contactEmail": "timothy@merosinv.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-21",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-32",
+        "text": "Extracted via Apify / Apollo. Location: Chattanooga, United States. Org Revenue: 1 - 2.5 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Space Theory",
+    "website": "https://spacetheory.com",
+    "industry": "Design Services,Architecture Firm\b Engineering Firm",
+    "companySize": "2 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "high",
+    "stage": "sourced",
+    "contactName": "Raina Page",
+    "contactRole": "Design & Business Development, California",
+    "linkedinUrl": "https://www.linkedin.com/in/raina-page-549012b6",
+    "contactEmail": "raina@spacetheory.com",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-33",
+        "text": "Extracted via Apify / Apollo. Location: Mill Valley, United States. Org Revenue: < 500k.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Triumph Car Wash Parts",
+    "website": "https://triumphcwp.com",
+    "industry": "Manufacturing",
+    "companySize": "2 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "Jason Kusznir",
+    "contactRole": "General Manager",
+    "linkedinUrl": "https://www.linkedin.com/in/jasonkusznir",
+    "contactEmail": "jason@triumphcwp.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-20",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-34",
+        "text": "Extracted via Apify / Apollo. Location: Greater Toronto Area, Canada. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Visionary Education Technology Holdings Group Inc",
+    "website": "https://visiongroupca.com",
+    "industry": "Higher Education",
+    "companySize": "1 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "decision_maker_found",
+    "contactName": "Jialiang Xu",
+    "contactRole": "Board Secretary",
+    "linkedinUrl": "https://www.linkedin.com/in/jialiang-xu-746073a8",
+    "contactEmail": "jialiang@visiongroupca.com",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-21",
+    "linkedinStatus": "request_sent",
+    "notes": [
+      {
+        "id": "note-apify-35",
+        "text": "Extracted via Apify / Apollo. Location: North York, Canada. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Camber",
+    "website": "https://cambercloud.com",
+    "industry": "Software Development",
+    "companySize": "2 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "urgent",
+    "stage": "sourced",
+    "contactName": "Ivan Novikau",
+    "contactRole": "Senior Research Engineer (AI/HPC Systems)",
+    "linkedinUrl": "https://www.linkedin.com/in/vanadiuz",
+    "contactEmail": "ivan@cambercloud.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-36",
+        "text": "Extracted via Apify / Apollo. Location: Vienna, Austria. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Triumph Car Wash Parts",
+    "website": "https://triumphcwp.com",
+    "industry": "Manufacturing",
+    "companySize": "2 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "Tim Justice",
+    "contactRole": "Chief Operating Officer and Founder",
+    "linkedinUrl": "https://www.linkedin.com/in/tim-justice-1aa58125",
+    "contactEmail": "tim@triumphcwp.com",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-20",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-37",
+        "text": "Extracted via Apify / Apollo. Location: Oakville, Canada. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Tempero Bio",
+    "website": "https://temperobio.com",
+    "industry": "Pharmaceutical Manufacturing",
+    "companySize": "3 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "Kevin Li",
+    "contactRole": "VP Operations and Program Management",
+    "linkedinUrl": "https://www.linkedin.com/in/kev-li",
+    "contactEmail": "kevin@temperobio.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-21",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-38",
+        "text": "Extracted via Apify / Apollo. Location: Greater Boston, United States. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "DEXX LTD",
+    "website": "https://dexx.ai",
+    "industry": "Wholesale,Wholesale Distribution",
+    "companySize": "1 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "high",
+    "stage": "sourced",
+    "contactName": "ZONGSHUO YANG",
+    "contactRole": "高级运营经理",
+    "linkedinUrl": "https://www.linkedin.com/in/zongshuo-yang-512110270",
+    "contactEmail": "zongshuo@dexx.ai",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-39",
+        "text": "Extracted via Apify / Apollo. Location: , Singapore. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "East Harlem Scholars Academies",
+    "website": "https://eastharlemscholars.org",
+    "industry": "Education Administration Programs,Education Training",
+    "companySize": "33 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "urgent",
+    "stage": "decision_maker_found",
+    "contactName": "Azalea Gonzalez",
+    "contactRole": "Operations Associate",
+    "linkedinUrl": "https://www.linkedin.com/in/azalea-gonzalez-82519a145",
+    "contactEmail": "agonzalez@eastharlemscholars.org",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-20",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-40",
+        "text": "Extracted via Apify / Apollo. Location: , US. Org Revenue: < 500k.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Zeeuw & Zeeuw Nissan",
+    "website": "https://zeeuwenzeeuw.nl",
+    "industry": "Motor Vehicle Manufacturing,Automotive",
+    "companySize": "25 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "M ZANDVLIET",
+    "contactRole": "Partsmanager",
+    "linkedinUrl": "https://www.linkedin.com/in/m-zandvliet-6467b0136",
+    "contactEmail": "m.zandvliet@zeeuwenzeeuw.nl",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-21",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-41",
+        "text": "Extracted via Apify / Apollo. Location: Voorschoten, Netherlands. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Hutchinson Mitsubishi",
+    "website": "https://hutchinsonmitsubishi.com",
+    "industry": "Retail",
+    "companySize": "179 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "high",
+    "stage": "linkedin_sent",
+    "contactName": "Jessica Warren",
+    "contactRole": "Catering Sales Coordinator",
+    "linkedinUrl": "https://www.linkedin.com/in/jessicawarren1234",
+    "contactEmail": "jessica.warren@hutchinsonmitsubishi.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "request_sent",
+    "notes": [
+      {
+        "id": "note-apify-42",
+        "text": "Extracted via Apify / Apollo. Location: San Antonio, Texas. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Small Museum Association",
+    "website": "https://smallmuseum.org",
+    "industry": "Museums, Historical Sites, and Zoos,Other",
+    "companySize": "21 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "Jeremy Cleghorn",
+    "contactRole": "Vice President",
+    "linkedinUrl": "https://www.linkedin.com/in/jeremy-cleghorn-b1937a190",
+    "contactEmail": "jeremy@smallmuseum.org",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-20",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-43",
+        "text": "Extracted via Apify / Apollo. Location: Greater Philadelphia, United States. Org Revenue: < 500k.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "East Harlem Scholars Academies",
+    "website": "https://eastharlemscholars.org",
+    "industry": "Education Administration Programs,Education Training",
+    "companySize": "33 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "urgent",
+    "stage": "sourced",
+    "contactName": "Hanna Riege",
+    "contactRole": "Literacy Specialist",
+    "linkedinUrl": "https://www.linkedin.com/in/hanna-riege-99ba3383",
+    "contactEmail": "hriege@eastharlemscholars.org",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-21",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-44",
+        "text": "Extracted via Apify / Apollo. Location: Bronx, United States. Org Revenue: < 500k.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "East Harlem Scholars Academies",
+    "website": "https://eastharlemscholars.org",
+    "industry": "Education Administration Programs,Education Training",
+    "companySize": "33 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "high",
+    "stage": "decision_maker_found",
+    "contactName": "Michael Ferreira",
+    "contactRole": "5th Grade Special Education Teacher",
+    "linkedinUrl": "https://www.linkedin.com/in/michael-ferreira-9a3b7a43",
+    "contactEmail": "fjmichael123@gmail.com",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-45",
+        "text": "Extracted via Apify / Apollo. Location: Alstead, United States. Org Revenue: < 500k.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "East Harlem Scholars Academies",
+    "website": "https://eastharlemscholars.org",
+    "industry": "Education/Training",
+    "companySize": "33 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "Andrew Huang",
+    "contactRole": "Special Education Teacher",
+    "linkedinUrl": "https://www.linkedin.com/in/andrew-huang-8b8576165",
+    "contactEmail": "ahuang@eastharlemscholars.org",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-20",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-46",
+        "text": "Extracted via Apify / Apollo. Location: , US. Org Revenue: < 500k.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Hutchinson Mitsubishi",
+    "website": "https://hutchinsonmitsubishi.com",
+    "industry": "Retail",
+    "companySize": "179 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "medium",
+    "stage": "sourced",
+    "contactName": "Brett Guthrie",
+    "contactRole": "Server",
+    "linkedinUrl": "https://www.linkedin.com/in/brett-guthrie-34b41621",
+    "contactEmail": "bguthrie2@yahoo.com",
+    "assignedVa": "Maria (VA)",
+    "nextFollowUpDate": "2026-08-21",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-47",
+        "text": "Extracted via Apify / Apollo. Location: , Greater Atlanta Area. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  },
+  {
+    "companyName": "Hutchinson Mitsubishi",
+    "website": "https://hutchinsonmitsubishi.com",
+    "industry": "Retail",
+    "companySize": "179 employees",
+    "dataSourcingNeeds": [
+      "B2B Contact Data Enrichment",
+      "Web Scraping & Extraction",
+      "Human-in-the-Loop Annotation"
+    ],
+    "estimatedValue": 6500,
+    "priority": "urgent",
+    "stage": "sourced",
+    "contactName": "Nidia Alvarez",
+    "contactRole": "Server",
+    "linkedinUrl": "https://www.linkedin.com/in/nidia-alvarez-24058977",
+    "contactEmail": "nidia.alvarez@hutchinsonmitsubishi.com",
+    "assignedVa": "Alex (VA)",
+    "nextFollowUpDate": "2026-08-19",
+    "linkedinStatus": "not_contacted",
+    "notes": [
+      {
+        "id": "note-apify-48",
+        "text": "Extracted via Apify / Apollo. Location: , DeKalb County GA. Org Revenue: 500k - 1 Million.",
+        "authorName": "Apify Ingestion",
+        "createdAt": "2026-08-19T09:26:17.798Z",
+        "type": "note"
+      }
+    ]
+  }
+]

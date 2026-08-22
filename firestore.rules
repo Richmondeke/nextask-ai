@@ -59,6 +59,11 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Company Leads CRM collection (Admin / VA access)
+    match /company_leads/{leadId} {
+      allow read, write: if isAuthenticated() && isAdmin();
+    }
+
     // Default deny
     match /{document=**} {
       allow read, write: if false;

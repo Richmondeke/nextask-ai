@@ -12,20 +12,7 @@ import {
     addDoc
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import {
-    Plus,
-    Search,
-    Filter,
-    MoreHorizontal,
-    Briefcase,
-    Users,
-    Clock,
-    CheckCircle2,
-    XCircle,
-    AlertCircle,
-    Zap,
-    Edit3
-} from 'lucide-react';
+import GlowIcon from '@/components/ui/GlowIcon';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { motion } from 'framer-motion';
 
@@ -189,7 +176,7 @@ export default function JobManagerPage() {
 
                 <div className="flex items-center gap-4">
                     <div className="relative">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" size={18} />
+                        <GlowIcon name="search" className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400" size={18}  />
                         <input
                             type="text"
                             placeholder="Search jobs..."
@@ -202,7 +189,7 @@ export default function JobManagerPage() {
                         onClick={() => setShowPostModal(true)}
                         className="flex items-center gap-2 px-6 py-3 bg-zinc-900 text-white rounded-2xl font-bold hover:bg-zinc-800 transition-all shadow-lg hover:shadow-zinc-900/20 active:scale-95"
                     >
-                        <Plus size={18} />
+                        <GlowIcon name="plus" size={18}  />
                         Post Job
                     </button>
                 </div>
@@ -230,7 +217,7 @@ export default function JobManagerPage() {
                                 }}
                                 className="p-2 hover:bg-zinc-50 rounded-xl transition-all"
                             >
-                                <XCircle className="text-zinc-400" size={24} />
+                                <GlowIcon name="xmark-circle" className="text-zinc-400" size={24} />
                             </button>
                         </div>
 
@@ -354,7 +341,7 @@ export default function JobManagerPage() {
                                             {isGenerating ? (
                                                 <LoadingSpinner size={16} />
                                             ) : (
-                                                <Zap size={16} className="text-blue-600 fill-blue-600" />
+                                                <GlowIcon name="zap" size={16} className="text-blue-600 fill-blue-600"  />
                                             )}
                                             {newJob.questions.length > 0 ? 'Regenerate Questions' : 'AI Generate Questions'}
                                         </button>
@@ -389,7 +376,7 @@ export default function JobManagerPage() {
                                     disabled={isPosting}
                                     className="flex-1 py-4 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-100 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
                                 >
-                                    {isPosting ? <LoadingSpinner size={18} /> : editingJobId ? <CheckCircle2 size={18} /> : <Plus size={18} />}
+                                    {isPosting ? <LoadingSpinner size={18} /> : editingJobId ? <GlowIcon name="checkmark-circle" size={18}  /> : <GlowIcon name="plus" size={18}  />}
                                     {editingJobId ? 'Save Changes' : 'Create Job Post'}
                                 </button>
                             </div>
@@ -418,7 +405,7 @@ export default function JobManagerPage() {
             <div className="grid grid-cols-1 gap-4">
                 {filteredJobs.length === 0 ? (
                     <div className="bg-white rounded-[40px] border border-dashed border-zinc-200 p-20 text-center">
-                        <AlertCircle className="w-12 h-12 text-zinc-300 mx-auto mb-4" />
+                        <GlowIcon name="alert-circle" className="w-12 h-12 text-zinc-300 mx-auto mb-4"  />
                         <h3 className="text-lg font-bold text-zinc-900">No jobs found</h3>
                         <p className="text-zinc-500">Try adjusting your search or post a new role.</p>
                     </div>
@@ -460,7 +447,7 @@ export default function JobManagerPage() {
                                             {job.type || 'Full-time'}
                                         </span>
                                         <span className="flex items-center gap-1.5 shrink-0">
-                                            <Users className="w-3.5 h-3.5 opacity-60" />
+                                            <GlowIcon name="users" className="w-3.5 h-3.5 opacity-60"  />
                                             {job.applicationCount || 0} applicants
                                         </span>
                                     </div>
@@ -472,7 +459,7 @@ export default function JobManagerPage() {
                                         onClick={() => handleEditClick(job)}
                                         className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold bg-zinc-50 text-zinc-600 hover:bg-zinc-100 transition-all"
                                     >
-                                        <Edit3 className="w-4 h-4" />
+                                        <GlowIcon name="edit" className="w-4 h-4"  />
                                         <span>Edit</span>
                                     </button>
                                     <button
@@ -484,12 +471,12 @@ export default function JobManagerPage() {
                                     >
                                         {job.status === 'Active' ? (
                                             <>
-                                                <XCircle className="w-4 h-4" />
+                                                <GlowIcon name="xmark-circle" className="w-4 h-4"  />
                                                 <span>Close</span>
                                             </>
                                         ) : (
                                             <>
-                                                <CheckCircle2 className="w-4 h-4" />
+                                                <GlowIcon name="checkmark-circle" className="w-4 h-4"  />
                                                 <span>Activate</span>
                                             </>
                                         )}

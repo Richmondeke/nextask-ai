@@ -4,15 +4,30 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Mail, ArrowLeft, Send, CheckCircle2 } from 'lucide-react';
+import { auth } from '@/lib/firebase';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import { formatAuthError } from '@/lib/utils';
 
 export default function ForgotPasswordPage() {
     const [email, setEmail] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [error, setError] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Simulate submission
-        setIsSubmitted(true);
+        if (!email.trim()) return;
+        setIsLoading(true);
+        setError('');
+        try {
+            await sendPasswordResetEmail(auth, email.trim());
+            setIsSubmitted(true);
+        } catch (err: any) {
+            console.error('Password reset error:', err);
+            setError(formatAuthError(err));
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -55,6 +70,11 @@ export default function ForgotPasswordPage() {
                         </div>
 
                         <form onSubmit={handleSubmit} className="space-y-6">
+                            {error && (
+                                <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium">
+                                    {error}
+                                </div>
+                            )}
                             <div className="space-y-2">
                                 <label className="text-sm font-medium text-zinc-400 ml-1">Email Address</label>
                                 <div className="relative group">
@@ -72,9 +92,10 @@ export default function ForgotPasswordPage() {
 
                             <button
                                 type="submit"
-                                className="w-full bg-white text-black font-bold py-4 rounded-2xl hover:bg-zinc-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group"
+                                disabled={isLoading}
+                                className="w-full bg-white text-black font-bold py-4 rounded-2xl hover:bg-zinc-200 transition-all active:scale-[0.98] flex items-center justify-center gap-2 group disabled:opacity-50"
                             >
-                                Send Instructions
+                                {isLoading ? 'Sending...' : 'Send Reset Link'}
                                 <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                             </button>
                         </form>

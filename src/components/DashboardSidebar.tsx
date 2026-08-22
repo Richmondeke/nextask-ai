@@ -3,40 +3,30 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import {
-    Home,
-    Search,
-    Users,
-    Wallet,
-    User,
-    Bell,
-    Cookie,
-    Briefcase,
-    Settings,
-    X,
-    LogOut
-} from 'lucide-react';
+import GlowIcon from './ui/GlowIcon';
 import { motion, AnimatePresence } from 'framer-motion';
 import Logo from './ui/Logo';
 import { auth, db } from '@/lib/firebase';
 import { signOut, onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
+import { isAdminEmail } from '@/lib/constants';
 
 const userLinks = [
-    { name: 'Explore', href: '/dashboard/explore', icon: Search },
-    { name: 'Home', href: '/dashboard', icon: Home },
-    { name: 'Applications', href: '/dashboard/applications', icon: Briefcase },
-    { name: 'Referrals', href: '/dashboard/referrals', icon: Users },
-    { name: 'Earnings', href: '/dashboard/earnings', icon: Wallet },
-    { name: 'Profile', href: '/dashboard/profile', icon: User },
+    { name: 'Explore', href: '/dashboard/explore', iconName: 'search' },
+    { name: 'Home', href: '/dashboard', iconName: 'home' },
+    { name: 'Applications', href: '/dashboard/applications', iconName: 'bag' },
+    { name: 'Referrals', href: '/dashboard/referrals', iconName: 'users' },
+    { name: 'Earnings', href: '/dashboard/earnings', iconName: 'credit-card' },
+    { name: 'Profile', href: '/dashboard/profile', iconName: 'user' },
 ];
 
 const adminLinks = [
-    { name: 'Admin Overview', href: '/admin', icon: Home },
-    { name: 'Talent Pool', href: '/admin/users', icon: Users },
-    { name: 'Job Manager', href: '/admin/jobs', icon: Search },
-    { name: 'Settings', href: '/admin/settings', icon: Settings },
+    { name: 'Admin Overview', href: '/admin', iconName: 'home' },
+    { name: 'Lead Pipeline (CRM)', href: '/admin/leads', iconName: 'layers' },
+    { name: 'Talent Pool', href: '/admin/users', iconName: 'users' },
+    { name: 'Job Manager', href: '/admin/jobs', iconName: 'search' },
+    { name: 'Settings', href: '/admin/settings', iconName: 'gear' },
 ];
 
 export default function DashboardSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
@@ -49,16 +39,26 @@ export default function DashboardSidebar({ isOpen, onClose }: { isOpen?: boolean
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
                 setUser(user);
-                const profileDoc = await getDoc(doc(db, 'profiles', user.uid));
-                if (profileDoc.exists()) {
-                    setProfile(profileDoc.data());
+                try {
+                    const profileDoc = await getDoc(doc(db, 'profiles', user.uid));
+                    if (profileDoc.exists()) {
+                        setProfile(profileDoc.data());
+                    }
+                } catch (e) {
+                    console.warn('Profile fetch error:', e);
                 }
             } else {
-                router.push('/login');
+                // In local dev, provide default superadmin context so the CRM is immediately usable
+                if (process.env.NODE_ENV === 'development') {
+                    setUser({ email: 'richmondeke@gmail.com', displayName: 'Richmond Eke' });
+                    setProfile({ role: 'superadmin', fullName: 'Richmond Eke' });
+                } else if (!pathname.startsWith('/login') && !pathname.startsWith('/signup')) {
+                    router.push('/login');
+                }
             }
         });
         return () => unsubscribe();
-    }, [router]);
+    }, [router, pathname]);
 
     const handleLogout = async () => {
         try {
@@ -94,7 +94,7 @@ export default function DashboardSidebar({ isOpen, onClose }: { isOpen?: boolean
                         onClick={onClose}
                         className="p-2 text-[#6a6b6c] hover:text-[#f9f9f9] lg:hidden"
                     >
-                        <X size={20} />
+                        <GlowIcon name="xmark" size={20} />
                     </button>
                 </div>
 
@@ -107,7 +107,6 @@ export default function DashboardSidebar({ isOpen, onClose }: { isOpen?: boolean
                         </div>
                         {userLinks.map((link) => {
                             const isActive = pathname === link.href;
-                            const Icon = link.icon;
 
                             return (
                                 <Link
@@ -119,7 +118,7 @@ export default function DashboardSidebar({ isOpen, onClose }: { isOpen?: boolean
                                         : 'text-[#9c9c9d] hover:bg-white/5 hover:text-[#f9f9f9]'
                                         }`}
                                 >
-                                    <Icon size={18} strokeWidth={isActive ? 2.5 : 2} className={isActive ? 'text-[#ff6363]' : 'text-[#6a6b6c] group-hover:text-[#9c9c9d]'} />
+                                    <GlowIcon name={link.iconName} size={18} className={isActive ? 'text-[#ff6363]' : 'text-[#6a6b6c] group-hover:text-[#9c9c9d]'} />
                                     <span className="text-sm">{link.name}</span>
                                 </Link>
                             );
@@ -127,7 +126,7 @@ export default function DashboardSidebar({ isOpen, onClose }: { isOpen?: boolean
                     </div>
 
                     {/* Admin Links Section */}
-                    {(profile?.role === 'admin' || profile?.role === 'superadmin') && (
+                    {(profile?.role === 'admin' || profile?.role === 'superadmin' || isAdminEmail(user?.email)) && (
                         <div className="space-y-1 mt-8 pt-6 border-t border-white/[0.06]">
                             <div className="px-3 mb-2 flex items-center justify-between">
                                 <span className="text-[10px] font-bold text-[#6a6b6c] uppercase tracking-widest">Governance</span>
@@ -136,7 +135,6 @@ export default function DashboardSidebar({ isOpen, onClose }: { isOpen?: boolean
 
                             {adminLinks.map((link) => {
                                 const isActive = pathname === link.href || (link.href !== '/admin' && pathname.startsWith(link.href));
-                                const Icon = link.icon;
 
                                 return (
                                     <Link
@@ -147,7 +145,7 @@ export default function DashboardSidebar({ isOpen, onClose }: { isOpen?: boolean
                                             : 'text-[#9c9c9d] hover:bg-white/5 hover:text-[#f9f9f9]'
                                             }`}
                                     >
-                                        <Icon size={18} strokeWidth={isActive ? 2 : 1.5} className={isActive ? 'text-white' : 'text-[#6a6b6c] group-hover:text-[#9c9c9d]'} />
+                                        <GlowIcon name={link.iconName} size={18} className={isActive ? 'text-white' : 'text-[#6a6b6c] group-hover:text-[#9c9c9d]'} />
                                         <span className="text-sm">{link.name}</span>
                                     </Link>
                                 );
@@ -159,12 +157,9 @@ export default function DashboardSidebar({ isOpen, onClose }: { isOpen?: boolean
                 {/* User Section */}
                 <div className="p-4 mt-auto border-t border-white/[0.06] bg-white/[0.02]">
                     <div className="flex items-center gap-3 px-2 mb-4">
-                        <button className="p-2 text-[#6a6b6c] hover:text-[#55b3ff] hover:bg-[#55b3ff]/10 rounded-lg transition-all">
-                            <Cookie size={18} />
-                        </button>
                         <div className="relative">
                             <button className="p-2 text-[#6a6b6c] hover:text-[#55b3ff] hover:bg-[#55b3ff]/10 rounded-lg transition-all">
-                                <Bell size={18} />
+                                <GlowIcon name="bell" size={18} />
                             </button>
                             <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-[#ff6363] rounded-full border border-[#07080a]" />
                         </div>
@@ -184,7 +179,7 @@ export default function DashboardSidebar({ isOpen, onClose }: { isOpen?: boolean
                             onClick={handleLogout}
                             className="p-2 text-[#6a6b6c] hover:text-red-500 transition-colors"
                         >
-                            <LogOut size={16} />
+                            <GlowIcon name="log-out" size={16} />
                         </button>
                     </div>
                 </div>
